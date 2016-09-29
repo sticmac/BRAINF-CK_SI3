@@ -10,7 +10,7 @@ public class Left extends Instruction {
 	}
 
 	@Override
-	public void action(Machine machine) throws OutOfMemoryException {
+	public void accept(Machine machine) throws OutOfMemoryException {
 		int location = machine.getLocation();
 		location--;
 		machine.setLocation(location);
