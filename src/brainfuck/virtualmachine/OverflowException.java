@@ -1,6 +1,6 @@
 package brainfuck.virtualmachine;
 
-public class OverflowException extends Exception {
+public class OverflowException extends RuntimeException {
 	public OverflowException() {
 		super();
 	}
