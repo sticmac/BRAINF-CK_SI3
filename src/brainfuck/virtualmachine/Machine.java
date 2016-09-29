@@ -21,11 +21,11 @@ public class Machine {
 	}
 
 	public void executeOp(String name) throws OverflowException {
-		iset.getOp(name).action(this);
+		iset.getOp(name).accept(this);
 	}
 
 	public void executeOp(char symbol) throws OverflowException {
-		iset.getOp(symbol).action(this);
+		iset.getOp(symbol).accept(this);
 	}
 
 	public int getLocation() {

@@ -10,7 +10,7 @@ public class Decr extends Instruction {
 	}
 
 	@Override
-	public void action(Machine machine) throws OverflowException {
+	public void accept(Machine machine) throws OverflowException {
 		byte value = machine.readMemory();
 		if (value <= 0) throw new OverflowException();
 		value--;

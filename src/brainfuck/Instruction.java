@@ -1,9 +1,11 @@
 package brainfuck;
 
+import java.util.function.Consumer;
+
 import brainfuck.virtualmachine.Machine;
 import brainfuck.virtualmachine.OverflowException;
 
-public abstract class Instruction {
+public abstract class Instruction implements Consumer<Machine> {
 	private String name;
 	private char symbol;
 	private String color;
@@ -25,6 +27,4 @@ public abstract class Instruction {
 	public String getColor() {
 		return color;
 	}
-
-	abstract public void action(Machine machine) throws OverflowException;
 }
