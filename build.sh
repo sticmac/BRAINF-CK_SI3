@@ -3,7 +3,6 @@
 
 javac -d bin/ -cp bin/ `find src/brainfuck -name \*.java`
 cd bin/
-mkdir META-INF
-echo "Main-Class: brainfuck.Main" > META-INF/MANIFEST.MF
-jar cmvf META-INF/MANIFEST.MF ../Bfck.jar brainfuck/*
+# See https://docs.oracle.com/javase/tutorial/deployment/jar/appman.html
+jar vcfe ../Bfck.jar brainfuck.Main brainfuck/
 cd ..
