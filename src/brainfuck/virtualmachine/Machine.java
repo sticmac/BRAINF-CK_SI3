@@ -28,6 +28,15 @@ public class Machine {
 		iset.getOp(symbol).action(this);
 	}
 
+	public int getLocation() {
+		return location;
+	}
+
+	public void setLocation(int i) throws OutOfMemoryException {
+		memory.checkBounds(i);
+		location = i;
+	}
+
 	public String dumpMemory() {
 		return memory.toString();
 	}

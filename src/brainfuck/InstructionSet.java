@@ -4,7 +4,7 @@ import java.util.HashMap;
 import brainfuck.instructions.*;
 
 public class InstructionSet {
-	private final static Instruction[] instructions = {new Incr(), new Decr()};
+	private final static Instruction[] instructions = {new Incr(), new Decr(), new Right(), new Left()};
 	private HashMap<String, Instruction> names;
 	private HashMap<Character, Instruction> symbols;
 
