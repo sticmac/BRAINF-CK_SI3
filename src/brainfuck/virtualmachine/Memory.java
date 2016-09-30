@@ -12,6 +12,11 @@ public class Memory {
 	 */
 	private static final int DEFAULT_SIZE = 30000;
 
+	/*
+	 * Offset allowing to obtain values from 0 to 255
+	 */
+	private static final int OFFSET = 128;
+
 	/**
 	 * Actual memory capacity.
 	 */
@@ -30,6 +35,9 @@ public class Memory {
 	public Memory(int size) {
 		this.size = size;
 		memory = new byte[size];
+		for (int i = 0; i < size; i++) {
+			memory[i] = Byte.MIN_VALUE;
+		}
 	}
 
 	/**
@@ -81,11 +89,10 @@ public class Memory {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder tmp = new StringBuilder(size+size/16); // roughly preallocate the needed capacity
+		StringBuilder tmp = new StringBuilder(size+size/16);
 		for (int i = 0; i < size; i++) {
-			tmp.append(memory[i]);
-			if ((i+1)%16 == 0) {
-				tmp.append('\n');
+			if (memory[i] != Byte.MIN_VALUE) {
+				tmp.append("C"+i+": "+(memory[i]+OFFSET)+"\n");
 			}
 		}
 		return tmp.toString();

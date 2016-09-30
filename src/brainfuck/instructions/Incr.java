@@ -30,7 +30,7 @@ public class Incr extends Instruction {
 	@Override
 	public void accept(Machine machine) throws OverflowException {
 		byte value = machine.readMemory();
-		if (value >= 255) throw new OverflowException();
+		if (value >= Byte.MAX_VALUE) throw new OverflowException();
 		value++;
 		machine.writeMemory(value);
 	}

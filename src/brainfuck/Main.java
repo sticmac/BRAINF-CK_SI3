@@ -10,8 +10,8 @@ public class Main {
 		ArgParser parser = new ArgParser(args);
 
 		machine.executeOp("INCR");
-		System.out.println(machine.dumpMemory());
+		System.out.print(machine.dumpMemory());
 		machine.executeOp('-');
-		System.out.println(machine.dumpMemory());
+		System.out.print(machine.dumpMemory());
 	}
 }
