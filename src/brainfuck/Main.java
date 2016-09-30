@@ -9,7 +9,7 @@ public class Main {
 
 		machine.executeOp("INCR");
 		System.out.println(machine.dumpMemory());
-		
+
 		machine.executeOp('-');
 		System.out.println(machine.dumpMemory());
 
