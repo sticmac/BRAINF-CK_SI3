@@ -17,7 +17,7 @@ public class Incr extends Instruction {
 	 * Constructs the Incr instruction.
 	 */
 	public Incr() {
-		super("INCR", '+', "blue"); // FIXME
+		super("INCR", '+', new int[] {0xFF, 0xFF, 0xFF});
 	}
 
 	/**
@@ -28,9 +28,12 @@ public class Incr extends Instruction {
 	 * @throws OverflowException	if the current cell value is at it's top limit.
 	 */
 	@Override
-	public void accept(Machine machine) throws OverflowException {
+	public void accept(Machine machine) {
 		byte value = machine.readMemory();
-		if (value >= Byte.MAX_VALUE) throw new OverflowException();
+		if (value >= Byte.MAX_VALUE) {
+			System.err.println("Error: above maximum value");
+	       		System.exit(1);
+		}	
 		value++;
 		machine.writeMemory(value);
 	}

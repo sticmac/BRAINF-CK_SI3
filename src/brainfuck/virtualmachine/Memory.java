@@ -12,8 +12,8 @@ public class Memory {
 	 */
 	private static final int DEFAULT_SIZE = 30000;
 
-	/*
-	 * Offset allowing to obtain values from 0 to 255
+	/**
+	 * Offset allowing to obtain values from 0 to 255.
 	 */
 	private static final int OFFSET = 128;
 
@@ -48,13 +48,15 @@ public class Memory {
 	}
 
 	/**
-	 * Throws an OutOfMemoryException exception if the given index is outside the memory block.
+	 * Exit the program with code 2 if the given index is outside the memory block.
 	 *
 	 * @param i	index to check.
-	 * @throws OutOfMemoryException when an invalid index is supplied.
 	 */
-	public void checkBounds(int i) throws OutOfMemoryException {
-		if (i < 0 || i >= size) throw new OutOfMemoryException(i, size);
+	public void checkBounds(int i) {
+		if (i < 0 || i >= size) {
+			System.err.println("Error: This data is out of memory");
+			System.exit(2);
+		}	       
 	}
 
 	/**
@@ -62,9 +64,8 @@ public class Memory {
 	 *
 	 * @param i	index in memory.
 	 * @return current value at index i.
-	 * @throws OutOfMemoryException	if the index is outside the memory block.
 	 */
-	public byte get(int i) throws OutOfMemoryException {
+	public byte get(int i) {
 		checkBounds(i);
 		return memory[i];
 	}
@@ -74,9 +75,8 @@ public class Memory {
 	 *
 	 * @param i	index in memory.
 	 * @param value	new value.
-	 * @throws OutOfMemoryException if the index is outside the memory block.
 	 */
-	public void set(int i, byte value) throws OutOfMemoryException {
+	public void set(int i, byte value) {
 		checkBounds(i);
 		memory[i] = value;
 	}
@@ -89,10 +89,10 @@ public class Memory {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder tmp = new StringBuilder(size+size/16);
+		StringBuilder tmp = new StringBuilder();
 		for (int i = 0; i < size; i++) {
 			if (memory[i] != Byte.MIN_VALUE) {
-				tmp.append("C"+i+": "+(memory[i]+OFFSET)+"\n");
+				tmp.append("C" + i + ": " + (memory[i] + OFFSET) + "\n");
 			}
 		}
 		return tmp.toString();

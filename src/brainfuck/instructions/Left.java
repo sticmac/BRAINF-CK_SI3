@@ -17,7 +17,7 @@ public class Left extends Instruction {
 	 * Constructs the Left instruction.
 	 */
 	public Left() {
-		super("LEFT", '<', "yellow"); // FIXMETOO
+		super("LEFT", '<', new int[] {0x94, 0x00, 0xD3});
 	}
 
 
@@ -26,10 +26,9 @@ public class Left extends Instruction {
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
 	 *
 	 * @param machine	Virtual Machine whose state will be altered
-	 * @throws OutOfMemoryException	if the current cell is the first in Memory.
 	 */
 	@Override
-	public void accept(Machine machine) throws OutOfMemoryException {
+	public void accept(Machine machine) {
 		int location = machine.getLocation();
 		location--;
 		machine.setLocation(location);

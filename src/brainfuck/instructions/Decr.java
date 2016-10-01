@@ -17,7 +17,7 @@ public class Decr extends Instruction {
 	 * Constructs the Decr instruction.
 	 */
 	public Decr() {
-		super("DECR", '-', "red"); // FIXMETOO
+		super("DECR", '-', new int[] {0x4B, 0x00, 0x82});
 	}
 
 	/**
@@ -25,12 +25,14 @@ public class Decr extends Instruction {
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
 	 *
 	 * @param machine	Virtual Machine whose state will be altered
-	 * @throws OverflowException	if the current cell value is at it's bottom limit.
 	 */
 	@Override
-	public void accept(Machine machine) throws OverflowException {
+	public void accept(Machine machine) {
 		byte value = machine.readMemory();
-		if (value <= Byte.MIN_VALUE) throw new OverflowException();
+		if (value <= Byte.MIN_VALUE) {
+		        System.err.println("Error: below minimum value");
+	       		System.exit(1);
+		}		
 		value--;
 		machine.writeMemory(value);
 	}

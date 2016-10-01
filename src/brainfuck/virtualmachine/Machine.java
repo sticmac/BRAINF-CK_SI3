@@ -30,7 +30,7 @@ public class Machine {
 	 * Constructs a new virtual machine, initialize its Memory.
 	 */
 	public Machine() {
-		memory = new Memory(32); //FIXME
+		memory = new Memory();
 		iset = new InstructionSet();
 	}
 
@@ -81,9 +81,8 @@ public class Machine {
 	 * Change the location in memory.
 	 *
 	 * @param i	new {@link Machine#location}.
-	 * @throws OutOfMemoryException	if the new location is outside the available Memory.
 	 */
-	public void setLocation(int i) throws OutOfMemoryException {
+	public void setLocation(int i) {
 		memory.checkBounds(i);
 		location = i;
 	}
