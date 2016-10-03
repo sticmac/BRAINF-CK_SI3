@@ -20,7 +20,7 @@
 \maketitle{}
 
 \section{Introduction}
-\paragraph{}Nous vous présenterons ici notre compte rendu de la réalisation du niveau 1 ($L_1$) du projet \textsc{Brainf*ck}. Ce premier niveau constitue une étape cruciale et non négligeable, puisqu'elle pose ce qui servira de base à l'intégralité du projet. Nous avons donc pris soin de bien mettre en place ce socle afin de nous assurer une certaine sérénité dans la suite de l'élaboration du projet.
+\paragraph{}Nous vous présenterons ici notre compte rendu de la réalisation du niveau 1 ($L_1$) du projet \textsc{Brainf*ck}. Ce premier niveau pose ce qui servira de base à l'intégralité du projet. Nous avons donc pris soin de bien mettre en place ce socle afin de nous assurer une certaine sérénité dans la suite de l'élaboration du projet.
 
 \section{Choix d'implémentations}
 \paragraph{}En découvrant les premières subdivisions du projet, notre premier reflexe a été de définir la structure du code que nous proposerons. L'organisation a été ainsi décidée :
@@ -35,7 +35,7 @@ Ce nom de fichier est ensuite passé en paramètre du constructeur de la classe 
 \paragraph{}Chacune de ces instructions est ensuite lue par la classe \texttt{Interpreter}, qui saura reconnaitre chacune des commandes lue par le lecteur de fichier et demandera à la machine virtuelle de l'exécuter.
 
 \section{Let's Keep Calm and Take a Step Back}
-\paragraph{}Avec ce premier niveau, nous avons pu entamer ce qui constitue la base du projet. En effet, si les objectifs proposés paraissaient simples au premier abord, ils sont en réalité bien plus complexes car nécessitent la mise en place d'une bonne partie des fonctionnalités de basedu programme final. Il a donc été nécessaire de réfléchir aux différents choix d'implémentations présentés afin de trouver la solution qui nous paraissait, à ce stade du developpement, optimale. 
+\paragraph{}Avec ce premier niveau, nous avons pu entamer ce qui constitue la base du projet. Il a donc été nécessaire de réfléchir aux différents choix d'implémentations présentés afin de trouver la solution qui nous paraissait, à ce stade du developpement, optimale. 
 \paragraph{}Toutefois, nous avons choisi un autre ordre d'implémentation des fonctionnalités que celui proposé. En effet, nous avons d'abord voulu implémenter la machine virtuelle et les différentes instructions possibles avant d'intégrer le lecteur de fichiers et l'analyseur d'arguments.
 Cette décision a été prise pour plusieurs raisons. La principale fut que notre première approche du problème ne nécessitait pas ces deux derniers points. En revanche, la mise en place des instructions était essentielle à son implémentation. Notre priorité pour ce début de projet ayant réellement été de mettre en place cette structure de code à laquelle nous avions réfléchi, plus encore que de répondre à une ou des fonctionnalités demandées, nous avons plutôt priorisé la mise en place de cette structure de base.
 De plus, cela nous a paru être une idée plus maintenable et plus « facile » à mettre en place car nous pouvions ainsi tester directement les différentes méthodes et instructions en ne faisant que modifier la méthode \texttt{main}. Et en effet, il a été beaucoup plus simple de travailler directement avec la machine virtuelle dans un premier temps, sans passer par le lecteur de fichiers et l'intepréteur.
