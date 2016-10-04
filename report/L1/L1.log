@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.5.5)  3 OCT 2016 18:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.5.5)  3 OCT 2016 20:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -578,7 +578,7 @@ r/jknappen/ec/ecbx1440.600pk> </home/julien/.texmf-var/fonts/pk/ljfour/jknappen
 /ec/ecrm1200.600pk> </home/julien/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm17
 28.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb>
-Output written on L1.pdf (2 pages, 69135 bytes).
+Output written on L1.pdf (2 pages, 68865 bytes).
 PDF statistics:
  208 PDF objects out of 1000 (max. 8388607)
  36 compressed objects within 1 object stream
