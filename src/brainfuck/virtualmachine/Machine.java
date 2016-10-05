@@ -21,6 +21,11 @@ public class Machine {
 	 * Instruction set supported on the virtual machine.
 	 */
 	private InstructionSet iset;
+	
+	/**
+	 * Input flux if specified
+	 */
+	private ByteBuffer inputFlux;
 
 	/**
 	 * Current location in memory.
@@ -96,6 +101,10 @@ public class Machine {
 		location = i;
 	}
 
+	public void setInputFlux(ByteBuffer bb){
+		this.inputFlux = bb;
+	}
+	
 	/**
 	 * @return Memory's content.
 	 */
