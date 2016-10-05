@@ -27,18 +27,18 @@ public abstract class Instruction implements Consumer<Machine> {
 
 	/**
 	 * Instruction's color used in images.
-	 * Saved as an array of 3 ints.
+	 * Saved as an int, which the hexadecimal form is the color's one.
 	 */
-	private int[] color;
+	private int color;
 
 	/**
 	 * Constructs an instruction with the given name, symbol and color.
 	 *
 	 * @param name		Instruction's keyword.
 	 * @param symbol	Instruction's symbol.
-	 * @param color		Instruction's color as an array of 3 ints.
+	 * @param color		Instruction's color as an int.
 	 */
-	public Instruction(String name, char symbol, int[] color) {
+	public Instruction(String name, char symbol, int color) {
 		this.name = name;
 		this.symbol = symbol;
 		this.color = color;
@@ -61,7 +61,7 @@ public abstract class Instruction implements Consumer<Machine> {
 	/**
 	 * @return Instruction's {@link Instruction#color}.
 	 */
-	public int[] getColor() {
+	public int getColor() {
 		return color;
 	}
 }
