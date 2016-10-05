@@ -43,6 +43,6 @@ public class Interpreter {
 				System.exit(38);
 			}
 		});
-		System.out.println(machine.dumpMemory());
+		System.out.print(machine.dumpMemory());
 	}
 }
