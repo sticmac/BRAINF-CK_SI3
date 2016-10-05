@@ -27,7 +27,7 @@ public class InstructionSet {
 	private HashMap<Character, Instruction> symbols;
 
 	/**
-	 * Maps between the instruction's colot and the instruction object for easy fetching.
+	 * Maps between the instruction's color and the instruction object for easy fetching.
 	 */
 	private HashMap<Integer, Instruction> colors;
 
