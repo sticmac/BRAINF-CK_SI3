@@ -59,7 +59,6 @@ public class ArgParser {
 					break;
 				default:
 					throw new SyntaxException(args[i]+" is not a recognized option or argument.");
-					break;
 			}
 		}
 	}
