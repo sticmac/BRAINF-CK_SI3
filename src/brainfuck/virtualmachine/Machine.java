@@ -79,6 +79,10 @@ public class Machine {
 		return true;
 	}
 
+	public void executeOp(Instruction instr) {
+		instr.accept(this);
+	}
+
 	/**
 	 * @return current {@link Machine#location} in memory.
 	 */

@@ -2,6 +2,8 @@ package brainfuck;
 
 import java.util.stream.Stream;
 
+import java.util.List;
+
 import brainfuck.virtualmachine.Machine;
 
 /**
@@ -15,15 +17,15 @@ public class Interpreter {
 	/**
 	 * Stream containing the instructions to parse.
 	 */
-	private Stream<String> stream;
+	private List<Instruction> instructions;
 
 	/**
 	 * Constructs an interpreter using the given Stream.
 	 *
 	 * @param stream	Stream of lines containing instructions.
 	 */
-	public Interpreter(Stream<String> stream) {
-		this.stream = stream;
+	public Interpreter(List<Instruction> instructions) {
+		this.instructions = instructions;
 	}
 
 	/**
@@ -35,14 +37,7 @@ public class Interpreter {
 	 * @param machine	Virtual machine which executes the instructions.
 	 */
 	public void run(Machine machine) {
-		stream.filter(l -> !"".equals(l)).forEachOrdered(line -> {
-			boolean validShort = false;
-			for (int i = 0; i < line.length() && (validShort = machine.executeOp(line.charAt(i))); i++); // Tries to executes the instructions with the short format
-			if (!validShort && !machine.executeOp(line)) { // Tries to execute the whole line (ie. long format)
-				System.err.println("Invalid instruction");
-				System.exit(38);
-			}
-		});
+		instructions.forEach(machine::executeOp);
 		System.out.print(machine.dumpMemory());
 	}
 }

@@ -9,9 +9,11 @@ public class Main {
 
 		ReadFile file = new ReadFile(argp.getFilename());
 
+		InstructionParser ip = new InstructionParser(file.getLines());
+
 		Machine machine = new Machine();
 
-		Interpreter interpreter = new Interpreter(file.getLines());
+		Interpreter interpreter = new Interpreter(ip.get());
 
 		interpreter.run(machine);
 	}
