@@ -27,14 +27,21 @@ public class InstructionSet {
 	private HashMap<Character, Instruction> symbols;
 
 	/**
+	 * Maps between the instruction's color and the instruction object for easy fetching.
+	 */
+	private HashMap<Integer, Instruction> colors;
+
+	/**
 	 * Constructs the instruction set and populates the HashMaps.
 	 */
 	public InstructionSet() {
 		names = new HashMap<>();
 		symbols = new HashMap<>();
+		colors = new HashMap<>();
 		for (Instruction instruction: instructions) {
 			names.put(instruction.getName(), instruction);
 			symbols.put(instruction.getSymbol(), instruction);
+			colors.put(instruction.getColor(), instruction);
 		}
 	}
 
@@ -56,5 +63,15 @@ public class InstructionSet {
 	 */
 	public Instruction getOp(char symbol) {
 		return symbols.get(symbol);
+	}
+
+	/**
+	 * Gets the instruction's object by its color.
+	 *
+	 * @param color	Instruction's symbol.
+	 * @return 	Corresponding Instruction object.
+	 */
+	public Instruction getOp(int color) {
+		return colors.get(color);
 	}
 }

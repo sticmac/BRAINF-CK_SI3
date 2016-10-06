@@ -31,6 +31,6 @@ package brainfuck;
  	 * @param instr	instruction to translate.
  	 */
    public void toColor(Instruction instr) {
-     System.out.print(String.format("%02X%02X%02X", instr.getColor()[0], instr.getColor()[1], instr.getColor()[2]));
+     System.out.print(String.format("%X", instr.getColor()));
    }
  }
