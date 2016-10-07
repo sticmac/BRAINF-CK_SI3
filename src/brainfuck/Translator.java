@@ -1,6 +1,7 @@
 package brainfuck;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Translate an instruction in an other form.
@@ -19,14 +20,14 @@ public class Translator {
 	}
 
 	/**
-	 * Write the instruction with the long syntax.
+	 * Write the instructions with the long syntax.
 	 *
 	 * @param instructions list of instructions to translate.
 	 */
 	public void toLongSyntax(List<Instruction> instructions) {
 		for (int i = 0; i < instructions.size(); i++) {
-			toLongSyntax(instructions.get(i));
-		}
+		toLongSyntax(instructions.get(i));
+			}
 	}
 
 	/**
@@ -39,7 +40,7 @@ public class Translator {
 	}
 
 	/**
-	 * Write the instruction in the short syntax.
+	 * Write the instructions in the short syntax.
 	 *
 	 * @param instructions list of instructions to translate.
 	 */
@@ -54,18 +55,20 @@ public class Translator {
 	 *
 	 * @param instr instruction to translate.
 	 */
-	public void toColor(Instruction instr) {
-		System.out.print(String.format("%06X", instr.getColor()));
+	public int toColor(Instruction instr) {
+		return instr.getColor();
 	}
 
 	/**
-	 * Write the instruction in a sequence of hexadecimal numbers.
+	 * Write the instructions in a sequence of hexadecimal numbers.
 	 *
 	 * @param instructions list of instructions to translate.
 	 */
-	public void toColor(List<Instruction> instructions) {
+	public List<Integer> toColor(List<Instruction> instructions) {
+		List<Integer> colors = new ArrayList<>();
 		for (int i = 0; i < instructions.size(); i++) {
-			toColor(instructions.get(i));
+			colors.add(toColor(instructions.get(i)));
 		}
+		return colors;
 	}
 }
