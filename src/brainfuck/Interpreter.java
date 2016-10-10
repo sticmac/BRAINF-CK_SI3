@@ -31,7 +31,12 @@ public class Interpreter {
 	 * @param machine	Virtual machine which executes the instructions.
 	 */
 	public void run(Machine machine) {
-		instructions.forEach(machine::executeOp);
+		int i = 0;
+		while (i >= 0 && i < instructions.size()) {
+			machine.executeOp(instructions.get(i));
+			if (machine.isReversed()) i--;
+			else i++;
+		}
 		System.out.print(machine.dumpMemory());
 	}
 }
