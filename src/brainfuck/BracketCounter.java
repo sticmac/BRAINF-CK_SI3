@@ -15,7 +15,11 @@ public class BracketCounter {
 	protected void onMatch() {
 	}
 
-	protected void onInconsistent() {
+	protected void onMismatch() {
+	}
+
+	public void checkMatching() {
+		if (left != right) onMismatch();
 	}
 
 	public int getLeft() {
@@ -34,6 +38,6 @@ public class BracketCounter {
 	public void incrRight() {
 		right++;
 		if (left == right) onMatch();
-		else if (right > left) onInconsistent();
+		else if (right > left) onMismatch();
 	}
 }
