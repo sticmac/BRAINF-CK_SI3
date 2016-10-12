@@ -19,7 +19,7 @@ public class Interpreter {
 	/**
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
-	 * @param stream	List of Instruction containing instructions to execute.
+	 * @param instructions 	List of Instruction containing instructions to execute.
 	 */
 	public Interpreter(List<Instruction> instructions) {
 		this.instructions = instructions;

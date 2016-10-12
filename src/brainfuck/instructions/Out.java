@@ -30,7 +30,7 @@ public class Out extends Instruction {
 	@Override
 	public void accept(Machine machine) {
 		byte value = machine.readMemory();
-		String str = "" + (value + OFFSET);
+		String str = "" + (char)(value + OFFSET);
 		machine.useOutputFlux(str);
 //		System.out.println(value + OFFSET);
 	}
