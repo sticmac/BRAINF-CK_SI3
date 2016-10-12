@@ -18,7 +18,7 @@ public class In extends Instruction {
 	 * Constructs the In instruction.
 	 */
 	public In() {
-		super("IN", ',', new int[] {0x00, 0xFF, 0x00});
+		super("IN", ',', 0xFF00FF00);
 	}
 
 	/**

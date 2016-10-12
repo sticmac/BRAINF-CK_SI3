@@ -18,7 +18,7 @@ public class Out extends Instruction {
 	 * Constructs the Incr instruction.
 	 */
 	public Out() {
-		super("OUT", '.', new int[] {0xFF, 0xFF, 0x00});
+		super("OUT", '.', 0xFFFFFF00);
 	}
 
 	/**
