@@ -2,6 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
+import brainfuck.virtualmachine.Memory;
 import brainfuck.virtualmachine.OverflowException;
 
 /**
@@ -28,7 +29,10 @@ public class In extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
-	//	byte value = machine.readMemory();
-	//	System.out.println(value);	
+		char c = machine.getInputFlux().charValue();
+		if(c < 0 || c > 255){ System.exit(41); }
+		byte cB = (byte) c;
+		cB -= Memory.OFFSET;
+		machine.writeMemory(cB);
 	}
 }

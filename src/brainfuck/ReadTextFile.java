@@ -16,7 +16,7 @@ import brainfuck.virtualmachine.Machine;
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html">Stream</a>
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html">Files</a>
  */
-public class ReadFile {
+public class ReadTextFile {
 	/**
 	 * File's path as a Path object for encapsulation.
 	 */
@@ -28,7 +28,7 @@ public class ReadFile {
 	 * @param filename	File's path.
 	 * @throws FileNotFoundException	if the given file does not exist.
 	 */
-	public ReadFile(String filename) throws FileNotFoundException {
+	public ReadTextFile(String filename) throws FileNotFoundException {
 		this.path = Paths.get(filename);
 		if (!Files.exists(path)) throw new FileNotFoundException();
 	}
