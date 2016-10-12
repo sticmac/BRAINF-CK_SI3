@@ -15,7 +15,7 @@ public class Memory {
 	/**
 	 * Offset allowing to obtain values from 0 to 255.
 	 */
-	private static final int OFFSET = 128;
+        public static final int OFFSET = 128;
 
 	/**
 	 * Actual memory capacity.
