@@ -1,38 +1,32 @@
 package brainfuck;
 
-import java.util.stream.Stream;
-
 import java.util.List;
 
 import brainfuck.virtualmachine.Machine;
 
 /**
- * Reads the instructions from a Stream and execute them.
+ * Reads the instructions from a List and execute them.
  *
  * @author Pierre-Emmanuel Novac
- * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html">Stream</a>
  * @see Machine
  */
 public class Interpreter {
 	/**
-	 * Stream containing the instructions to parse.
+	 * List containing the instructions to parse.
 	 */
 	private List<Instruction> instructions;
 
 	/**
-	 * Constructs an interpreter using the given Stream.
+	 * Constructs an interpreter using the given List of Instruction.
 	 *
-	 * @param stream	Stream of lines containing instructions.
+	 * @param stream	List of Instruction containing instructions to execute.
 	 */
 	public Interpreter(List<Instruction> instructions) {
 		this.instructions = instructions;
 	}
 
 	/**
-	 * Executes the instructions from the Stream and print memory content if the program terminated successfully.
-	 * Exits with error code 38 upon invalid instruction.
-	 * Tries to read the line first as short instructions, if an invalid instruction is found, tries to read it as a long instruction.
-	 * Not that efficient but should work in most of the cases.
+	 * Executes the instructions from the List and print memory content if the program terminated successfully.
 	 *
 	 * @param machine	Virtual machine which executes the instructions.
 	 */
