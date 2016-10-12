@@ -13,6 +13,10 @@ public class Main {
 
 		Machine machine = new Machine();
 
+		Checker checker = new Checker(ip.get());
+
+		checker.check();
+
 		Interpreter interpreter = new Interpreter(ip.get());
 
 		interpreter.run(machine);
