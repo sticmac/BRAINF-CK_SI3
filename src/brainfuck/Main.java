@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) throws SyntaxException, IOException {
 		ArgParser argp = new ArgParser(args);
 
-		ReadFile file = new ReadFile(argp.getFilename());
+		ReadTextFile file = new ReadTextFile(argp.getFilename());
 
 		InstructionParser ip = new InstructionParser(file.getLines());
 

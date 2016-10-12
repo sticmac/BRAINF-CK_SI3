@@ -27,16 +27,13 @@ public class WriteTextFile {
 	/**
 	 * Constructs a file reader with the given file path and check if the file exists.
 	 *
+	 * @throws IOException	if the file can't be created
 	 * @param filename	File's path.
 	 */
-	public WriteTextFile(String filename){
+	public WriteTextFile(String filename) throws IOException {
 		this.file = new File(filename);
-		if(!this.file.exists()){	
-			try{
-				this.file.createNewFile();
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+		if (!this.file.exists()) {	
+			this.file.createNewFile();
 		}
 	}
 	
