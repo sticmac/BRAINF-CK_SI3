@@ -14,7 +14,7 @@ public class InstructionSet {
 	/**
 	 * Lists all Instruction objects (instantiated from their respective classes).
 	 */
-	private final static Instruction[] instructions = {new Incr(), new Decr(), new Right(), new Left(), new In(), new Out()};
+	private final static Instruction[] instructions = {new Incr(), new Decr(), new Right(), new Left(), new In(), new Out(), new Jump(), new Back()};
 
 	/**
 	 * Maps between the instruction's keyword and the instruction object for easy fetching.

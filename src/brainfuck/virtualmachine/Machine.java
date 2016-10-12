@@ -10,6 +10,8 @@ import java.util.Scanner;
 import brainfuck.InstructionSet;
 import brainfuck.Instruction;
 import brainfuck.WriteTextFile;
+import brainfuck.instructions.ConditionalJump;
+import brainfuck.BracketCounter;
 
 /**
  * Actual virtual machine which processes the instructions and interracts with the memory.
@@ -46,12 +48,25 @@ public class Machine {
 	 */
 	private int location = 0;
 
+	private boolean jumping = false;
+
+	private boolean reversed = false;
+
+	private BracketCounter bracketCounter;
+
 	/**
 	 * Constructs a new virtual machine, initialize its Memory.
 	 */
 	public Machine() {
 		memory = new Memory();
 		iset = new InstructionSet();
+		bracketCounter = new BracketCounter() {
+			@Override protected void onMatch() {
+				Machine.this.setJumping(false);
+				Machine.this.setReversed(false);
+				this.reset();
+			}
+		};
 	}
 
 	/**
@@ -81,7 +96,7 @@ public class Machine {
 	public boolean executeOp(String name) {
 		Instruction instr = iset.getOp(name);
 		if (instr == null) return false;
-		instr.accept(this);
+		if (!jumping) instr.accept(this);
 		return true;
 	}
 
@@ -94,12 +109,16 @@ public class Machine {
 	public boolean executeOp(char symbol) {
 		Instruction instr = iset.getOp(symbol);
 		if (instr == null) return false;
-		instr.accept(this);
+		if (!jumping) instr.accept(this);
 		return true;
 	}
 
 	public void executeOp(Instruction instr) {
-		instr.accept(this);
+		if (!jumping) instr.accept(this); // Jumping may be modified in there
+		if (jumping && instr instanceof ConditionalJump) {
+			((ConditionalJump) instr).incr(bracketCounter);
+		}
+
 	}
 
 	/**
@@ -117,6 +136,22 @@ public class Machine {
 	public void setLocation(int i) {
 		memory.checkBounds(i);
 		location = i;
+	}
+
+	public void setJumping(boolean jumping) {
+		this.jumping = jumping;
+	}
+
+	public boolean isJumping() {
+		return jumping;
+	}
+
+	public void setReversed(boolean r) {
+		this.reversed = r;
+	}
+
+	public boolean isReversed() {
+		return reversed;
 	}
 
 	/**
