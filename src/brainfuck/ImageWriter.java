@@ -13,7 +13,7 @@ import java.awt.Color;
 /**
  * Build a bmp image from a list of instructions'color.
  *
- * @author MIAOU
+ * @author Guillaume Casagrande
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html">BufferedImage</a>
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html">Graphics</a>
  * @see Translator
