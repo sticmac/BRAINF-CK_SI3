@@ -12,7 +12,7 @@ import brainfuck.virtualmachine.Machine;
  */
 public class Interpreter {
 	/**
-	 * List containing the instructions to parse.
+	 * List containing the instructions to execute.
 	 */
 	private List<Instruction> instructions;
 
@@ -27,6 +27,7 @@ public class Interpreter {
 
 	/**
 	 * Executes the instructions from the List and print memory content if the program terminated successfully.
+	 * Parses in reverse order when Machine::isReversed returns true.
 	 *
 	 * @param machine	Virtual machine which executes the instructions.
 	 */

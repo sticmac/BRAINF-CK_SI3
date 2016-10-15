@@ -32,7 +32,7 @@ public class Decr extends Instruction {
 		if (value <= Byte.MIN_VALUE) {
 		        System.err.println("Error: below minimum value");
 	       		System.exit(1);
-		}		
+		}
 		value--;
 		machine.writeMemory(value);
 	}

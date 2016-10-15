@@ -10,23 +10,25 @@ import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 /**
- * Reading an image and extract color informations for each 3x3 square to be converted into matching instructions in the future.
+ * Reads an image and extract color code for each 3x3 square.
  * The parsed image MUST be in .bmp format.
  *
  * @author Julien Lemaire
  */
 public class ReadImage {
-	private BufferedImage img;
+	/**
+	 * List of colors.
+	 */
 	private List<Integer> colors;
 
 	/**
 	 * Main constructor of the <code>ReadImage</code> class.
 	 *
-	 * @param url The url of the parsed image.
-	 * @throws IOException if the given URL doesn't exist, or if reading failed.
+	 * @param filename	the filename of the image to decode.
+	 * @throws IOException	if the given filename doesn't exist, or if reading failed.
 	 */
-	public ReadImage(String url) throws IOException {
-		img = ImageIO.read(new File(url));
+	public ReadImage(String filename) throws IOException {
+		BufferedImage img = ImageIO.read(new File(filename));
 		colors = new ArrayList<>();
 
 		int height = img.getHeight();
@@ -40,9 +42,9 @@ public class ReadImage {
 	}
 
 	/**
-	 * Returns the colors of the parsed image, as an <code>IntStream</code> containing integers matching the RGB values of each square.
+	 * Returns the colors of the decoded image, as an <code>IntStream</code> containing color codes as ints in the ARGB format.
 	 *
-	 * @return an <code>IntStream</code> containing the integer value of each color.
+	 * @return an <code>IntStream</code> containing the integer value of each color in ARGB.
 	 */
 	public IntStream getData() {
 		return colors.stream().mapToInt(Integer::intValue);
