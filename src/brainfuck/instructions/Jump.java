@@ -39,6 +39,11 @@ public class Jump extends Instruction implements ConditionalJump {
 		}
 	}
 
+	/**
+	 * Increments the left bracket counter.
+	 *
+	 * @param bc	BracketCounter whose left bracket count is to be incremented.
+	 */
 	@Override
 	public void incr(BracketCounter bc) {
 		bc.incrLeft();

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Translate an instruction in an other form.
  *
- * @author MIAOU
+ * @author Guillaume Casagrande
  * @see Instruction
  */
 public class Translator {
@@ -54,6 +54,7 @@ public class Translator {
 	 * Write the instruction in a sequence of hexadecimal numbers.
 	 *
 	 * @param instr instruction to translate.
+	 * @return instruction's color code.
 	 */
 	public int toColor(Instruction instr) {
 		return instr.getColor();
@@ -63,6 +64,7 @@ public class Translator {
 	 * Write the instructions in a sequence of hexadecimal numbers.
 	 *
 	 * @param instructions list of instructions to translate.
+	 * @return list of instruction's color code.
 	 */
 	public List<Integer> toColor(List<Instruction> instructions) {
 		List<Integer> colors = new ArrayList<>();

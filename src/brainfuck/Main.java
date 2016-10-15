@@ -13,7 +13,7 @@ public class Main {
 	 * Application entry point.
 	 * Runs the requested behaviour depending on the command line arguments.
 	 *
-	 * @aaram args array of received command-line arguments.
+	 * @param args array of received command-line arguments.
 	 * @throws IOException		in case of IO error on file operation.
 	 */
 	public static void main(String[] args) throws IOException {
@@ -46,6 +46,8 @@ public class Main {
 	 * Returns an InstructionParser which parses the text file with given filename.
 	 *
 	 * @param filename	file's name of the text file we should parse.
+	 * @return the InstructionParser which parsed the given file.
+	 * @throws IOException  if an IO error arised when reading the file.
 	 */
 	public static InstructionParser textFileRead(String filename) throws IOException {
 		ReadTextFile file = new ReadTextFile(filename);
@@ -57,6 +59,8 @@ public class Main {
 	 * Returns an InstructionParser which parses the image file with given filename.
 	 *
 	 * @param filename	file's name of the image file we should parse.
+	 * @return the InstructionParser which parsed the given file.
+	 * @throws IOException	if an IO error arised when reading the file.
 	 */
 	public static InstructionParser imageRead(String filename) throws IOException {
 		ReadImage file = new ReadImage(filename);

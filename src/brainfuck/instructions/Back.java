@@ -39,6 +39,11 @@ public class Back extends Instruction implements ConditionalJump {
 		}
 	}
 
+	/**
+	 * Increments the right bracket counter.
+	 *
+	 * @param bc	BracketCounter whose right bracket count is to be incremented.
+	 */
 	@Override
 	public void incr(BracketCounter bc) {
 		bc.incrRight();

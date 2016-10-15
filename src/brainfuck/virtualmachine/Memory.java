@@ -18,11 +18,6 @@ public class Memory {
         public static final int OFFSET = 128;
 
 	/**
-	 * Actual memory capacity.
-	 */
-	private int size;
-
-	/**
 	 * Memory block allocated for the virtual machine.
 	 */
 	private byte[] memory;
@@ -33,9 +28,8 @@ public class Memory {
 	 * @param size	wanted memory size.
 	 */
 	public Memory(int size) {
-		this.size = size;
 		memory = new byte[size];
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < memory.length; i++) {
 			memory[i] = Byte.MIN_VALUE;
 		}
 	}
@@ -53,10 +47,10 @@ public class Memory {
 	 * @param i	index to check.
 	 */
 	public void checkBounds(int i) {
-		if (i < 0 || i >= size) {
+		if (i < 0 || i >= memory.length) {
 			System.err.println("Error: This data is out of memory");
 			System.exit(2);
-		}	       
+		}
 	}
 
 	/**
@@ -83,14 +77,15 @@ public class Memory {
 
 	/**
 	 * Returns the memory content in a String.
-	 * Each byte is printed next to the other with a newline after 16 bytes.
+	 * Each memory cell whose content is greater than 0 is added to the String on a new line.
+	 * Format is: "C&lt;cell_number&gt;: &lt;value&gt;".
 	 *
-	 * @return memory content.
+	 * @return memory content as a String.
 	 */
 	@Override
 	public String toString() {
 		StringBuilder tmp = new StringBuilder();
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < memory.length; i++) {
 			if (memory[i] != Byte.MIN_VALUE) {
 				tmp.append("C" + i + ": " + (memory[i] + OFFSET) + "\n");
 			}

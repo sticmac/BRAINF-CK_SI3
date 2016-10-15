@@ -33,7 +33,7 @@ public class Incr extends Instruction {
 		if (value >= Byte.MAX_VALUE) {
 			System.err.println("Error: above maximum value");
 	       		System.exit(1);
-		}	
+		}
 		value++;
 		machine.writeMemory(value);
 	}
