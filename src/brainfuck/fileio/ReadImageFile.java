@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.stream.IntStream;
 
@@ -26,7 +27,10 @@ public class ReadImageFile {
 	 * @throws IOException	if the given filename doesn't exist, or if reading failed.
 	 */
 	public ReadImageFile(String filename) throws IOException {
-		BufferedImage img = ImageIO.read(new File(filename));
+		File file = new File(filename);
+		if (!file.exists()) throw new FileNotFoundException();
+
+		BufferedImage img = ImageIO.read(file);
 		colors = IntStream.builder();
 
 		int height = img.getHeight();
