@@ -1,4 +1,4 @@
-package brainfuck;
+package brainfuck.fileio;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -14,7 +14,7 @@ import brainfuck.virtualmachine.Machine;
 /**
  * Opens a file and provide a Stream to read the data from.
  *
- * @author Nassim Bounouas 
+ * @author Nassim Bounouas
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html">Files</a>
  */
 public class WriteTextFile {
@@ -32,16 +32,16 @@ public class WriteTextFile {
 	 */
 	public WriteTextFile(String filename) throws IOException {
 		this.file = new File(filename);
-		if (!this.file.exists()) {	
+		if (!this.file.exists()) {
 			this.file.createNewFile();
 		}
 	}
-	
+
 	public void write(String str){
 		try{
 			this.fos = new FileOutputStream(this.file, true);
 			fos.write(str.getBytes());
-			fos.write('\n');		
+			fos.write('\n');
 			fos.close();
 		}catch(Exception e){
 			e.printStackTrace();

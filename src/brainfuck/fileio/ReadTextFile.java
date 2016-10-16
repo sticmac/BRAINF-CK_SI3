@@ -1,4 +1,4 @@
-package brainfuck;
+package brainfuck.fileio;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;

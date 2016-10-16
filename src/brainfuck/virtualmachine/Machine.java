@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import brainfuck.InstructionSet;
 import brainfuck.Instruction;
-import brainfuck.WriteTextFile;
+import brainfuck.fileio.WriteTextFile;
 import brainfuck.instructions.ConditionalJump;
 import brainfuck.BracketCounter;
 import brainfuck.exceptions.EndOfInputException;
