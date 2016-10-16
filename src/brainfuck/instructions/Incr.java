@@ -2,7 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OverflowException;
+import brainfuck.exceptions.OverflowException;
 
 /**
  * Incr instruction: increments the current memory cell by one.
@@ -28,12 +28,9 @@ public class Incr extends Instruction {
 	 * @throws OverflowException	if the current cell value is at it's top limit.
 	 */
 	@Override
-	public void accept(Machine machine) {
+	public void accept(Machine machine) throws OverflowException {
 		byte value = machine.readMemory();
-		if (value >= Byte.MAX_VALUE) {
-			System.err.println("Error: above maximum value");
-	       		System.exit(1);
-		}
+		if (value >= Byte.MAX_VALUE) throw new OverflowException("Above maximum value");
 		value++;
 		machine.writeMemory(value);
 	}

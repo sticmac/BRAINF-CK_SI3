@@ -2,7 +2,6 @@ package brainfuck.instructions;
 
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.OutOfMemoryException;
 
 /**
  * Right instruction: move to the next memory cell.
