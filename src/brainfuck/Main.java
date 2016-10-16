@@ -17,9 +17,9 @@ public class Main {
 	 * @throws IOException		in case of IO error on file operation.
 	 */
 	public static void main(String[] args) throws IOException {
-		ArgParser argp = new ArgParser(args);
 		Main app = new Main();
 		try {
+			ArgParser argp = new ArgParser(args);
 			app.run(argp);
 		} catch (BrainfuckException e) {
 			System.err.println(e);
