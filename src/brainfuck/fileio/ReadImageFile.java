@@ -24,7 +24,8 @@ public class ReadImageFile {
 	 * Main constructor of the <code>ReadImage</code> class.
 	 *
 	 * @param filename	the filename of the image to decode.
-	 * @throws IOException	if the given filename doesn't exist, or if reading failed.
+	 * @throws IOException			if the given filename doesn't exist, or if reading failed.
+	 * @throws FileNotFoundException	if the given file does not exist.
 	 */
 	public ReadImageFile(String filename) throws IOException {
 		File file = new File(filename);
