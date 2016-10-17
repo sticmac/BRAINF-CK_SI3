@@ -4,9 +4,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 /**
@@ -17,9 +16,9 @@ import java.util.stream.IntStream;
  */
 public class ReadImageFile {
 	/**
-	 * List of colors.
+	 * Stream of colors being built.
 	 */
-	private List<Integer> colors;
+	IntStream.Builder colors;
 
 	/**
 	 * Main constructor of the <code>ReadImage</code> class.
@@ -28,8 +27,11 @@ public class ReadImageFile {
 	 * @throws IOException	if the given filename doesn't exist, or if reading failed.
 	 */
 	public ReadImageFile(String filename) throws IOException {
-		BufferedImage img = ImageIO.read(new File(filename));
-		colors = new ArrayList<>();
+		File file = new File(filename);
+		if (!file.exists()) throw new FileNotFoundException();
+
+		BufferedImage img = ImageIO.read(file);
+		colors = IntStream.builder();
 
 		int height = img.getHeight();
 		int width = img.getWidth();
@@ -47,6 +49,6 @@ public class ReadImageFile {
 	 * @return an <code>IntStream</code> containing the integer value of each color in ARGB.
 	 */
 	public IntStream getData() {
-		return colors.stream().mapToInt(Integer::intValue);
+		return colors.build();
 	}
 }
