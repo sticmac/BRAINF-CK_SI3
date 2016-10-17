@@ -1,6 +1,6 @@
 package brainfuck;
 
-import brainfuck.exceptions.SyntaxException;
+import brainfuck.exceptions.ArgumentsException;
 
 /**
  * Parser for the arguments passed through the call of the bfck executable.
@@ -22,7 +22,7 @@ public class ArgParser {
  	 *
 	 * @param args Array of String containing all the arguments passed through the executable.
 	 */
-	public ArgParser(String[] args) throws SyntaxException {
+	public ArgParser(String[] args) throws ArgumentsException {
 		mode = Mode.READ; //reading a file by default
 		type = Type.TEXT; //the file is considered as text by default
 		//parsing files
@@ -36,7 +36,7 @@ public class ArgParser {
 						}
 						i++;
 					} else {
-						throw new SyntaxException("No file for -p option.");
+						throw new ArgumentsException("No file for -p option.");
 					}
 					break;
 				case "-i":
@@ -44,7 +44,7 @@ public class ArgParser {
 						this.in = args[i+1];
 						i++;
 					} else {
-						throw new SyntaxException("No file for -i option.");
+						throw new ArgumentsException("No file for -i option.");
 					}
 					break;
 				case "-o":
@@ -52,7 +52,7 @@ public class ArgParser {
 						this.out = args[i+1];
 						i++;
 					} else {
-						throw new SyntaxException("No file for -o option.");
+						throw new ArgumentsException("No file for -o option.");
 					}
 					break;
 				case "--rewrite":
@@ -65,7 +65,7 @@ public class ArgParser {
 					this.mode = Mode.CHECK;
 					break;
 				default:
-					throw new SyntaxException(args[i]+" is not a recognized option or argument.");
+					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}
 		}
 	}
