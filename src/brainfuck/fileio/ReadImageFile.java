@@ -1,4 +1,4 @@
-package brainfuck;
+package brainfuck.fileio;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  *
  * @author Julien Lemaire
  */
-public class ReadImage {
+public class ReadImageFile {
 	/**
 	 * List of colors.
 	 */
@@ -27,7 +27,7 @@ public class ReadImage {
 	 * @param filename	the filename of the image to decode.
 	 * @throws IOException	if the given filename doesn't exist, or if reading failed.
 	 */
-	public ReadImage(String filename) throws IOException {
+	public ReadImageFile(String filename) throws IOException {
 		BufferedImage img = ImageIO.read(new File(filename));
 		colors = new ArrayList<>();
 

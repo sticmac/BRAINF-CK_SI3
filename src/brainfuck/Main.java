@@ -3,6 +3,9 @@ package brainfuck;
 import java.io.IOException;
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.BrainfuckException;
+import brainfuck.fileio.WriteImageFile;
+import brainfuck.fileio.ReadTextFile;
+import brainfuck.fileio.ReadImageFile;
 
 /**
  * Entry point for the application.
@@ -47,7 +50,7 @@ public class Main {
 				break;
 			case TRANSLATE:
 				Translator tra = new Translator();
-				ImageWriter iw = new ImageWriter(tra.toColor(textFileRead(argp.getFilename()).get()));
+				WriteImageFile iw = new WriteImageFile(tra.toColor(textFileRead(argp.getFilename()).get()));
 				break;
 			case CHECK:
 				Checker checker = new Checker(textFileRead(argp.getFilename()).get());
@@ -77,7 +80,7 @@ public class Main {
 	 * @throws IOException	if an IO error arised when reading the file.
 	 */
 	private InstructionParser imageRead(String filename) throws IOException {
-		ReadImage file = new ReadImage(filename);
+		ReadImageFile file = new ReadImageFile(filename);
 
 		return new InstructionParser(file.getData());
 	}
