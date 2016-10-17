@@ -1,4 +1,4 @@
-package brainfuck.fileio;
+package brainfuck.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +14,12 @@ import java.awt.Color;
  * Build a bmp image from a list of instructions'color.
  *
  * @author Guillaume Casagrande
+ * @author Julien Lemaire
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html">BufferedImage</a>
  * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html">Graphics</a>
  * @see brainfuck.Translator
  */
-public class WriteImageFile {
+public class WriteImage {
 	/**
 	 * Image represented by a buffer.
 	 */
@@ -40,11 +41,6 @@ public class WriteImageFile {
 	private int nbCol;
 
 	/**
-	 * Destination of the image.
-	 */
-	private static final String PATH = "./bfck.bmp";
-
-	/**
 	 * Width and height of a square (number of pixels).
 	 */
 	private static final int SIZE_SQUARE = 3;
@@ -58,7 +54,7 @@ public class WriteImageFile {
 	 * @param colors  list of the color of each pixel
 	 * @throws IOException	if an IO error arised when writing the image.
 	 */
-	public WriteImageFile(List<Integer> colors) throws IOException {
+	public WriteImage(List<Integer> colors) throws IOException {
 		this.colors = colors;
 		//The image has nbCol² cells. Furthermore, there should be more cells than colors.size().
 		//So, one column contains the value rounded off to the superiors of the square root of the number of instructions.
@@ -87,6 +83,6 @@ public class WriteImageFile {
 	 * @throws IOException	if an IO error arised when writing the image.
 	 */
 	private void writeBmp() throws IOException {
-		ImageIO.write(image, "bmp", new File(PATH));
+		ImageIO.write(image, "bmp", System.out);
 	}
 }

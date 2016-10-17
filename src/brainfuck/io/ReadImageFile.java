@@ -1,4 +1,4 @@
-package brainfuck.fileio;
+package brainfuck.io;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -18,7 +18,12 @@ public class ReadImageFile {
 	/**
 	 * Stream of colors being built.
 	 */
-	IntStream.Builder colors;
+	private IntStream.Builder colors;
+
+	/**
+	 * Width and height of a square (number of pixels).
+	 */
+	private static final int SIZE_SQUARE = 3;
 
 	/**
 	 * Main constructor of the <code>ReadImage</code> class.
@@ -37,8 +42,8 @@ public class ReadImageFile {
 		int height = img.getHeight();
 		int width = img.getWidth();
 
-		for (int y = 0 ; y < height ; y+=3) {
-			for (int x = 0 ; x < width ; x+=3) {
+		for (int y = 0 ; y < height ; y += SIZE_SQUARE) {
+			for (int x = 0 ; x < width ; x += SIZE_SQUARE) {
 				colors.add(img.getRGB(x, y));
 			}
 		}
