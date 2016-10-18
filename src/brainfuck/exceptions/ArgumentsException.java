@@ -5,12 +5,12 @@ package brainfuck.exceptions;
  *
  * @author Julien Lemaire
  */
-public class SyntaxException extends BrainfuckException {
+public class ArgumentsException extends BrainfuckException {
 	/**
-	 * The main constructor of the <code>SyntaxException</code> class.
+	 * The main constructor of the <code>ArgumentsException</code> class.
 	 * @param message The message to display as an error.
 	 */
-	public SyntaxException(String message) {
+	public ArgumentsException(String message) {
 		super(message);
 	}
 
