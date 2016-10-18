@@ -8,9 +8,9 @@ import java.nio.file.Files;
 
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.BrainfuckException;
-import brainfuck.fileio.WriteImageFile;
-import brainfuck.fileio.ReadTextFile;
-import brainfuck.fileio.ReadImageFile;
+import brainfuck.io.WriteImage;
+import brainfuck.io.ReadTextFile;
+import brainfuck.io.ReadImageFile;
 
 /**
  * Entry point for the application.
@@ -61,7 +61,7 @@ public class Main {
 			case TRANSLATE:
 				if (argp.getType() == Type.TEXT) {
 					Translator tra = new Translator();
-					WriteImageFile iw = new WriteImageFile(tra.toColor(textFileRead(argp.getFilename()).get()));
+					WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
 				} else {
 					Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
 				}
