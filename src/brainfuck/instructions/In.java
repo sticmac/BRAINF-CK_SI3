@@ -2,11 +2,12 @@ package brainfuck.instructions;
 
 import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.virtualmachine.Memory;
-import brainfuck.exceptions.OverflowException;
+import brainfuck.exceptions.InputOutputException;
+import brainfuck.exceptions.EndOfInputException;
+import static brainfuck.virtualmachine.Memory.OFFSET;
 
 /**
- * Read the value present in the input as an ASCII character.
+ * Reads and store a byte in the current memory cell.
  *
  * @author Nassim Bounouas
  * @see Instruction
@@ -22,20 +23,22 @@ public class In extends Instruction {
 	}
 
 	/**
-	 * Action performed by the instruction: print out the contents of the current memory cell as ASCII.
+	 * Action performed by the instruction: reads a byte from the input and store it in the current memory cell.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
 	 *
 	 * @param machine	Virtual Machine whose state will be altered
-	 * @throws OverflowException	if the value of the character read is outside of the allowed range [0-255].
+	 * @throws InputOutputException	if reading the value failed.
+	 * @throws EndOfInputException	if there is nothing more to read.
 	 */
 	@Override
 	public void accept(Machine machine) {
-		char c = machine.getInputFlux().charValue();
-		if(c < 0 || c > 255) {
-			throw new OverflowException();
+		int c = machine.getInput();
+		if (c == -1) {
+			throw new EndOfInputException();
+		} else if (c < 0 || c > 255) {
+			throw new InputOutputException("Read error from input stream: " + c);
 		}
-		byte cB = (byte) c;
-		cB -= Memory.OFFSET;
-		machine.writeMemory(cB);
+		c -= OFFSET;
+		machine.writeMemory((byte) c);
 	}
 }
