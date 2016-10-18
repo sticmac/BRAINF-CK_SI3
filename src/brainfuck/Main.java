@@ -16,6 +16,7 @@ import brainfuck.io.ReadImageFile;
  * Entry point for the application.
  *
  * @author Julien Lemaire
+ * @author Pierre-Emmanuel Novac
  */
 public class Main {
 	/**
@@ -52,6 +53,7 @@ public class Main {
 
 		switch(argp.getMode()) {
 			case READ:
+				check(ip);
 				execute(ip);
 				break;
 			case REWRITE:
@@ -67,8 +69,7 @@ public class Main {
 				}
 				break;
 			case CHECK:
-				Checker checker = new Checker(ip.get());
-				checker.check();
+				check(ip);
 				break;
 		}
 	}
@@ -97,6 +98,16 @@ public class Main {
 		ReadImageFile file = new ReadImageFile(filename);
 
 		return new InstructionParser(file.getData());
+	}
+
+	/**
+	 * Starts the Checker to make sure the program is well-formed.
+	 *
+	 * @param ip	InstructionParser which previously parsed a file.
+	 */
+	private void check(InstructionParser ip) {
+		Checker checker = new Checker(ip.get());
+		checker.check();
 	}
 
 	/**
