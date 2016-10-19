@@ -5,6 +5,6 @@ package brainfuck;
  * @author Julien Lemaire
  */
 public enum Mode {
-	READ, REWRITE, TRANSLATE, CHECK
+	RUN, REWRITE, TRANSLATE, CHECK
 };
 

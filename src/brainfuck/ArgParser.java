@@ -23,7 +23,7 @@ public class ArgParser {
 	 * @param args Array of String containing all the arguments passed through the executable.
 	 */
 	public ArgParser(String[] args) throws ArgumentsException {
-		mode = Mode.READ; //reading a file by default
+		mode = Mode.RUN; //reading a file by default
 		type = Type.TEXT; //the file is considered as text by default
 		//parsing files
 		for (int i = 0 ; i < args.length ; i++) {
@@ -103,7 +103,7 @@ public class ArgParser {
 	/**
 	 * Getter for the current instance's mode.
 	 *
-	 * @return The current instance's mode (by default READ).
+	 * @return The current instance's mode (by default RUN).
 	 */
 	public Mode getMode() {
 		return mode;
@@ -120,13 +120,13 @@ public class ArgParser {
 
 	/**
 	 * Setter for the mode.
-	 * Checks if another mode (other than READ) has been used before. In that case, it throws an exceptions.
+	 * Checks if another mode (other than RUN) has been used before. In that case, it throws an exceptions.
 	 *
 	 * @param mode The new mode of execution.
 	 * @throws ArgumentsException if we try to use several modes of execution for the same instance (e.g : Translate and Check at the same time).
 	 */
 	private void setMode(Mode mode) {
-		if (this.mode == Mode.READ) {
+		if (this.mode == Mode.RUN) {
 			this.mode = mode;
 		} else {
 			throw new ArgumentsException("Trying to use several modes at the same time.");
