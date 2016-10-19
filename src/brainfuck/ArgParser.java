@@ -56,19 +56,13 @@ public class ArgParser {
 					}
 					break;
 				case "--rewrite":
-					if (this.mode == Mode.TRANSLATE) { //you can't use rewrite and translate at the same time
-						throw new ArgumentsException("Trying to use rewrite and translate mode at the same time");
-					}
-					this.mode = Mode.REWRITE;
+					setMode(Mode.REWRITE);
 					break;
 				case "--translate":
-					if (this.mode == Mode.REWRITE) { //you can't use rewrite and translate at the same time
-						throw new ArgumentsException("Trying to use rewrite and translate mode at the same time");
-					}
-					this.mode = Mode.TRANSLATE;
+					setMode(Mode.TRANSLATE);
 					break;
 				case "--check":
-					this.mode = Mode.CHECK;
+					setMode(Mode.CHECK);
 					break;
 				default:
 					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
@@ -107,9 +101,9 @@ public class ArgParser {
 	}
 
 	/**
-	 * Getter for the mode of execution.
+	 * Getter for the current instance's mode.
 	 *
-	 * @return The program's mode of execution (by default READ).
+	 * @return The current instance's mode (by default READ).
 	 */
 	public Mode getMode() {
 		return mode;
@@ -122,5 +116,20 @@ public class ArgParser {
 	 */
 	public Type getType() {
 		return type;
+	}
+
+	/**
+	 * Setter for the mode.
+	 * Checks if another mode (other than READ) has been used before. In that case, it throws an exceptions.
+	 *
+	 * @param mode The new mode of execution.
+	 * @throws ArgumentsException if we try to use several modes of execution for the same instance (e.g : Translate and Check at the same time).
+	 */
+	private void setMode(Mode mode) {
+		if (this.mode == Mode.READ) {
+			this.mode = mode;
+		} else {
+			throw new ArgumentsException("Trying to use several modes at the same time.");
+		}
 	}
 }
