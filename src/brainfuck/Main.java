@@ -52,7 +52,7 @@ public class Main {
 		}
 
 		switch(argp.getMode()) {
-			case READ:
+			case RUN:
 				check(ip);
 				execute(ip);
 				break;
