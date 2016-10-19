@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import brainfuck.InstructionSet;
 import brainfuck.Instruction;
 import brainfuck.io.WriteTextFile;
 import brainfuck.instructions.ConditionalJump;
@@ -20,7 +19,6 @@ import brainfuck.exceptions.EndOfInputException;
  * @author Pierre-Emmanuel Novac
  * @author Nassim Bounouas
  * @see brainfuck.Instruction
- * @see InstructionSet
  * @see Memory
  */
 public class Machine {
@@ -28,11 +26,6 @@ public class Machine {
 	 * Virtual machine's data memory.
 	 */
 	private Memory memory;
-
-	/**
-	 * Instruction set supported on the virtual machine.
-	 */
-	private InstructionSet iset;
 
 	/**
 	 * Input flux if specified.
@@ -69,7 +62,6 @@ public class Machine {
 	 */
 	public Machine() {
 		memory = new Memory();
-		iset = new InstructionSet();
 		bracketCounter = new BracketCounter() { // Anonymous class for defining the onMatch() callback method.
 			@Override protected void onMatch() {
 				Machine.this.setJumping(false);
