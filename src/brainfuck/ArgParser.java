@@ -56,9 +56,15 @@ public class ArgParser {
 					}
 					break;
 				case "--rewrite":
+					if (this.mode == Mode.TRANSLATE) { //you can't use rewrite and translate at the same time
+						throw new ArgumentsException("Trying to use rewrite and translate mode at the same time");
+					}
 					this.mode = Mode.REWRITE;
 					break;
 				case "--translate":
+					if (this.mode == Mode.REWRITE) { //you can't use rewrite and translate at the same time
+						throw new ArgumentsException("Trying to use rewrite and translate mode at the same time");
+					}
 					this.mode = Mode.TRANSLATE;
 					break;
 				case "--check":
