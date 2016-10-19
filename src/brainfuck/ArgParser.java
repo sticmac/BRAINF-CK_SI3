@@ -31,7 +31,7 @@ public class ArgParser {
 				case "-p":
 					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
 						this.filename = args[i+1];
-						if (this.filename.endsWith(".bmp")) {
+						if (this.filename.toLowerCase().endsWith(".bmp")) {
 							type = Type.IMAGE;
 						}
 						i++;
