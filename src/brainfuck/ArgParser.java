@@ -74,6 +74,9 @@ public class ArgParser {
 					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}
 		}
+		if (this.filename == "") {
+			throw new ArgumentsException("No program filename specified.");
+		}
 	}
 
 	/**
