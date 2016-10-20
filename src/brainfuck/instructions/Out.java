@@ -5,7 +5,7 @@ import brainfuck.virtualmachine.Machine;
 import static brainfuck.virtualmachine.Memory.OFFSET;
 
 /**
- * Print out the contents of the pointed memory cell as ASCII
+ * Print out the contents of the pointed memory cell on output.
  *
  * @author Nassim Bounouas
  * @see Instruction
@@ -21,7 +21,7 @@ public class Out extends Instruction {
 	}
 
 	/**
-	 * Action performed by the instruction: print out the contents of the current memory cell as ASCII
+	 * Action performed by the instruction: print out the contents of the current memory cell on output.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
 	 *
 	 * @param machine	Virtual Machine whose state will be altered
@@ -29,8 +29,6 @@ public class Out extends Instruction {
 	@Override
 	public void accept(Machine machine) {
 		byte value = machine.readMemory();
-		String str = "" + (char)(value + OFFSET);
-		machine.useOutputFlux(str);
-//		System.out.println(value + OFFSET);
+		machine.output(value + OFFSET);
 	}
 }
