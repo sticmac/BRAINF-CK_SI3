@@ -1,6 +1,5 @@
 package brainfuck.instructions;
 
-import brainfuck.Instruction;
 import brainfuck.BracketCounter;
 import brainfuck.virtualmachine.Machine;
 
@@ -13,7 +12,7 @@ import brainfuck.virtualmachine.Machine;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Jump extends Instruction implements ConditionalJump {
+public class Jump extends ConditionalJump {
 	/**
 	 * Constructs the Jump instruction.
 	 */

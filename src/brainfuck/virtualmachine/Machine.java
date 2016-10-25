@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import brainfuck.Instruction;
+import brainfuck.instructions.Instruction;
 import brainfuck.io.WriteTextFile;
 import brainfuck.io.Io;
 import brainfuck.instructions.ConditionalJump;
@@ -19,7 +19,7 @@ import brainfuck.exceptions.EndOfInputException;
  *
  * @author Pierre-Emmanuel Novac
  * @author Nassim Bounouas
- * @see brainfuck.Instruction
+ * @see brainfuck.instructions.Instruction
  * @see Memory
  */
 public class Machine {

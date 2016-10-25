@@ -1,6 +1,5 @@
 package brainfuck.instructions;
 
-import brainfuck.Instruction;
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.InputOutputException;
 import brainfuck.exceptions.EndOfInputException;
