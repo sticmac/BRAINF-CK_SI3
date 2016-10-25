@@ -1,4 +1,4 @@
-package brainfuck;
+package brainfuck.instructions;
 
 import java.util.function.Consumer;
 
