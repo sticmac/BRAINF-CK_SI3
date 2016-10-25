@@ -2,6 +2,7 @@ package brainfuck;
 
 import java.util.List;
 
+import brainfuck.instructions.Instruction;
 import brainfuck.virtualmachine.Machine;
 
 /**

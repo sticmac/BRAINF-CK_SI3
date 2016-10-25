@@ -3,13 +3,24 @@ package brainfuck.instructions;
 import brainfuck.BracketCounter;
 
 /**
- * Interface which describes a conditional jump instruction (Jump or Back).
+ * Describes a conditional jump instruction (Jump or Back).
  */
-public interface ConditionalJump {
+public abstract class ConditionalJump extends Instruction {
+	/**
+	 * Constructs an conditional instruction with the given name, symbol and color, using Instruction constructor.
+	 *
+	 * @param name		Instruction's keyword.
+	 * @param symbol	Instruction's symbol.
+	 * @param color		Instruction's color as an int.
+	 */
+	public ConditionalJump(String name, char symbol, int color) {
+		super(name, symbol, color);
+	}
+
 	/**
 	 * Called when we need to increment a value in the BracketCounter.
 	 *
 	 * @param bc	BracketCounter whose counter is to be incremented.
 	 */
-	void incr(BracketCounter bc);
+	abstract public void incr(BracketCounter bc);
 }

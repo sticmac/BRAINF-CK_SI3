@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
-import brainfuck.Instruction;
+import brainfuck.instructions.Instruction;
 import brainfuck.InstructionSet;
 import brainfuck.exceptions.InvalidInstructionException;
 
