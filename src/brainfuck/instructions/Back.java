@@ -1,6 +1,5 @@
 package brainfuck.instructions;
 
-import brainfuck.Instruction;
 import brainfuck.BracketCounter;
 import brainfuck.virtualmachine.Machine;
 

@@ -3,6 +3,8 @@ package brainfuck;
 import java.util.List;
 import java.util.ArrayList;
 
+import brainfuck.instructions.Instruction;
+
 /**
  * Translate an instruction in an other form.
  *

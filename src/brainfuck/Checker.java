@@ -1,6 +1,7 @@
 package brainfuck;
 
 import java.util.List;
+import brainfuck.instructions.Instruction;
 import brainfuck.instructions.ConditionalJump;
 import brainfuck.exceptions.BracketMismatchException;
 
