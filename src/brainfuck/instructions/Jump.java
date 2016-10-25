@@ -12,7 +12,7 @@ import brainfuck.virtualmachine.Machine;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Jump extends Instruction implements ConditionalJump {
+public class Jump extends ConditionalJump {
 	/**
 	 * Constructs the Jump instruction.
 	 */

@@ -42,7 +42,7 @@ public class Checker {
 	 */
 	public void check() {
 		instructions.forEach(i -> {
-			if (i instanceof ConditionalJump) { // Checks if the Instruction is either a Jump or a Back, both of which implements ConditionalJump
+			if (i instanceof ConditionalJump) { // Checks if the Instruction is either a Jump or a Back, both of which inherits ConditionalJump
 				((ConditionalJump) i).incr(bracketCounter); // Increment either the right of left bracket counter
 			}
 		});
