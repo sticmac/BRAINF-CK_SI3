@@ -23,6 +23,7 @@
 \setmathfont{xits-math.otf}
 
 \setmainlanguage{english}
+\PolyglossiaSetup{english}{indentfirst=true}
 \setmainfont{Latin Modern Roman}
 
 \geometry{margin={1in,1in}}
@@ -142,6 +143,8 @@ All error handling is done using exceptions now. We have got a package containin
 Implementing I/O instructions required us to add a new \texttt{Io} class, interfaced with the \texttt{Machine}. The impact was however quite limited thanks to the in-place architecture which was already similar. Implemention itself relies on Java's power to handle both standard input/output streams the same as file streams.
 
 The short syntax was very easy to implement, since we prepared it in the first level (by creating this representation in the different instruction classes). Image syntax became a little bit harder to create. We first thought about an attribute which would be an array of three integers (RGB values). But we decided to adapt our representation to the \texttt{BufferedImage.getRGB()} method and to store the color value as one integer (in code, written in hexadecimal format) in the ARGB format (e.g : 0xFF000000 for black. The alpha channel value is always at the maximum (FF) since we only want full opacity colors). Then, reading a color was as simple as requesting the \texttt{InstructionSet} to return the \texttt{Instruction} corresponding to the result of \texttt{BufferedImage.getRGB()} method. Another issue arose when we had to load the image: we initially wanted to use \texttt{Stream\char60{}\char62{}} for both text and image data, but because of type erasure, we couldn't overload methods and keep the underlying object type at runtime. Our workaround was to use an \texttt{IntStream} instead of \texttt{Stream\char60{}Int\char62{}} for the image.
+
+\newpage
 
 Code modularity is great when it pertains to instructions. Adding one or altering another does not require much effort as all you have to do is create a new subclass of instructions and instanciate it in the \texttt{InstructionSet}. However, integrating a new file format isn't that easy: after adding the class to read it, you need to implement a parsing method in \texttt{InstructionParser}, then add support for the file type in the \texttt{ArgParser} (in order to distinguish between the different formats, currently by the file extension) and finally handle the loading in the \texttt{Launcher}, adding a new case and a new method. This isn't great at all and should be reworked, by using similar to our \texttt{InstructionSet} for example, which would limit the change to adding the class for the new format support and registering it in another. The same could be said with the different modes to a lesser extent. Then should all have their own class (which is more or less the case but not clearly defined) and registered only once with the corresponding arguments on the command line.
 
