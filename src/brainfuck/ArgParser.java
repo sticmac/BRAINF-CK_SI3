@@ -15,6 +15,7 @@ public class ArgParser {
 	private String out;
 	private Mode mode;
 	private Type type;
+	private boolean trace = false;
 
 	/**
 	 * Main constructor of the <code>ArgParser</code> class.
@@ -64,6 +65,9 @@ public class ArgParser {
 				case "--check":
 					setMode(Mode.CHECK);
 					break;
+				case "--trace":
+					this.trace = true;
+					break;
 				default:
 					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}
@@ -107,6 +111,15 @@ public class ArgParser {
 	 */
 	public Mode getMode() {
 		return mode;
+	}
+
+	/**
+	 * Getter for the trace boolean.
+	 *
+	 * @return true if trace mode is activated, else false.
+	 */
+	public boolean isTracing() {
+		return trace;
 	}
 
 	/**

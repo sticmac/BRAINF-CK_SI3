@@ -130,10 +130,13 @@ public class Main {
 	 * @param ip	InstructionParser which previously parsed a file.
 	 * @throws FileNotFoundException	if creating/opening output file failed.
 	 */
-	private void execute(InstructionParser ip) throws FileNotFoundException {
+	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
 		Machine machine = new Machine();
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
+		if (argp.isTracing()) {
+			interpreter.setLogger(new Logger(argp.getFilename().substring(0, argp.getFilename().lastIndexOf("."))+".log"));
+		}
 		interpreter.run(machine);
 	}
 }

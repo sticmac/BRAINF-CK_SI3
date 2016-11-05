@@ -1,9 +1,11 @@
 package brainfuck;
 
 import java.util.List;
+import java.io.IOException;
 
 import brainfuck.instructions.Instruction;
 import brainfuck.virtualmachine.Machine;
+import brainfuck.Logger;
 
 /**
  * Reads the instructions from a List and execute them.
@@ -18,6 +20,11 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
+	 * The Logger for the current instance of the program.
+	 */
+	private Logger logger;
+
+	/**
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
 	 * @param instructions 	List of Instruction containing instructions to execute.
@@ -27,17 +34,29 @@ public class Interpreter {
 	}
 
 	/**
+	 * Set the Logger.
+	 *
+	 * @param log	Logger to use for this instance of the Interpreter.
+	 */
+	public void setLogger(Logger log) {
+		this.logger = log;
+	}
+
+	/**
 	 * Executes the instructions from the List and print memory content if the program terminated successfully.
 	 * Parses in reverse order when Machine::isReversed returns true.
 	 *
 	 * @param machine	Virtual machine which executes the instructions.
 	 */
-	public void run(Machine machine) {
+	public void run(Machine machine) throws IOException {
 		int i = 0;
 		while (i >= 0 && i < instructions.size()) {
 			machine.executeOp(instructions.get(i));
 			if (machine.isReversed()) i--;
 			else i++;
+		}
+		if (logger != null) {
+			logger.write();
 		}
 		System.out.print(machine.dumpMemory());
 	}
