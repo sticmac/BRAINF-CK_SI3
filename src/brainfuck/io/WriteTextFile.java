@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import java.io.FileOutputStream;
+import brainfuck.exceptions.OutputFileNotFoundException;
 
 import brainfuck.virtualmachine.Machine;
 
@@ -43,8 +44,10 @@ public class WriteTextFile {
 			fos.write(str.getBytes());
 			fos.write('\n');
 			fos.close();
-		}catch(Exception e){
-			e.printStackTrace();
+		} catch(FileNotFoundException e) {
+			throw new OutputFileNotFoundException(e);
+		} catch(IOException e) {
+			throw new InputOutputException(e);
 		}
 	}
 
