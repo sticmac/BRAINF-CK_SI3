@@ -138,10 +138,7 @@ public class Main {
 		if (argp.isTracing()) {
 			Logger log  = new Logger(argp.getFilename().substring(0, argp.getFilename().lastIndexOf("."))+".log");
 			interpreter.setLogger(log);
-			interpreter.run(machine);
-			log.write();
-		} else {
-			interpreter.run(machine);
 		}
+		interpreter.run(machine);
 	}
 }

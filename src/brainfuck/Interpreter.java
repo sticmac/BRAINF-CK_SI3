@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import brainfuck.instructions.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.Logger;
+import brainfuck.io.WriteTextFile;
 
 /**
  * Reads the instructions from a List and execute them.
@@ -47,14 +47,15 @@ public class Interpreter {
 	 * Parses in reverse order when Machine::isReversed returns true.
 	 *
 	 * @param machine	Virtual machine which executes the instructions.
+	 * @throws IOException	if any attempt to write in the log file failed.
 	 */
-	public void run(Machine machine) {
+	public void run(Machine machine) throws IOException {
 		int i = 0;
 		int j = 0;
 		while (i >= 0 && i < instructions.size()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
-				logger.add((++j)+" — exec "+i+": "+instructions.get(i).getName()+" on C"+machine.getLocation()+"\n"+machine.dumpMemory()+"\n");
+				logger.write((++j)+" — exec "+i+": "+instructions.get(i).getName()+" on C"+machine.getLocation()+"\n"+machine.dumpMemory());
 			}
 			if (machine.isReversed()) i--;
 			else i++;

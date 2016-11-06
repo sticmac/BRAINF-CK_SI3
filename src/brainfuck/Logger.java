@@ -10,58 +10,26 @@ import brainfuck.io.WriteTextFile;
  */
 public class Logger {
 	/**
-	 * Containing log data.
+	 * The log file.
 	 */
-	private StringBuilder data;
-
-	/**
-	 * Name of the log file.
-	 */
-	private String logName;
+	private WriteTextFile wtf;
 
 	/**
 	 * Main constructor of the <code>Logger</code> class.
 	 *
 	 * @param logName	the name of the log file.
-	 * @param data		log data, as a <code>StringBuilder</code>.
+	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public Logger(String logName, StringBuilder data) {
-		this.logName = logName;
-		this.data = data;
-	}
-	
-	/**
-	 * Constructor of the <code>Logger</code> class with empty data.
-	 *
-	 * @param logName	the name of the log file.
-	 */
-	public Logger(String logName) {
-		this(logName, new StringBuilder());
+	public Logger(String logName) throws IOException {
+		wtf = new WriteTextFile(logName);
 	}
 
 	/**
-	 * Adding a line for data logging.
-	 *
-	 * @param line new line to add to logging.
-	 */
-	public void add(String line) {
-		data.append(line);
-	}
-
-	/**
-	 * Getting for the log data.
-	 *
-	 * @return the log data, as a <code>String</code>.
-	 */
-	public String getData() {
-		return data.toString();
-	}
-
-	/**
-	 * Writing the log file.
+	 * Writing data in the log file.
+	 * @param data data to write in the log file.
 	 * @throws IOException	in case writing the file is impossible.
 	 */
-	public void write() throws IOException {
-		new WriteTextFile(logName).write(data.toString());
+	public void write(String data) throws IOException {
+		wtf.write(data);
 	}
 }
