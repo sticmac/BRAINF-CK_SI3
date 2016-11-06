@@ -48,15 +48,16 @@ public class Interpreter {
 	 *
 	 * @param machine	Virtual machine which executes the instructions.
 	 */
-	public void run(Machine machine) throws IOException {
+	public void run(Machine machine) {
 		int i = 0;
+		int j = 0;
 		while (i >= 0 && i < instructions.size()) {
 			machine.executeOp(instructions.get(i));
+			if (logger != null) {
+				logger.add((++j)+" — exec "+i+": "+instructions.get(i).getName()+" on C"+machine.getLocation()+"\n"+machine.dumpMemory()+"\n");
+			}
 			if (machine.isReversed()) i--;
 			else i++;
-		}
-		if (logger != null) {
-			logger.write();
 		}
 		System.out.print(machine.dumpMemory());
 	}

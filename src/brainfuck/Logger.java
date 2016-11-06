@@ -59,7 +59,7 @@ public class Logger {
 
 	/**
 	 * Writing the log file.
-	 * @throws IOException 	in case writing the file is impossible.
+	 * @throws IOException	in case writing the file is impossible.
 	 */
 	public void write() throws IOException {
 		new WriteTextFile(logName).write(data.toString());

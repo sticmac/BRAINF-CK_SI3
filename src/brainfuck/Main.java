@@ -129,14 +129,19 @@ public class Main {
 	 *
 	 * @param ip	InstructionParser which previously parsed a file.
 	 * @throws FileNotFoundException	if creating/opening output file failed.
+	 * @throws IOException			if writing the log failed (when one has to be written).
 	 */
 	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
 		Machine machine = new Machine();
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
 		if (argp.isTracing()) {
-			interpreter.setLogger(new Logger(argp.getFilename().substring(0, argp.getFilename().lastIndexOf("."))+".log"));
+			Logger log  = new Logger(argp.getFilename().substring(0, argp.getFilename().lastIndexOf("."))+".log");
+			interpreter.setLogger(log);
+			interpreter.run(machine);
+			log.write();
+		} else {
+			interpreter.run(machine);
 		}
-		interpreter.run(machine);
 	}
 }
