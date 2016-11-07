@@ -136,7 +136,7 @@ public class Main {
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
 		if (argp.isTracing()) {
-			Logger log  = new Logger(argp.getFilename().substring(0, argp.getFilename().lastIndexOf("."))+".log");
+			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);
 		}
 		interpreter.run(machine);

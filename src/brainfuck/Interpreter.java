@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import brainfuck.instructions.Instruction;
 import brainfuck.virtualmachine.Machine;
-import brainfuck.io.WriteTextFile;
 
 /**
  * Reads the instructions from a List and execute them.
@@ -51,11 +50,10 @@ public class Interpreter {
 	 */
 	public void run(Machine machine) throws IOException {
 		int i = 0;
-		int j = 0;
 		while (i >= 0 && i < instructions.size()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
-				logger.write((++j)+" — exec "+i+": "+instructions.get(i).getName()+" on C"+machine.getLocation()+"\n"+machine.dumpMemory());
+				logger.logStep(i, instructions.get(i), machine);
 			}
 			if (machine.isReversed()) i--;
 			else i++;
