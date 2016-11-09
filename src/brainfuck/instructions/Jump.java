@@ -2,6 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.BracketCounter;
 import brainfuck.virtualmachine.Machine;
+import brainfuck.Metrics;
 
 /**
  * Jump instruction: jump to the instruction right after the associated BACK if the pointed
@@ -35,6 +36,7 @@ public class Jump extends ConditionalJump {
 			machine.setReversed(false);
 			machine.setJumping(false);
 		}
+                Metrics.DATA_READ.incr();
 	}
 
 	/**

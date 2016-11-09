@@ -1,6 +1,7 @@
 package brainfuck.instructions;
 
 import brainfuck.virtualmachine.Machine;
+import brainfuck.Metrics;
 
 /**
  * Left instruction: move to the previous memory cell.
@@ -30,5 +31,6 @@ public class Left extends Instruction {
 		int location = machine.getLocation();
 		location--;
 		machine.setLocation(location);
+		Metrics.DATA_MOVE.incr();
 	}
 }

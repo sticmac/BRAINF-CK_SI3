@@ -4,6 +4,7 @@ import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.InputOutputException;
 import brainfuck.exceptions.EndOfInputException;
 import static brainfuck.virtualmachine.Memory.OFFSET;
+import brainfuck.Metrics;
 
 /**
  * Reads and store a byte in the current memory cell.
@@ -39,5 +40,6 @@ public class In extends Instruction {
 		}
 		c -= OFFSET;
 		machine.writeMemory((byte) c);
+                Metrics.DATA_WRITE.incr();
 	}
 }

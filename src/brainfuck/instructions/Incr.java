@@ -2,6 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.OverflowException;
+import brainfuck.Metrics;
 
 /**
  * Incr instruction: increments the current memory cell by one.
@@ -32,5 +33,6 @@ public class Incr extends Instruction {
 		if (value >= Byte.MAX_VALUE) throw new OverflowException("Above maximum value");
 		value++;
 		machine.writeMemory(value);
+                Metrics.DATA_WRITE.incr();
 	}
 }

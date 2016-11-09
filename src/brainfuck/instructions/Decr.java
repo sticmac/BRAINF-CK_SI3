@@ -2,6 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.OverflowException;
+import brainfuck.Metrics;
 
 /**
  * Decr instruction: decrements the current memory cell by one.
@@ -32,5 +33,6 @@ public class Decr extends Instruction {
 		if (value <= Byte.MIN_VALUE) throw new OverflowException("Below minimum value");
 		value--;
 		machine.writeMemory(value);
+                Metrics.DATA_WRITE.incr();
 	}
 }
