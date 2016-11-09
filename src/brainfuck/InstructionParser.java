@@ -43,21 +43,34 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
-		// Does it need a .filter(l -> !"".equals) ?
 		stream.forEachOrdered(line -> {
-				Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
-				if (instr != null) {
-					instructions.add(instr);
-				} else {
-					for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
-						char c = line.charAt(i);
-						instr = iset.getOp(c);
-						if (instr != null) instructions.add(instr);
-						else {
-							throw new InvalidInstructionException(c);
-						}
-					}
+			if (line.startsWith("#")) return;
+
+			int posCom = line.indexOf("#");
+
+			if (posCom != -1) {
+				line = line.substring(0, posCom);
 			}
+
+			line = line.trim();
+
+			if (line.isEmpty()) return;
+
+			Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
+
+			if (instr != null) {
+				instructions.add(instr);
+			} else {
+				for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
+					char c = line.charAt(i);
+					if (c == ' ' || c == '\t') continue;
+
+					instr = iset.getOp(c);
+					if (instr == null) 	throw new InvalidInstructionException(c);
+					instructions.add(instr);
+				}
+			}
+
 		});
 
 	}
