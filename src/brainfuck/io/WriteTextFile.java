@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 import java.io.FileOutputStream;
 import brainfuck.exceptions.OutputFileNotFoundException;
+import brainfuck.exceptions.InputOutputException;
 
 import brainfuck.virtualmachine.Machine;
 
