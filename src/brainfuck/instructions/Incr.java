@@ -12,7 +12,7 @@ import brainfuck.Metrics;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Incr extends Instruction {
+public class Incr extends WriteMemory {
 	/**
 	 * Constructs the Incr instruction.
 	 */
@@ -29,10 +29,10 @@ public class Incr extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) throws OverflowException {
+		super.accept(machine);
 		byte value = machine.readMemory();
 		if (value >= Byte.MAX_VALUE) throw new OverflowException("Above maximum value");
 		value++;
 		machine.writeMemory(value);
-                Metrics.DATA_WRITE.incr();
 	}
 }

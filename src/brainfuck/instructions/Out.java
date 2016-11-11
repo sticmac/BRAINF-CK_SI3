@@ -12,7 +12,7 @@ import brainfuck.Metrics;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Out extends Instruction {
+public class Out extends ReadMemory {
 	/**
 	 * Constructs the Incr instruction.
 	 */
@@ -28,8 +28,8 @@ public class Out extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		byte value = machine.readMemory();
 		machine.output(value + OFFSET);
-                Metrics.DATA_READ.incr();
 	}
 }

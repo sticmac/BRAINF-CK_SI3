@@ -30,13 +30,13 @@ public class Back extends ConditionalJump {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		if (!machine.isJumping() && machine.readMemory() != Byte.MIN_VALUE) {
 			machine.setJumping(true);
 			machine.setReversed(true);
 		} else {
 			machine.setJumping(false);
 		}
-                Metrics.DATA_READ.incr();
 	}
 
 	/**

@@ -11,7 +11,7 @@ import brainfuck.Metrics;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Left extends Instruction {
+public class Left extends MoveCursor {
 	/**
 	 * Constructs the Left instruction.
 	 */
@@ -28,9 +28,9 @@ public class Left extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		int location = machine.getLocation();
 		location--;
 		machine.setLocation(location);
-		Metrics.DATA_MOVE.incr();
 	}
 }

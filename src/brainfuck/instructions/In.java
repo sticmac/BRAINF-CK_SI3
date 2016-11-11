@@ -14,7 +14,7 @@ import brainfuck.Metrics;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class In extends Instruction {
+public class In extends WriteMemory {
 	/**
 	 * Constructs the In instruction.
 	 */
@@ -32,6 +32,7 @@ public class In extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		int c = machine.getInput();
 		if (c == -1) {
 			throw new EndOfInputException();
@@ -40,6 +41,5 @@ public class In extends Instruction {
 		}
 		c -= OFFSET;
 		machine.writeMemory((byte) c);
-                Metrics.DATA_WRITE.incr();
 	}
 }
