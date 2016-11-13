@@ -50,6 +50,8 @@ public class Interpreter {
 	 */
 	public void run(Machine machine) throws IOException {
 		int i = 0;
+		Metrics.PROG_SIZE.set(instructions.size());
+		Metrics.EXEC_TIME.start();
 		while (i >= 0 && i < instructions.size()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
@@ -57,7 +59,10 @@ public class Interpreter {
 			}
 			if (machine.isReversed()) i--;
 			else i++;
+			Metrics.EXEC_MOVE.incr();
 		}
+		Metrics.EXEC_TIME.stop();
 		System.out.print(machine.dumpMemory());
+		System.out.print(Metrics.dump());
 	}
 }

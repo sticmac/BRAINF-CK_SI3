@@ -2,6 +2,7 @@ package brainfuck.instructions;
 
 import brainfuck.virtualmachine.Machine;
 import static brainfuck.virtualmachine.Memory.OFFSET;
+import brainfuck.Metrics;
 
 /**
  * Print out the contents of the pointed memory cell on output.
@@ -11,7 +12,7 @@ import static brainfuck.virtualmachine.Memory.OFFSET;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class Out extends Instruction {
+public class Out extends ReadMemory {
 	/**
 	 * Constructs the Incr instruction.
 	 */
@@ -27,6 +28,7 @@ public class Out extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		byte value = machine.readMemory();
 		machine.output(value + OFFSET);
 	}

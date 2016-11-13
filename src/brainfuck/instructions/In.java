@@ -4,6 +4,7 @@ import brainfuck.virtualmachine.Machine;
 import brainfuck.exceptions.InputOutputException;
 import brainfuck.exceptions.EndOfInputException;
 import static brainfuck.virtualmachine.Memory.OFFSET;
+import brainfuck.Metrics;
 
 /**
  * Reads and store a byte in the current memory cell.
@@ -13,7 +14,7 @@ import static brainfuck.virtualmachine.Memory.OFFSET;
  * @see Machine
  * @see brainfuck.virtualmachine.Memory
  */
-public class In extends Instruction {
+public class In extends WriteMemory {
 	/**
 	 * Constructs the In instruction.
 	 */
@@ -31,6 +32,7 @@ public class In extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		super.accept(machine);
 		int c = machine.getInput();
 		if (c == -1) {
 			throw new EndOfInputException();
