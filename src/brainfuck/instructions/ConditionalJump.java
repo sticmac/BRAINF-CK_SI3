@@ -5,7 +5,7 @@ import brainfuck.BracketCounter;
 /**
  * Describes a conditional jump instruction (Jump or Back).
  */
-public abstract class ConditionalJump extends Instruction {
+public abstract class ConditionalJump extends ReadMemory {
 	/**
 	 * Constructs an conditional instruction with the given name, symbol and color, using Instruction constructor.
 	 *
