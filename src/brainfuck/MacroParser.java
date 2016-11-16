@@ -8,43 +8,111 @@ import java.util.List;
 
 import brainfuck.exceptions.SyntaxMacroException;
 
+/**
+ * Parsing <code>Macro</code>s (while creating them and using them).
+ *
+ * @author Pierre-Emmanuel Novac
+ * @author Julien Lemaire
+ */
 public class MacroParser {
+	/**
+	 * Different states for implementing a finite state machine.
+	 *
+	 * @author Pierre-Emmanuel Novac
+	 */
 	private enum State {
-		NO_MACRO, // Not defining a macro
-		MACRO_NAME, // Next field is macro name
-		MACRO_ARGS, // Next field is macro arguments
-		MACRO_BODY // Next field is macro body
+		/**
+		 * Not defining a <code>Macro</code>.
+		 */
+		NO_MACRO,
+		/**
+		 * Next line defines the name of the <code>Macro</code>.
+		 */
+		MACRO_NAME,
+		/**
+		 * Next lines define the different arguments of the <code>Macro</code>.
+		 */
+		MACRO_ARGS,
+		/**
+		 * Next lines define the content of the <code>Macro</code>.
+		 */
+		MACRO_BODY
 	}
 
+	/**
+	 * Defining the content of a <code>Macro</code>.
+	 *
+	 * @author Pierre-Emmanuel Novac
+	 */
 	private class Macro {
-		//private List<String> args;
+		/**
+		 * Contains <code>Macro</code>'s content.
+		 */
 		private List<String> body;
 
+		/**
+		 * Main constructor of class <code>Macro</code>.
+		 */
 		Macro() {
 			body = new ArrayList<>();
 		}
 
+		/**
+		 * Adds content to the <code>Macro</code>'s body.
+		 *
+		 * @param line Content to add to <code>Macro</code>'s body.
+		 */
 		void addToBody(String line) {
 			body.add(line);
 		}
 
+		/**
+		 * Returns the <code>Macro</code>'s body.
+		 *
+		 * @return the <code>Macro</code>'s body.
+		 */
 		List<String> getBody() {
 			return body;
 		}
 	}
 
+	/**
+	 * Map containing the different <code>Macro</code>s linked to their names.
+	 */
 	private Map<String, Macro> macros;
+	/**
+	 * Original content of the program, with <code>Macro</code> syntax.
+	 */
 	private Stream<String> prog;
+	/**
+	 * Current state of the finite state machine.
+	 */
 	private State state = State.NO_MACRO;
 
-	String macroName;
-	Macro macro;
+	/**
+	 * Stores the name of the <code>Macro</code> being defined.
+	 */
+	private String macroName;
+	/**
+	 * Content of the <code>Macro</code> being defined.
+	 */
+	private Macro macro;
 
+	/**
+	 * Main constructor of <code>MacroParser</code>.
+	 *
+	 * @param stream stream of lines containing instructions symbols and keywords to parse.
+	 */
 	public MacroParser(Stream<String> stream) {
 		this.macros = new HashMap<>();
 		this.prog = stream;
 	}
 
+	/**
+	 * Parses the stream given in constructor and returns it without <code>Macro</code>s definitions and usage.
+	 *
+	 * @return The stream of lines given in constructor without <code>Macro</code>s definitions and usage.
+	 */
 	public Stream<String> parse() {
 		return prog.flatMap(line -> {
 			State prev_state = state;
@@ -66,7 +134,7 @@ public class MacroParser {
 					throw new SyntaxMacroException("AS without a previous DEFINE.");
 				}
 			} else if ("END".equals(line)) {
-				if (state == State.MACRO_NAME) {
+				if (state == State.MACRO_BODY) {
 					state = State.NO_MACRO;
 					macros.put(macroName, macro);
 					return Stream.empty();
