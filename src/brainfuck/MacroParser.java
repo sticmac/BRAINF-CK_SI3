@@ -6,6 +6,8 @@ import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
 
+import brainfuck.exceptions.SyntaxMacroException;
+
 public class MacroParser {
 	private enum State {
 		NO_MACRO, // Not defining a macro
@@ -44,31 +46,40 @@ public class MacroParser {
 	}
 
 	public Stream<String> parse() {
-		// Wtf is this shit? Go hang yourself before reading it.
 		return prog.flatMap(line -> {
 			State prev_state = state;
 
 			// MACRO_ARGS not implemented for now
 			if ("DEFINE".equals(line)) {
-				state = State.MACRO_NAME;
-				macro = new Macro();
-				return Stream.empty();
+				if (state == State.NO_MACRO) {
+					state = State.MACRO_NAME;
+					macro = new Macro();
+					return Stream.empty();
+				} else {
+					throw new SyntaxMacroException("Defining a Macro while not finishing defining a previous one.");
+				}
 			} else if ("AS".equals(line)) {
-				state = State.MACRO_BODY;
-				return Stream.empty();
+				if (state == State.MACRO_NAME) {
+					state = State.MACRO_BODY;
+					return Stream.empty();
+				} else {
+					throw new SyntaxMacroException("AS without a previous DEFINE.");
+				}
 			} else if ("END".equals(line)) {
-				if (macro == null) throw new NullPointerException(); // FIXME
-				state = State.NO_MACRO;
-				macros.put(macroName, macro);
-				macro = null;
-				return Stream.empty();
+				if (state == State.MACRO_NAME) {
+					state = State.NO_MACRO;
+					macros.put(macroName, macro);
+					return Stream.empty();
+				} else {
+					throw new SyntaxMacroException("END without a previous AS.");
+				}
 			}
 
 			if (state == State.MACRO_NAME) macroName = line;
 			if (state == State.MACRO_BODY) macro.addToBody(line);
 
 			if (state == State.NO_MACRO /*|| state == MACRO_BODY // uncomment that for recursive expansion*/) {
-				if (macros.containsKey(line)) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro and fuck everyone up.
+				if (macros.containsKey(line)) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro.
 					return macros.get(line).getBody().stream();
 				} else {
 					return Stream.of(line);
