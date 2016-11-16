@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import brainfuck.instructions.Instruction;
 import brainfuck.virtualmachine.Machine;
+import brainfuck.JumpTable;
 
 /**
  * Reads the instructions from a List and execute them.
@@ -19,6 +20,11 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
+	 * Jumptable to manage order in instruction list.
+	 */
+	private JumpTable jumptable;
+
+	/**
 	 * The Logger for the current instance of the program.
 	 */
 	private Logger logger;
@@ -28,8 +34,9 @@ public class Interpreter {
 	 *
 	 * @param instructions 	List of Instruction containing instructions to execute.
 	 */
-	public Interpreter(List<Instruction> instructions) {
+	public Interpreter(List<Instruction> instructions, JumpTable jumptable) {
 		this.instructions = instructions;
+		this.jumptable = jumptable;
 	}
 
 	/**
@@ -57,8 +64,11 @@ public class Interpreter {
 			if (logger != null) {
 				logger.logStep(i, instructions.get(i), machine);
 			}
-			if (machine.isReversed()) i--;
-			else i++;
+			if (machine.isJumping()){
+				i = jumptable.getJump(instructions.get(i),i).intValue();
+			} else {
+				i++;
+			}
 			Metrics.EXEC_MOVE.incr();
 		}
 		Metrics.EXEC_TIME.stop();

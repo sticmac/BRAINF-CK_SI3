@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import brainfuck.instructions.Instruction;
 import brainfuck.InstructionSet;
+import brainfuck.JumpTable;
 import brainfuck.exceptions.InvalidInstructionException;
 
 /**
@@ -26,11 +27,17 @@ public class InstructionParser {
 	private InstructionSet iset;
 
 	/**
+	 * Jumptable used to bind Jump and Back instructions
+	 */
+	private JumpTable jumptable;
+
+	/**
 	 * Constructs an InsturctionParser with an empty list of instructions and creates the InstructionSet object.
 	 */
 	private InstructionParser() {
 		instructions = new ArrayList<Instruction>();
 		iset = new InstructionSet();
+		jumptable = new JumpTable();
 	}
 
 	/**
@@ -60,6 +67,7 @@ public class InstructionParser {
 
 			if (instr != null) {
 				instructions.add(instr);
+				jumptable.bind(instr, instructions.size());
 			} else {
 				for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
 					char c = line.charAt(i);
@@ -68,9 +76,10 @@ public class InstructionParser {
 					instr = iset.getOp(c);
 					if (instr == null) 	throw new InvalidInstructionException(c);
 					instructions.add(instr);
+					jumptable.bind(instr, instructions.size());
 				}
 			}
-
+			//jumptable.showTable();
 		});
 	}
 
@@ -101,5 +110,9 @@ public class InstructionParser {
 	 */
 	public List<Instruction> get() {
 		return instructions;
+	}
+
+	public JumpTable getJumpTable(){
+		return this.jumptable;
 	}
 }
