@@ -16,7 +16,7 @@ import brainfuck.exceptions.SyntaxMacroException;
  */
 public class MacroParser {
 	/**
-	 * Different states for implementing a finite state machine.
+	 * Different states of the <code>Macro</code> parsing process.
 	 *
 	 * @author Pierre-Emmanuel Novac
 	 */
@@ -67,12 +67,12 @@ public class MacroParser {
 		}
 
 		/**
-		 * Returns the <code>Macro</code>'s body.
+		 * Returns the <code>Macro</code>'s body as a stream.
 		 *
-		 * @return the <code>Macro</code>'s body.
+		 * @return the <code>Macro</code>'s body as a stream.
 		 */
-		List<String> getBody() {
-			return body;
+		Stream<String> getBody() {
+			return body.stream();
 		}
 	}
 
@@ -146,9 +146,9 @@ public class MacroParser {
 			if (state == State.MACRO_NAME) macroName = line;
 			if (state == State.MACRO_BODY) macro.addToBody(line);
 
-			if (state == State.NO_MACRO /*|| state == MACRO_BODY // uncomment that for recursive expansion*/) {
+			if (state == State.NO_MACRO) {
 				if (macros.containsKey(line)) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro.
-					return macros.get(line).getBody().stream();
+					return macros.get(line).getBody();
 				} else {
 					return Stream.of(line);
 				}

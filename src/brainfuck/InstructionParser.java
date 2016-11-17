@@ -46,8 +46,6 @@ public class InstructionParser {
 		stream = (new MacroParser(stream)).parse();
 
 		stream.forEachOrdered(line -> {
-			System.out.println(line);
-
 			if (line.startsWith("#")) return;
 
 			int posCom = line.indexOf("#");
