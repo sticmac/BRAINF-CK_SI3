@@ -43,6 +43,8 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
+		stream = (new MacroParser(stream)).parse();
+
 		stream.forEachOrdered(line -> {
 			if (line.startsWith("#")) return;
 
