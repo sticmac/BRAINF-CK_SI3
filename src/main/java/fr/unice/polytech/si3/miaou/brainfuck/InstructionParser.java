@@ -50,15 +50,13 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
-		stream = (new MacroParser(stream)).parse();
-
-		// Does it need a .filter(l -> !"".equals) ?
-		stream.filter(l -> !l.startsWith("#"))
+		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
 		.map(l -> {
 			int p = l.indexOf("#");
-			if (p > 0) l = l.substring(0, p);
-			return l.trim();
+			if (p > 0) l = l.substring(0, p); // Remove comments from the line
+			return l.trim(); // Remove leading and trailing whitespaces from the line
 		})
+		.flatMap(new MacroParser()) // Expand macros
 		.forEachOrdered(line -> {
 			Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
 

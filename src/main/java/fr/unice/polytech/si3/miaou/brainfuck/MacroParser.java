@@ -6,16 +6,19 @@ import java.util.stream.Stream;
 import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxMacroException;
 
 /**
  * Parsing <code>Macro</code>s (while creating them and using them).
+ * Implements the function interface Function in order to be used directly in the Stream of line's flatMap().
  *
  * @author Pierre-Emmanuel Novac
  * @author Julien Lemaire
+ * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a>
  */
-public class MacroParser {
+public class MacroParser implements Function<String, Stream<String>> {
 	/**
 	 * Different states of the <code>Macro</code> parsing process.
 	 *
@@ -68,7 +71,7 @@ public class MacroParser {
 		 *
 		 * @return the <code>Macro</code>'s body as a stream.
 		 */
-		Stream<String> getBody() {
+		Stream<String> stream() {
 			return body.stream();
 		}
 	}
@@ -77,10 +80,7 @@ public class MacroParser {
 	 * Map containing the different <code>Macro</code>s linked to their names.
 	 */
 	private Map<String, Macro> macros;
-	/**
-	 * Original content of the program, with <code>Macro</code> syntax.
-	 */
-	private Stream<String> prog;
+
 	/**
 	 * Current state of the finite state machine.
 	 */
@@ -90,6 +90,7 @@ public class MacroParser {
 	 * Stores the name of the <code>Macro</code> being defined.
 	 */
 	private String macroName;
+
 	/**
 	 * Content of the <code>Macro</code> being defined.
 	 */
@@ -97,12 +98,9 @@ public class MacroParser {
 
 	/**
 	 * Main constructor of <code>MacroParser</code>.
-	 *
-	 * @param stream stream of lines containing instructions symbols and keywords to parse.
 	 */
-	public MacroParser(Stream<String> stream) {
+	public MacroParser() {
 		this.macros = new HashMap<>();
-		this.prog = stream;
 	}
 
 	/**
@@ -136,51 +134,55 @@ public class MacroParser {
 		Macro macro = macros.get(name);
 		return IntStream.range(0, repeat) // generate a Stream<Integer> of repeat integers
 			.mapToObj(i -> // map it to the String<Stream> macro body
-				macro.getBody() // fetch the Stream<String> macro body
+				macro.stream() // fetch the Stream<String> macro body
 				.flatMap(this::parseLine) // recursive expand the macro content using parseLine which returns a Stream<String> for each of the macro line and flatten it to a Stream<String>
 			).flatMap(t->t); // flatten the Stream of repeated macro bodies from Stream<Stream<String>> to Stream<String> using identity
 	}
 
 	/**
-	 * Parses the stream given in constructor and returns it without <code>Macro</code>s definitions and usage.
+	 * Parses the given line and returns it with macro expanded.
+	 * Returns an empty Stream for all the macro definition lines.
+	 * Returns a Stream of the macro body for a macro call.
+	 * Returns a Stream of the line itself otherwise.
+	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a>'s apply() method.
 	 *
-	 * @return The stream of lines given in constructor without <code>Macro</code>s definitions and usage.
+	 * @param line	the line to parse coming from the calling Stream function.
+	 * @return macro parsing result.
 	 */
-	public Stream<String> parse() {
-		return prog.flatMap(line -> {
-			State prev_state = state;
+	@Override
+	public Stream<String> apply(String line) {
+		State prev_state = state;
 
-			if ("DEFINE".equals(line)) {
-				if (state == State.NO_MACRO) {
-					state = State.MACRO_NAME;
-					macro = new Macro();
-					return Stream.empty();
-				} else {
-					throw new SyntaxMacroException("Defining a Macro while not finishing defining a previous one.");
-				}
-			} else if ("AS".equals(line)) {
-				if (state == State.MACRO_NAME) {
-					state = State.MACRO_BODY;
-					return Stream.empty();
-				} else {
-					throw new SyntaxMacroException("AS without a previous DEFINE.");
-				}
-			} else if ("END".equals(line)) {
-				if (state == State.MACRO_BODY) {
-					state = State.NO_MACRO;
-					macros.put(macroName, macro);
-					return Stream.empty();
-				} else {
-					throw new SyntaxMacroException("END without a previous AS.");
-				}
+		if ("DEFINE".equals(line)) {
+			if (state == State.NO_MACRO) {
+				state = State.MACRO_NAME;
+				macro = new Macro();
+				return Stream.empty();
+			} else {
+				throw new SyntaxMacroException("Defining a Macro while not finishing defining a previous one.");
 			}
+		} else if ("AS".equals(line)) {
+			if (state == State.MACRO_NAME) {
+				state = State.MACRO_BODY;
+				return Stream.empty();
+			} else {
+				throw new SyntaxMacroException("AS without a previous DEFINE.");
+			}
+		} else if ("END".equals(line)) {
+			if (state == State.MACRO_BODY) {
+				state = State.NO_MACRO;
+				macros.put(macroName, macro);
+				return Stream.empty();
+			} else {
+				throw new SyntaxMacroException("END without a previous AS.");
+			}
+		}
 
-			if (state == State.MACRO_NAME) macroName = line;
+		if (state == State.MACRO_NAME) macroName = line;
 
-			if (state == State.MACRO_BODY) macro.addToBody(line);
+		if (state == State.MACRO_BODY) macro.addToBody(line);
 
-			if (state == State.NO_MACRO) return parseLine(line);
-			return Stream.empty();
-		});
+		if (state == State.NO_MACRO) return parseLine(line);
+		return Stream.empty();
 	}
 }
