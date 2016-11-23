@@ -11,6 +11,8 @@ import brainfuck.instructions.Instruction;
 import brainfuck.io.WriteTextFile;
 import brainfuck.io.Io;
 import brainfuck.instructions.ConditionalJump;
+import brainfuck.instructions.Jump;
+import brainfuck.instructions.Back;
 import brainfuck.BracketCounter;
 import brainfuck.exceptions.EndOfInputException;
 
@@ -92,9 +94,13 @@ public class Machine {
 	 * @param instr	Instruction to execute.
 	 */
 	public void executeOp(Instruction instr) {
-		if (!jumping) instr.accept(this); // Jumping may be modified in there
-		if (jumping && instr instanceof ConditionalJump) { // Increase the corresponding counter when encountering a conditional jump instruction
-			((ConditionalJump) instr).incr(bracketCounter);
+		if (instr instanceof Jump && readMemory() == Byte.MIN_VALUE) {
+			this.jumping = true;
+		} else if (instr instanceof Back && readMemory() != Byte.MIN_VALUE) {
+			this.jumping = true;
+		} else {
+			this.jumping = false ;
+			instr.accept(this);
 		}
 
 	}

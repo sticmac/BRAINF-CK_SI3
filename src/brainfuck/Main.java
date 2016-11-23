@@ -134,7 +134,7 @@ public class Main {
 	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
 		Machine machine = new Machine();
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
-		Interpreter interpreter = new Interpreter(ip.get());
+		Interpreter interpreter = new Interpreter(ip.get(), ip.getJumpTable());
 		if (argp.isTracing()) {
 			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);
