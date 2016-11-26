@@ -1,0 +1,54 @@
+%        File: L3.tex
+%     Created: mer. nov. 23 06:00  2016 C
+% Last Change: mer. nov. 23 06:00  2016 C
+%
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amssymb}
+\usepackage{caption} 
+
+\title{Rapport Niveau 3 – PS5 BRAINF-CK}
+\author{MIAOU – MIAOU Is An Open Umbrella\\
+Nassim BOUNOUAS - Guillaume CASAGRANDE \\ Julien LEMAIRE - Pierre-Emmanuel NOVAC}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\paragraph{}Nous vous présentons à travers ce rapport notre version de l'interpréteur du langage de programmation exotique \textsc{Brainf*ck} développée à ce jour jusqu'à la fin du niveau 3, suivant le découpage du sujet d'origine. Nous avons donc repris les fonctionnalités dont le développement a été achevé dans les deux précédents niveaux, à savoir :\\
+\begin{itemize}
+	\item La mise en place d'une \texttt{Machine} virtuelle et d'une mémoire (\texttt{Memory}).
+	\item Le support des différentes \texttt{Instruction}s proposée par le langage \textsc{Brainf*ck} (\texttt{INCR}, \texttt{DECR}, \texttt{LEFT}, \texttt{RIGHT}, \texttt{IN}, \texttt{OUT}, \texttt{JUMP}, \texttt{BACK}).
+	\item La redirection des flux d'entrée et de sortie pour que les instructions \texttt{IN} et \texttt{OUT} puissent respectivement lire et écrire dans des fichiers plutôt que sur l'entrée/la sortie standard.
+	\item Le support des sauts conditionnels dans une implémentation naïve (décrite plus tard) et de la vérification de leur bonne utilisation dans un programme donnée.
+	\item Le support des différentes syntaxes décrites dans le sujet, à savoir la syntaxe image (les instructions étant alors codées sous la forme de couleurs de 3 x 3 pixels), la syntaxe texte dite ``longue'' (les instructions sont alors écrites ligne par ligne, sous la forme de leur nom suscité) et la syntaxe texte dite ``courte'' (la syntaxe la plus connue, agrémentée de symboles).
+	\item Le module de traduction (\texttt{Translator}) afin de pouvoir passer d'une syntaxe à une autre.
+\end{itemize}
+\paragraph{}Ces fonctionnalités étant implémentées, nous devions alors y rajouter celles du niveau 3. Celles-ci étaient, entre autres, composées des \texttt{Metrics} qui, à chaque lancement d'un programme \textsc{Brainf*ck}, propose des données sur son exécution, ou encore du \texttt{Logger} qui, à la demande de l'utilisateur, devait fournir un fichier log, lié au programme exécuté, et détaillant les différentes instructions effectuées avec leur conséquence propre sur la \texttt{Machine} et la \texttt{Memory}. Le support des commentaires et de l'indentation permettaient de rentre un programme \textsc{Brainf*ck} aussi libre et compréhensible que l'auteur l'eusse souhaité.
+\paragraph{}En dehors de ces outils, plus de l'ordre de la maintenance d'un programme \textsc{Brainf*ck} et de sa clarté, l'ajout du support des \texttt{Macros} était réellement une vraie fonctionnalité supplémentaire pour le développeur \textsc{Brainf*ck}, qui pourrait alors sauvegarder un morceau de code sous l'appellation de son choix. Chaque appel de cette même appellation serait alors remplacé par le code lui-même lors de la lecture du fichier. Enfin, la \texttt{JumpTable} est apparue comme une amélioration potentiellement considérable de notre implémentation naïve des sauts conditionnels, permettant de lier chaque instruction \texttt{JUMP} à l'instruction \texttt{BACK} associée et inversement.
+\paragraph{}Proposer une implémentation de ces différentes fonctionnalités était donc notre objectif pour terminer ce niveau 3. Cet objectif étant à présent atteint, nous vous présenterons dans ce rapport nos différents choix d'implémentations pour le réaliser.
+
+\section{Nos choix d'implémentations}
+\subsection{Schéma d'implémentation / Diagramme de classes}
+\paragraph{}Nous avons implémenté les différentes classes de cette façon :
+\subsection{Metrics}
+\paragraph{}Comme précisé en introduction, les \texttt{Metrics} sont des données fournies à chaque interprétation d'un programme \textsc{Brainf*ck} à propos de celui-ci et de son exécution. Ces \texttt{Metrics} sont composés de 6 valeurs, à savoir :
+\begin{itemize}
+	\item \texttt{PROG\_SIZE}, qui contient le nombre d'instructions écrites dans le programme interprété.
+	\item \texttt{EXEC\_TIME}, qui donne le temps d'exécution du programme en ms.
+	\item \texttt{EXEC\_MOVE}, qui donne le nombre de fois que le pointeur d'exécution (entendons par là, le pointeur sur les instructions à exécuter) a été déplacé.
+	\item \texttt{DATA\_MOVE}, qui donne le nombre de déplacements du pointeur sur la mémoire lors de l'exécution du programme.
+	\item \texttt{DATA\_READ}, qui donne le nombre d'opérations de lecture de la mémoire effectuées par le programme.
+	\item \texttt{DATA\_WRITE}, qui donne le nombre d'opérations d'écriture dans la mémoire effectuées par le programme.
+\end{itemize}
+
+\end{document}
+
+
