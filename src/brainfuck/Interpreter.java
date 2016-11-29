@@ -20,7 +20,7 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
-	 * Jumptable to manage order in instruction list.
+	 * Jumptable used to associate ConditionalJump instructions
 	 */
 	private JumpTable jumptable;
 
