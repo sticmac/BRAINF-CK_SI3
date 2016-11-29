@@ -22,15 +22,10 @@ import brainfuck.exceptions.InvalidInstructionException;
 public class JumpTable {
 
 	/**
-	 * Hashmap from Jump to Back instructions
+	 * Hashmap containing conditionnal jump instructions indexes
 	 */
-	private Map<Integer, Integer> mapJumpToBack;
+	private Map<Integer, Integer> conditionnalJumpMap;
 	
-	/**
-	 * Hashmap from Back to Jump instructions
-	 */
-	private Map<Integer, Integer> mapBackToJump;
-
 	/**
 	 * Stack used as a buffer to store a Jump waiting its Back instruction
 	 */
@@ -38,17 +33,14 @@ public class JumpTable {
 
 	/**
 	 * Constructs an interpreter using the given List of Instruction.
-	 *
-	 * @param instructions 	List of Instruction containing instructions to execute.
 	 */
 	public JumpTable() {
-		this.mapJumpToBack = new HashMap<>();
-		this.mapBackToJump = new HashMap<>();
+		this.conditionnalJumpMap = new HashMap<>();
 		this.intermediateStack = new ArrayDeque<>();
 	}
 
 	/**
-	 * Add and associate a Jump/Back instruction to its ?
+	 * Add and associate a Jump/Back instruction to its corresponding instruction 
 	 *
 	 * @param i The instruction to add in the Jumptable
 	 * @param index The instruction index
@@ -57,27 +49,22 @@ public class JumpTable {
 		index--; // Instruction list is counting from 1 to n and Machine from 0 to n
 		if (i instanceof Jump) {
 			this.intermediateStack.push(new Integer(index));
-		}else if (i instanceof Back) {
+		} else if (i instanceof Back) {
 			Integer jumpIndex = this.intermediateStack.pop();
-			this.mapJumpToBack.put(jumpIndex, new Integer(index));
-			this.mapBackToJump.put(new Integer(index), jumpIndex);
+			Integer backIndex = index;
+			this.conditionnalJumpMap.put(jumpIndex, backIndex);
+			this.conditionnalJumpMap.put(backIndex, jumpIndex);
 		}
 	}
 
 	/**
 	 * Return the index of the associated conditionnal Jump.
 	 *
-	 * @param instr The instrution from where we are jumping
-	 * @param index THe index from where we are jumping
+	 * @param index The index from where we are jumping
+	 * @return The target index
 	 */
-	public Integer getJump(Instruction instr, int index) {
-		if (instr instanceof Jump) {
-			return this.mapJumpToBack.get(new Integer(index));
-		} else if(instr instanceof Back) {
-			return this.mapBackToJump.get(new Integer(index));
-		} else {
-			throw new InvalidInstructionException(-1);
-		}
+	public Integer getJump(int index) {
+			return this.conditionnalJumpMap.get(new Integer(index));
 	}
 
 	/**
@@ -85,11 +72,13 @@ public class JumpTable {
 	 */
 	@Override
 	public String toString() {
-		Iterator it = this.mapJumpToBack.entrySet().iterator();
+		String str = "";
+		Iterator it = this.conditionnalJumpMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry)it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue());
+			str += pair.getKey() + " = " + pair.getValue() + "\n";
 		}
-		System.out.println("Size : " + this.mapJumpToBack.size());
+		str += "Size : " + this.conditionnalJumpMap.size() + "\n";
+		return str;
 	}
 }
