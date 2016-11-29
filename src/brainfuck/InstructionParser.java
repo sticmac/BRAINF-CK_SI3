@@ -119,7 +119,7 @@ public class InstructionParser {
 	 *
 	 * @return the jumptable
 	 */
-	public JumpTable getJumpTable(){
+	public JumpTable getJumpTable() {
 		return this.jumptable;
 	}
 }
