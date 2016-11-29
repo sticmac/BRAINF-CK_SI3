@@ -25,14 +25,14 @@ Nassim BOUNOUAS - Guillaume CASAGRANDE \\ Julien LEMAIRE - Pierre-Emmanuel NOVAC
 \paragraph{}Nous vous présentons à travers ce rapport notre version de l'interpréteur du langage de programmation exotique \textsc{Brainf*ck} développée à ce jour jusqu'à la fin du niveau 3, suivant le découpage du sujet d'origine. Nous avons donc repris les fonctionnalités dont le développement a été achevé dans les deux précédents niveaux, à savoir :
 \begin{itemize}
 	\item La mise en place d'une \texttt{Machine} virtuelle et d'une mémoire (\texttt{Memory}).
-	\item Le support des différentes \texttt{Instruction}s proposée par le langage \textsc{Brainf*ck} (\texttt{INCR}, \texttt{DECR}, \texttt{LEFT}, \texttt{RIGHT}, \texttt{IN}, \texttt{OUT}, \texttt{JUMP}, \texttt{BACK}).
+	\item La prise en charge des différentes \texttt{Instruction}s proposée par le langage \textsc{Brainf*ck} (\texttt{INCR}, \texttt{DECR}, \texttt{LEFT}, \texttt{RIGHT}, \texttt{IN}, \texttt{OUT}, \texttt{JUMP}, \texttt{BACK}).
 	\item La redirection des flux d'entrée et de sortie pour que les instructions \texttt{IN} et \texttt{OUT} puissent respectivement lire et écrire dans des fichiers plutôt que sur l'entrée/la sortie standard.
-	\item Le support des sauts conditionnels dans une implémentation naïve (décrite plus tard) et de la vérification de leur bonne utilisation dans un programme donnée.
-	\item Le support des différentes syntaxes décrites dans le sujet, à savoir la syntaxe image (les instructions étant alors codées sous la forme de couleurs de 3 x 3 pixels), la syntaxe texte dite ``longue'' (les instructions sont alors écrites ligne par ligne, sous la forme de leur nom suscité) et la syntaxe texte dite ``courte'' (la syntaxe la plus connue, agrémentée de symboles).
+	\item La prise en charge des sauts conditionnels dans une implémentation naïve (décrite plus tard) et de la vérification de leur bonne utilisation dans un programme donnée.
+	\item La prise en charge des différentes syntaxes décrites dans le sujet, à savoir la syntaxe image (les instructions étant alors codées sous la forme de couleurs de 3 x 3 pixels), la syntaxe texte dite ``longue'' (les instructions sont alors écrites ligne par ligne, sous la forme de leur nom suscité) et la syntaxe texte dite ``courte'' (la syntaxe la plus connue, agrémentée de symboles).
 	\item Le module de traduction (\texttt{Translator}) afin de pouvoir passer d'une syntaxe à une autre.
 \end{itemize}
-\paragraph{}Ces fonctionnalités étant implémentées, nous devions alors y rajouter celles du niveau 3. Celles-ci étaient, entre autres, composées des \texttt{Metrics} qui, à chaque lancement d'un programme \textsc{Brainf*ck}, propose des données sur son exécution, ou encore du \texttt{Logger} qui, à la demande de l'utilisateur, devait fournir un fichier log, lié au programme exécuté, et détaillant les différentes instructions effectuées avec leur conséquence propre sur la \texttt{Machine} et la \texttt{Memory}. Le support des commentaires et de l'indentation permettaient de rentre un programme \textsc{Brainf*ck} aussi libre et compréhensible que l'auteur l'eusse souhaité.
-\paragraph{}En dehors de ces outils, plus de l'ordre de la maintenance d'un programme \textsc{Brainf*ck} et de sa clarté, l'ajout du support des \texttt{Macros} était réellement une vraie fonctionnalité supplémentaire pour le développeur \textsc{Brainf*ck}, qui pourrait alors sauvegarder un morceau de code sous l'appellation de son choix. Chaque appel de cette même appellation serait alors remplacé par le code lui-même lors de la lecture du fichier. Enfin, la \texttt{JumpTable} est apparue comme une amélioration potentiellement considérable de notre implémentation naïve des sauts conditionnels, permettant de lier chaque instruction \texttt{JUMP} à l'instruction \texttt{BACK} associée et inversement.
+\paragraph{}Ces fonctionnalités étant implémentées, nous devions alors y rajouter celles du niveau 3. Celles-ci étaient, entre autres, composées des \texttt{Metrics} qui, à chaque lancement d'un programme \textsc{Brainf*ck}, propose des données sur son exécution, ou encore du \texttt{Logger} qui, à la demande de l'utilisateur, devait fournir un fichier log, lié au programme exécuté, et détaillant les différentes instructions effectuées avec leur conséquence propre sur la \texttt{Machine} et la \texttt{Memory}. Le support des commentaires et de l'indentation permettaient de rentre un programme \textsc{Brainf*ck} aussi libre et compréhensible que l'auteur l'aurait souhaité.
+\paragraph{}En dehors de ces outils, plus de l'ordre de la maintenance d'un programme \textsc{Brainf*ck} et de sa clarté, l'ajout du support des \texttt{Macros} était réellement une vraie fonctionnalité supplémentaire pour le développeur \textsc{Brainf*ck}, qui pourrait alors sauvegarder un morceau de code sous l'appellation de son choix. Chaque appel de cette même appellation serait alors remplacé par le code lui-même lors de la lecture du fichier. Enfin, la \texttt{JumpTable} est apparue comme une amélioration de notre implémentation naïve des sauts conditionnels, permettant de lier chaque instruction \texttt{JUMP} à l'instruction \texttt{BACK} associée et inversement.
 \paragraph{}Proposer une implémentation de ces différentes fonctionnalités était donc notre objectif pour terminer ce niveau 3. Cet objectif étant à présent atteint, nous vous présenterons dans ce rapport nos différents choix d'implémentations pour le réaliser.
 
 \section{Nos choix d'implémentations}
@@ -61,7 +61,7 @@ Nassim BOUNOUAS - Guillaume CASAGRANDE \\ Julien LEMAIRE - Pierre-Emmanuel NOVAC
 	\captionof{figure}{Affichage des \texttt{Metrics} à la fin de l'exécution d'un programme \textsc{Brainf*ck}}
 \end{center}
 
-\paragraph{}D'un point de vue implémentation, les différentes \texttt{Metrics} sont tout simplement stockées dans un \texttt{enum}. Chacun des éléments de cet \texttt{enum} (nommé \texttt{Metrics}) possède un attribut de type \texttt{long}. Il peut être modifié par diverses méthodes. Ainsi, on peut l'incrémenter, via une méthode nommée \texttt{incr}, ou encore directement changer sa valeur en dur par le biais d'une méthode \texttt{set} ou finalement l'utiliser comme un chronomètre avec les méthodes \texttt{start} et \texttt{stop}. Cette pluralité dans les moyens de modifications des \texttt{Metrics} sert bien sur à couvrir  tous les comportements possibles (chacune d'entre elles ne se calculant pas de la même façon, \texttt{EXEC\_TIME} est le seul calculateur de temps par exemple). Toutefois, nous reconnaissons que cette implémentation pose le problème de la liberté du changement de valeur. Il est possible ici de calculer \texttt{DATA\_WRITE} comme un temps par exemple alors que cela devrait être impossible. Nous avions réfléchi à une meilleure implémentation, plus orientée objet, pour régler ce problème, mais la solution de l'\texttt{enum} s'imposait comme la plus simple malgré tout.
+\paragraph{}D'un point de vue implémentation, les différentes \texttt{Metrics} sont tout simplement stockées dans un \texttt{enum}. Chacun des éléments de cet \texttt{enum} (nommé \texttt{Metrics}) possède un attribut de type \texttt{long}. Il peut être modifié par diverses méthodes. Ainsi, on peut l'incrémenter, via une méthode nommée \texttt{incr}, ou encore directement changer sa valeur en dur par le biais d'une méthode \texttt{set} ou finalement l'utiliser comme un chronomètre avec les méthodes \texttt{start} et \texttt{stop}. Cette pluralité dans les moyens de modifications des \texttt{Metrics} sert bien sûr à couvrir  tous les comportements possibles (chacune d'entre elles ne se calculant pas de la même façon, \texttt{EXEC\_TIME} est le seul calculateur de temps par exemple). Toutefois, nous reconnaissons que cette implémentation pose le problème de la liberté du changement de valeur. Il est possible ici de calculer \texttt{DATA\_WRITE} comme un temps par exemple alors que cela devrait être impossible. Nous avions réfléchi à une meilleure implémentation, plus orientée objet, pour régler ce problème, mais la solution de l'\texttt{enum} s'imposait comme la plus simple malgré tout.
 
 \paragraph{}Nous avons choisi de diviser les différentes \texttt{Instructions} que propose le langage \textsc{Brainf*ck} en différentes catégories. Pour rappel, nous avions implémenté ces \texttt{Instructions} sous la forme d'un Command Pattern, c'est-à-dire qu'elles héritaient toutes d'une classe mère \texttt{Instruction} définissant une méthode nommée \texttt{accept}. Cette méthode est alors surchargée dans les classes filles pour définir le comportement d'une instruction donnée sur la \texttt{Machine} et la \texttt{Memory}.
 
@@ -122,7 +122,45 @@ C1: 53
 \paragraph{}Pour cela, on opère des traitements supplémentaires sur chaque ligne du texte. On regarde d'abord s'il s'agit d'une ligne entièrement commentée (si elle commence par un « \# »). Sinon, on cherche à tronquer de la ligne une éventuelle partie commentée, si elle existe.  Par la suite, on analyse la ligne sans les espaces et tabulations qui la composent en son début et sa fin. Si l'analyse caractère par caractère est nécessaire (cas d'une ligne qui n'est pas en syntaxe longue, donc), on ignorera les espaces et tabulations.
 
 \subsection{Jump Table}
-\paragraph{}
+\paragraph{}Lors de notre première implémentation des sauts conditionnels, nous ne faisions que vérifier si toutes les instructions \texttt{JUMP} possédaient bien une instruction \texttt{BACK} associée. Dès lors, au sein d'une boucle conditionnelle, lorsqu'une instruction \texttt{BACK} est atteinte, nous retrouvions le \texttt{JUMP} associé en remontant la liste d'instructions jusqu'à tomber sur ce que nous cherchions. Les instructions ainsi remontées n'étaient pas interprétées, mais l'opération restait malgré tout couteuse.
+
+\paragraph{}La \texttt{JumpTable} était donc une amélioration de cette implémentation naïve des sauts conditionnels. Nous avons décidé de l'implémenter par le biais d'une classe entière, donc un objet serait instancié dans l'\texttt{Interpreter}. Elle relie, par le biais de \texttt{HashMap}s, chaque instruction \texttt{JUMP} à la position de l'instruction \texttt{BACK} correspondante (et vice-versa). La gestion d'une même boucle conditionnelle nécessite ainsi deux fois moins d'opérations qu'auparavant.
+
+\paragraph{}Pour montrer l'efficacité de cette amélioration, nous pouvons voir les résultats en termes de \texttt{Metrics} d'un même programme une première fois avec notre implémentation naïve des sauts conditionnels et une seconde fois avec la \texttt{JumpTable}.  Nous avons volontairement choisi un programme conséquent opérant 255 fois une séquence de 255 incrémentations suivies de 255 décrémentations sur la même case mémoire. Nous utilisons donc ici une boucle conditionnelle et un compteur sur la case mémoire précédente.
+\paragraph{}Après les deux essais effectués sur la même machine, nous obtenons les résultats suivants :\\\\
+\textbf{Sans JumpTable :}
+\begin{verbatim}
+PROG_SIZE: 764
+EXEC_TIME: 23
+EXEC_MOVE: 257804
+DATA_MOVE: 506
+DATA_WRITE: 128524
+DATA_READ: 254
+\end{verbatim}
+\textbf{Avec JumpTable : }
+\begin{verbatim}
+PROG_SIZE: 764
+EXEC_TIME: 21
+EXEC_MOVE: 129536
+DATA_MOVE: 506
+DATA_WRITE: 128524
+DATA_READ: 254
+\end{verbatim}
+
+\paragraph{}On peut donc bien se rendre compte d'une division par deux du nombre de déplacement du pointeur d'exécution avec la \texttt{JumpTable}. De plus, le temps d'exécution se voit diminué de 2ms, environ. Cette différence de temps s'est avérée être plus significative sur un programme comme le classique Hello World pour lequel la différence est d'environ 9 	ms. On obtient en effet les résultats affichés en \textsc{Figure 4} et en \textsc{Figure 5}.
+\begin{center}
+	\includegraphics[scale=0.45]{withoutJumptable.png}
+	\captionof{figure}{Temps d'exécution du programme Hello World \textsc{Brainf*ck} sans \texttt{JumpTable}.}
+	
+	\includegraphics[scale=0.45]{withJumptable.png} 
+	\captionof{figure}{Temps d'exécution du programme Hello World \textsc{Brainf*ck} avec \texttt{JumpTable}.}
+\end{center}
+
+\begin{verbatim}
+
+
+TODO: Parler d'implémentation -> Nassim.
+\end{verbatim}
 
 \subsection{Macros}
 \paragraph{}
