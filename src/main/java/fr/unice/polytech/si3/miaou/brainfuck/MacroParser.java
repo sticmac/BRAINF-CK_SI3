@@ -3,6 +3,7 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Stream;
+import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +30,6 @@ public class MacroParser {
 		 * Next line defines the name of the <code>Macro</code>.
 		 */
 		MACRO_NAME,
-		/**
-		 * Next lines define the different arguments of the <code>Macro</code>.
-		 */
-		MACRO_ARGS,
 		/**
 		 * Next lines define the content of the <code>Macro</code>.
 		 */
@@ -109,6 +106,42 @@ public class MacroParser {
 	}
 
 	/**
+	 * Expand the macro if the line contains a macro call, otherwise returns the line itself.
+	 *
+	 * @param line	line which may contain a macro call to expand.
+	 * @return a stream containing the expanded macro if there was a macro call or the original line.
+	 */
+	private Stream<String> parseLine(String line) {
+		String[] params = line.split(" ");
+
+		if (macros.containsKey(params[0])) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro.
+			return writeMacroBody(params);
+		} else {
+			return Stream.of(line);
+		}
+	}
+
+	/**
+	 * Returns the expanded macro recursively with the given params.
+	 * params[0] is the macro name, params[1] is the number of repetition.
+	 *
+	 * @param params	parameters for macro expansion: params[0] is the macro name, params[1] is the repetition count
+	 * @return macro recursively expanded (optionally multiple times)
+	 */
+	private Stream<String> writeMacroBody(String[] params) {
+		String name = params[0];
+		int repeat = 1;
+		if (params.length > 1) repeat = Integer.parseInt(params[1]); // convert the second param to the repetition count as an int
+
+		Macro macro = macros.get(name);
+		return IntStream.range(0, repeat) // generate a Stream<Integer> of repeat integers
+			.mapToObj(i -> // map it to the String<Stream> macro body
+				macro.getBody() // fetch the Stream<String> macro body
+				.flatMap(this::parseLine) // recursive expand the macro content using parseLine which returns a Stream<String> for each of the macro line and flatten it to a Stream<String>
+			).flatMap(t->t); // flatten the Stream of repeated macro bodies from Stream<Stream<String>> to Stream<String> using identity
+	}
+
+	/**
 	 * Parses the stream given in constructor and returns it without <code>Macro</code>s definitions and usage.
 	 *
 	 * @return The stream of lines given in constructor without <code>Macro</code>s definitions and usage.
@@ -117,7 +150,6 @@ public class MacroParser {
 		return prog.flatMap(line -> {
 			State prev_state = state;
 
-			// MACRO_ARGS not implemented for now
 			if ("DEFINE".equals(line)) {
 				if (state == State.NO_MACRO) {
 					state = State.MACRO_NAME;
@@ -144,15 +176,10 @@ public class MacroParser {
 			}
 
 			if (state == State.MACRO_NAME) macroName = line;
+
 			if (state == State.MACRO_BODY) macro.addToBody(line);
 
-			if (state == State.NO_MACRO) {
-				if (macros.containsKey(line)) { // We've got a macro right there, try to replace it. Naive check so you can be evil and declare a "+" macro.
-					return macros.get(line).getBody();
-				} else {
-					return Stream.of(line);
-				}
-			}
+			if (state == State.NO_MACRO) return parseLine(line);
 			return Stream.empty();
 		});
 	}
