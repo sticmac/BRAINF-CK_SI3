@@ -114,7 +114,12 @@ public class InstructionParser {
 		return instructions;
 	}
 
-	public JumpTable getJumpTable(){
+	/**
+	 * Return the jumptable associated to the instructions list
+	 *
+	 * @return the jumptable
+	 */
+	public JumpTable getJumpTable() {
 		return this.jumptable;
 	}
 }

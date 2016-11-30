@@ -20,7 +20,7 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
-	 * Jumptable to manage order in instruction list.
+	 * Jumptable used to associate ConditionalJump instructions
 	 */
 	private JumpTable jumptable;
 
@@ -33,6 +33,7 @@ public class Interpreter {
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
 	 * @param instructions 	List of Instruction containing instructions to execute.
+	 * @param jumptable     The jumptable containing conditional jumps positions
 	 */
 	public Interpreter(List<Instruction> instructions, JumpTable jumptable) {
 		this.instructions = instructions;
@@ -65,7 +66,7 @@ public class Interpreter {
 				logger.logStep(i, instructions.get(i), machine);
 			}
 			if (machine.isJumping()){
-				i = jumptable.getJump(instructions.get(i),i).intValue();
+				i = jumptable.getJump(i).intValue();
 			} else {
 				i++;
 			}
