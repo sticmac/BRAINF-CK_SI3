@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.unice.polytech.si3.miaou</groupId>
+  <artifactId>brainfuck</artifactId>
+  <packaging>jar</packaging>
+  <version>2.5.0-SNAPSHOT</version>
+  <name>MIAOU :: BRAINF-CK_SI3</name>
+  <url>https://github.com/MIAOU-Polytech/BRAINF-CK_SI3</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:all</arg> <!-- Show all warnings -->
+            <arg>-Xlint:-serial</arg> <!-- Hide warnings about missing unused serialVersionUID -->
+          </compilerArgs>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+      </plugin>
+
+      <!-- Code coverage reports -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.7.201606060606</version>
+        <executions>
+          <execution>
+            <id>pre-unit-test</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- SonarQube static analysis -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.2</version>
+<!--        <executions>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>sonar</goal>
+            </goals>
+          </execution>
+        </executions>
+-->
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <!-- Some static analysis reports -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.7</version>
+      </plugin>
+
+      <!-- Links to Javadoc -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
+
+      <!-- Javadoc generation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.4</version>
+        <configuration>
+          <!-- Generate simple UML -->
+          <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+          <docletArtifact>
+            <groupId>org.umlgraph</groupId>
+            <artifactId>umlgraph</artifactId>
+            <version>5.6.6</version>
+          </docletArtifact>
+          <additionalparam>-views -all -collpackages fr.unice.polytech.si3.miaou.brainfuck.* -inferdep -inferdepinpackage -inferrel</additionalparam>
+          <useStandardDocletOptions>true</useStandardDocletOptions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>
