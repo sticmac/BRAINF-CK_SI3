@@ -7,8 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
-import java.util.ArrayList;
-
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
@@ -28,8 +26,6 @@ public class Main {
 	 */
 	private ArgParser argp;
 
-	List list = new ArrayList();
-
 	/**
 	 * Constructs a Main with the given ArgParser, ie. arguments parsed from command line parameters.
 	 *
@@ -37,8 +33,6 @@ public class Main {
 	 */
 	Main(ArgParser argp) {
 		this.argp = argp;
-
-		list.add(2);
 	}
 
 	/**
