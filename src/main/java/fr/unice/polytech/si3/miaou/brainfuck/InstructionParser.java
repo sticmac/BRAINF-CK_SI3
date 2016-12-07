@@ -50,21 +50,14 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
-		stream = (new MacroParser(stream)).parse();
-
-		stream.forEachOrdered(line -> {
-			if (line.startsWith("#")) return;
-
-			int posCom = line.indexOf("#");
-
-			if (posCom != -1) {
-				line = line.substring(0, posCom);
-			}
-
-			line = line.trim();
-
-			if (line.isEmpty()) return;
-
+		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
+		.map(l -> {
+			int p = l.indexOf("#");
+			if (p > 0) l = l.substring(0, p); // Remove comments from the line
+			return l.trim(); // Remove leading and trailing whitespaces from the line
+		})
+		.flatMap(new MacroParser()) // Expand macros
+		.forEachOrdered(line -> {
 			Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
 
 			if (instr != null) {
@@ -76,7 +69,8 @@ public class InstructionParser {
 					if (c == ' ' || c == '\t') continue;
 
 					instr = iset.getOp(c);
-					if (instr == null) 	throw new InvalidInstructionException(c);
+
+					if (instr == null) throw new InvalidInstructionException(c);
 					instructions.add(instr);
 					jumptable.bind(instr, instructions.size());
 				}

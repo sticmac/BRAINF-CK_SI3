@@ -16,7 +16,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionExcept
 /**
  * instructions from a List and execute them.
  *
- * @author Nassim Bounouas 
+ * @author Nassim Bounouas
  * @see Instruction
  */
 public class JumpTable {
@@ -25,7 +25,7 @@ public class JumpTable {
 	 * Hashmap containing conditionnal jump instructions indexes
 	 */
 	private Map<Integer, Integer> conditionnalJumpMap;
-	
+
 	/**
 	 * Stack used as a buffer to store a Jump waiting its Back instruction
 	 */
@@ -40,7 +40,7 @@ public class JumpTable {
 	}
 
 	/**
-	 * Add and associate a Jump/Back instruction to its corresponding instruction 
+	 * Add and associate a Jump/Back instruction to its corresponding instruction
 	 *
 	 * @param i The instruction to add in the Jumptable
 	 * @param index The instruction index
@@ -73,9 +73,9 @@ public class JumpTable {
 	@Override
 	public String toString() {
 		String str = "";
-		Iterator it = this.conditionnalJumpMap.entrySet().iterator();
+		Iterator<Map.Entry<Integer, Integer>> it = this.conditionnalJumpMap.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry)it.next();
+			Map.Entry<Integer, Integer> pair = it.next();
 			str += pair.getKey() + " = " + pair.getValue() + "\n";
 		}
 		str += "Size : " + this.conditionnalJumpMap.size() + "\n";
