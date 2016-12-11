@@ -16,7 +16,7 @@ public class Out extends ReadMemory {
 	 * Constructs the Incr instruction.
 	 */
 	public Out() {
-		super("OUT", '.', 0xFFFFFF00);
+		super("OUT", '.', 0xFFFFFF00, "printf(\"%c\n\", memory[i] + OFFSET)");
 	}
 
 	/**

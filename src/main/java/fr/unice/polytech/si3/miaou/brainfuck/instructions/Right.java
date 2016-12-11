@@ -15,7 +15,7 @@ public class Right extends MoveCursor {
 	 * Constructs the Right instruction.
 	 */
 	public Right() {
-		super("RIGHT", '>', 0xFF0000FF);
+		super("RIGHT", '>', 0xFF0000FF, "i++");
 	}
 
 	/**

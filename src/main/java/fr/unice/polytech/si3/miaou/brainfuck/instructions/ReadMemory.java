@@ -17,8 +17,8 @@ public class ReadMemory extends Instruction {
 	 * @param symbol	Instruction's symbol.
 	 * @param color		Instruction's color as an int.
 	 */
-	public ReadMemory(String name, char symbol, int color) {
-		super(name, symbol, color);
+	public ReadMemory(String name, char symbol, int color, String commandInC) {
+		super(name, symbol, color, commandInC);
 	}
 
 	/**
