@@ -68,6 +68,9 @@ public class ArgParser {
 				case "--trace":
 					this.trace = true;
 					break;
+				case "--generate":
+					setMode(Mode.GENERATE);
+					break;
 				default:
 					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}

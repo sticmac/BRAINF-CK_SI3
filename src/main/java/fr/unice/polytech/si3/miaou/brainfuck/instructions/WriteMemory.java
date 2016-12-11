@@ -16,8 +16,8 @@ public class WriteMemory extends Instruction {
 	 * @param symbol	Instruction's symbol.
 	 * @param color		Instruction's color as an int.
 	 */
-	public WriteMemory(String name, char symbol, int color, String commandInC) {
-		super(name, symbol, color, commandInC);
+	public WriteMemory(String name, char symbol, int color) {
+		super(name, symbol, color);
 	}
 
 	/**

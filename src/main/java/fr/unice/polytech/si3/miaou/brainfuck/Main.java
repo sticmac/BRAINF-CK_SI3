@@ -13,6 +13,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteImage;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadImageFile;
+import fr.unice.polytech.si3.miaou.brainfuck.codegeneration.CodeGenerator;
 
 /**
  * Entry point for the application.
@@ -88,6 +89,11 @@ public class Main {
 				break;
 			case CHECK:
 				check(ip);
+				break;
+			case GENERATE:
+				CodeGenerator cg = new CodeGenerator(argp.getFilename());
+				cg.writeInstructions(textFileRead(argp.getFilename()).get());
+				cg.footer();
 				break;
 		}
 	}
