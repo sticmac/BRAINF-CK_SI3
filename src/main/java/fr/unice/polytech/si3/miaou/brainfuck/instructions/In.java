@@ -18,7 +18,7 @@ public class In extends WriteMemory {
 	 * Constructs the In instruction.
 	 */
 	public In() {
-		super("IN", ',', 0xFF00FF00);
+		super("IN", ',', 0xFF00FF00, "memory[i] = getchar();");
 	}
 
 	/**

@@ -1,35 +1,4 @@
 
-	Element *p = l;
-	for (j = 0; j < nbOfInstructions; j++) {
-		switch (p->instr) {
-			case '+':
-				INCR
-				break;
-			case '-':
-				DECR
-				break;
-			case ',':
-				IN
-				break;
-			case '.':
-				OUT
-				break;
-			case '<':
-				LEFT
-				break;
-			case '>':
-				RIGHT
-				break;
-			case '[':
-				JUMP
-				break;
-			case ']':
-				BACK
-				break;
-		}
-		p = p->next;
-    }
-
 	//dump
 	for (i = 0; i < SIZE_MEMORY; i++) {
 		if (memory[i] != 0) {

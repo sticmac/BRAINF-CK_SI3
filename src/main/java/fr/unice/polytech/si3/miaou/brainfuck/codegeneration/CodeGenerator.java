@@ -38,9 +38,8 @@ public class CodeGenerator {
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
 		for (Instruction instr : instructions) {
-			wtf.write("    l = append_element(l, '"+instr.getSymbol()+"');\n    nbOfInstructions++;");
+			wtf.write("    "+instr.getCode());
 		}
-
 	}
 
 	public void front() throws IOException {

@@ -16,7 +16,7 @@ public class Decr extends WriteMemory {
 	 * Constructs the Decr instruction.
 	 */
 	public Decr() {
-		super("DECR", '-', 0xFF4B0082);
+		super("DECR", '-', 0xFF4B0082, "memory[i]--;");
 	}
 
 	/**

@@ -10,9 +10,10 @@ public abstract class ConditionalJump extends ReadMemory {
 	 * @param name			Instruction's keyword.
 	 * @param symbol		Instruction's symbol.
 	 * @param color			Instruction's color as an int.
+	 * @param code			Instruction's code.
 	 */
-	public ConditionalJump(String name, char symbol, int color) {
-		super(name, symbol, color);
+	public ConditionalJump(String name, char symbol, int color, String code) {
+		super(name, symbol, color, code);
 	}
 
 }

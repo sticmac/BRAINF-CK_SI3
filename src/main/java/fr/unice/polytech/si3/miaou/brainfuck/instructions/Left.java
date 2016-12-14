@@ -15,7 +15,7 @@ public class Left extends MoveCursor {
 	 * Constructs the Left instruction.
 	 */
 	public Left() {
-		super("LEFT", '<', 0xFF9400D3);
+		super("LEFT", '<', 0xFF9400D3, "i--;");
 	}
 
 
