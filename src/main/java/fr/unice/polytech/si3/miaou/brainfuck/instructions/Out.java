@@ -16,7 +16,7 @@ public class Out extends ReadMemory {
 	 * Constructs the Incr instruction.
 	 */
 	public Out() {
-		super("OUT", '.', 0xFFFFFF00, "putchar(memory[i]);");
+		super("OUT", '.', 0xFFFFFF00);
 	}
 
 	/**

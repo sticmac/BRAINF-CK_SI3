@@ -8,47 +8,66 @@ import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
+/**
+ * Builds a file that is the translation of the brainfuck program in another language.
+ *
+ * @author Guillaume Casagrande
+ */
 public class CodeGenerator {
 	/**
-	 * The C file.
+	 * The file where the program has to be wrote.
 	 */
 	private WriteTextFile wtf;
 
 	/**
-	 * A test.
+	 * The Language object used to translate the code in another language.
 	 */
-	private ReadTextFile rtf;
+	private Language lang;
 
 	/**
 	 * Main constructor of the <code>CodeGenerator</code> class.
 	 *
 	 * @param filename the name of the program file.
+	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename) throws IOException {
-		filename = filename.substring(0, filename.lastIndexOf("."))+".c";
+	public CodeGenerator(String filename, String language) throws IOException {
+		switch (language) {
+			case "c":
+				lang = new CLanguage();
+				break;
+			case "python":
+				break;
+		}
+
+		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
 		File f = new File(filename);
 		if (f.exists()) { f.delete(); }
+
 		wtf = new WriteTextFile(filename);
 		front();
 	}
 
 	/**
-	 * Write the equivalent of a call of an instruction in C.
+	 * Writes the equivalent of a call of an instruction in C.
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
 		for (Instruction instr : instructions) {
-			wtf.write("    "+instr.getCode());
+			wtf.write("    "+lang.translateInstruction(instr));
 		}
 	}
 
+	/**
+	 * Writes the front of the file.
+	 */
 	public void front() throws IOException {
-		rtf = new ReadTextFile("src/main/java/fr/unice/polytech/si3/miaou/brainfuck/codegeneration/front.txt");
-		rtf.getData().forEachOrdered(wtf::write);
+		wtf.write(lang.buildFront());
 	}
 
+	/**
+	 * Writes the footer of the file.
+	 */
 	public void footer() throws IOException {
-		rtf = new ReadTextFile("src/main/java/fr/unice/polytech/si3/miaou/brainfuck/codegeneration/footer.txt");
-		rtf.getData().forEachOrdered(wtf::write);
+		wtf.write(lang.buildFooter());
 	}
 }

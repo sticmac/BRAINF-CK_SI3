@@ -16,7 +16,7 @@ public class Back extends ConditionalJump {
 	 * Constructs the Back instruction.
 	 */
 	public Back() {
-		super("BACK", ']', 0xFFFF0000, "}");
+		super("BACK", ']', 0xFFFF0000);
 	}
 
 

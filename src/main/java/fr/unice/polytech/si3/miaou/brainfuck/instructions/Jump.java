@@ -16,9 +16,8 @@ public class Jump extends ConditionalJump {
 	 * Constructs the Jump instruction.
 	 */
 	public Jump() {
-		super("JUMP", '[', 0xFFFF7F00, "while (memory[i] != 0) {");
+		super("JUMP", '[', 0xFFFF7F00);
 	}
-
 
 	/**
 	 * Action performed by the instruction: conditional jump.

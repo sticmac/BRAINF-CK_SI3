@@ -15,10 +15,9 @@ public class WriteMemory extends Instruction {
 	 * @param name		Instruction's keyword.
 	 * @param symbol	Instruction's symbol.
 	 * @param color		Instruction's color as an int.
-	 * @param code		Instruction's code.
 	 */
-	public WriteMemory(String name, char symbol, int color, String code) {
-		super(name, symbol, color, code);
+	public WriteMemory(String name, char symbol, int color) {
+		super(name, symbol, color);
 	}
 
 	/**

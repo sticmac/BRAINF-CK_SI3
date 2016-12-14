@@ -15,9 +15,8 @@ public class Left extends MoveCursor {
 	 * Constructs the Left instruction.
 	 */
 	public Left() {
-		super("LEFT", '<', 0xFF9400D3, "i--;");
+		super("LEFT", '<', 0xFF9400D3);
 	}
-
 
 	/**
 	 * Action performed by the instruction: move to the previous memory cell.

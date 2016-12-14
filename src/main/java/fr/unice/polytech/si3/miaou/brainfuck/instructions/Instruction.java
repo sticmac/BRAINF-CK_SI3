@@ -31,23 +31,16 @@ public abstract class Instruction implements Consumer<Machine> {
 	private int color;
 
 	/**
-	 * Instruction's code in C.
-	 */
-	private String code;
-
-	/**
 	 * Constructs an instruction with the given name, symbol and color.
 	 *
 	 * @param name		Instruction's keyword.
 	 * @param symbol	Instruction's symbol.
 	 * @param color		Instruction's color as an int.
-	 * @param code		Instruction's code.
 	 */
-	public Instruction(String name, char symbol, int color, String code) {
+	public Instruction(String name, char symbol, int color) {
 		this.name = name;
 		this.symbol = symbol;
 		this.color = color;
-		this.code = code;
 	}
 
 	/**
@@ -69,12 +62,5 @@ public abstract class Instruction implements Consumer<Machine> {
 	 */
 	public int getColor() {
 		return color;
-	}
-	
-	/**
-	 * @return Instruction's {@link Instruction#code}.
-	 */
-	public String getCode() {
-		return code;
 	}
 }
