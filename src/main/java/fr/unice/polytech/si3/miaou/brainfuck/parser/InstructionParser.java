@@ -1,4 +1,4 @@
-package fr.unice.polytech.si3.miaou.brainfuck;
+package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,32 +51,9 @@ public class InstructionParser {
 		this();
 
 		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
-		.map(l -> {
-			int p = l.indexOf("#");
-			if (p > 0) l = l.substring(0, p); // Remove comments from the line
-			return l.trim(); // Remove leading and trailing whitespaces from the line
-		})
+		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
-		.forEachOrdered(line -> {
-			Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
-
-			if (instr != null) {
-				instructions.add(instr);
-				jumptable.bind(instr, instructions.size());
-			} else {
-				for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
-					char c = line.charAt(i);
-					if (c == ' ' || c == '\t') continue;
-
-					instr = iset.getOp(c);
-
-					if (instr == null) throw new InvalidInstructionException(c);
-					instructions.add(instr);
-					jumptable.bind(instr, instructions.size());
-				}
-			}
-			//jumptable.showTable();
-		});
+		.forEachOrdered(this::parseInstructionsFromText);
 	}
 
 	/**
@@ -96,6 +73,32 @@ public class InstructionParser {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Parses a given line of text to parse new Instructions.
+	 * Add the parsed Instructions to instructions list.
+	 *
+	 * @param line the line to parse.
+	 */
+	private void parseInstructionsFromText(String line) {
+		Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
+
+		if (instr != null) {
+			instructions.add(instr);
+			jumptable.bind(instr, instructions.size());
+		} else {
+			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
+				char c = line.charAt(i);
+				if (c == ' ' || c == '\t') continue;
+
+				instr = iset.getOp(c);
+
+				if (instr == null) throw new InvalidInstructionException(c);
+				instructions.add(instr);
+				jumptable.bind(instr, instructions.size());
+			}
+		}
 	}
 
 	/**
