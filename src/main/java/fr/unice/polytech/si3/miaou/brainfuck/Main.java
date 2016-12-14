@@ -132,9 +132,9 @@ public class Main {
 	 * @throws IOException			if writing the log failed (when one has to be written).
 	 */
 	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
-		Machine machine = new Machine();
+		Machine machine = new Machine(0, ip.getJumpTable());
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
-		Interpreter interpreter = new Interpreter(ip.get(), ip.getJumpTable());
+		Interpreter interpreter = new Interpreter(ip.get());
 		if (argp.isTracing()) {
 			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);
