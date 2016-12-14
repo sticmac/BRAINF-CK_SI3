@@ -52,7 +52,6 @@ public class Interpreter {
 	public void run(Machine machine) throws IOException {
 		Metrics.PROG_SIZE.set(instructions.size());
 		Metrics.EXEC_TIME.start();
-		//while (i >= 0 && i < instructions.size()) {
 		for (int i = machine.getInstrPointer() ; i >= 0 && i < instructions.size() ; i = machine.getInstrPointer()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {

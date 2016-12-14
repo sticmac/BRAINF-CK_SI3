@@ -2,11 +2,10 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
+import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
