@@ -27,12 +27,12 @@ class CLanguage extends Language {
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return instructionsTranslation.get(instr.getSymbol());
+		return "    "+instructionsTranslation.get(instr.getSymbol());
 	}
 
 	@Override
 	String buildFront() {
-		StringBuilder sb = new StringBuilder();
+		sb = new StringBuilder();
 		sb.append("#include <stdio.h>\n");
 		sb.append("#include <stdlib.h>\n");
 		sb.append("#include <string.h>\n\n");
@@ -48,7 +48,7 @@ class CLanguage extends Language {
 
 	@Override
 	String buildFooter() {
-		StringBuilder sb = new StringBuilder();
+		sb = new StringBuilder();
 		sb.append("\n    for (i = 0; i < SIZE_MEMORY; i++) {\n");
 		sb.append("        if (memory[i] != 0) { printf(\"C%d: %d\\n\", i, memory[i]); }\n    }\n");
 		sb.append("    return 0;\n}");

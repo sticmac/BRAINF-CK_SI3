@@ -13,6 +13,7 @@ import java.util.HashMap;
 abstract class Language {
 	Map<Character, String> instructionsTranslation;
 	String extension;
+	StringBuilder sb;
 
 	Language() {
 		instructionsTranslation = new HashMap<>();

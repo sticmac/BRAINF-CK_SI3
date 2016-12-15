@@ -37,6 +37,7 @@ public class CodeGenerator {
 				lang = new CLanguage();
 				break;
 			case "python":
+				lang = new PythonLanguage();
 				break;
 		}
 
@@ -53,7 +54,7 @@ public class CodeGenerator {
 	 */
 	public void writeInstructions(List<Instruction> instructions) {
 		for (Instruction instr : instructions) {
-			wtf.write("    "+lang.translateInstruction(instr));
+			wtf.write(lang.translateInstruction(instr));
 		}
 	}
 
