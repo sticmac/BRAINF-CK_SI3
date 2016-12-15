@@ -39,6 +39,9 @@ public class CodeGenerator {
 			case "python":
 				lang = new PythonLanguage();
 				break;
+			case "ruby":
+				lang = new RubyLanguage();
+				break;
 		}
 
 		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
