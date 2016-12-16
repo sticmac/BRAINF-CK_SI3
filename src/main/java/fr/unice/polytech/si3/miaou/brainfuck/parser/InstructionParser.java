@@ -2,6 +2,7 @@ package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
@@ -32,6 +33,11 @@ public class InstructionParser {
 	private JumpTable jumptable;
 
 	/**
+	 * Position of main program in instruction memory.
+	 */
+	private int mainPosition;
+
+	/**
 	 * Constructs an InsturctionParser with an empty list of instructions and creates the InstructionSet object.
 	 */
 	private InstructionParser() {
@@ -53,7 +59,10 @@ public class InstructionParser {
 		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
 		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
+		.flatMap(new FunctionsParser(iset))
 		.forEachOrdered(this::parseInstructionsFromText);
+
+		mainPosition = instructions.lastIndexOf(iset.getOp("RET"))+1;
 	}
 
 	/**
@@ -87,6 +96,8 @@ public class InstructionParser {
 		if (instr != null) {
 			instructions.add(instr);
 			jumptable.bind(instr, instructions.size());
+		} else if (iset.getProc(line) != null) {
+			instructions.add(iset.getProc(line));
 		} else {
 			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
 				char c = line.charAt(i);
@@ -118,5 +129,14 @@ public class InstructionParser {
 	 */
 	public JumpTable getJumpTable() {
 		return this.jumptable;
+	}
+
+	/**
+	 * Returns the position of the main program into the instruction memory.
+	 *
+	 * @return the position of the main program into the instruction memory.
+	 */
+	public int getMainPosition() {
+		return mainPosition;
 	}
 }
