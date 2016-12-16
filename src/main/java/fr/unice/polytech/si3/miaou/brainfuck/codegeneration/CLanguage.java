@@ -20,13 +20,13 @@ class CLanguage extends Language {
 		name = "c";
 
 		instructionsTranslation.put(']', "}");
-		instructionsTranslation.put('-', "memory[i]--;");
-		instructionsTranslation.put(',', "memory[i] = getchar();");
-		instructionsTranslation.put('+', "memory[i]++;");
-		instructionsTranslation.put('[', "while (memory[i] != 0) {");
-		instructionsTranslation.put('<', "i--;");
-		instructionsTranslation.put('.', "putchar(memory[i]);");
-		instructionsTranslation.put('>', "i++;");
+		instructionsTranslation.put('-', "(*memory)--;");
+		instructionsTranslation.put(',', "(*memory) = getchar();");
+		instructionsTranslation.put('+', "(*memory)++;");
+		instructionsTranslation.put('[', "while (*memory) {");
+		instructionsTranslation.put('<', "memory--;");
+		instructionsTranslation.put('.', "putchar(*memory);");
+		instructionsTranslation.put('>', "memory++;");
 	}
 
 	@Override
@@ -44,8 +44,8 @@ class CLanguage extends Language {
 		sb.append("#define SIZE_MEMORY 30000\n\n");
 
 		sb.append("int main() {\n");
-		sb.append("    char memory[SIZE_MEMORY] = {};\n");
-		sb.append("    int i = 0;\n");
+		sb.append("    char *memory = calloc(SIZE_MEMORY, sizeof(char));\n");
+		sb.append("    char *p = memory;\n");
 
 		return sb.toString();
 	}
@@ -53,8 +53,8 @@ class CLanguage extends Language {
 	@Override
 	String buildFooter() {
 		sb = new StringBuilder();
-		sb.append("\n    for (i = 0; i < SIZE_MEMORY; i++) {\n");
-		sb.append("        if (memory[i] != 0) { printf(\"C%d: %d\\n\", i, memory[i]); }\n    }\n");
+		sb.append("\n    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n");
+		sb.append("        if (*p) { printf(\"C%d: %d\\n\", i, *p); }\n    }\n");
 		sb.append("    return 0;\n}");
 
 		return sb.toString();
