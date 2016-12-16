@@ -11,9 +11,13 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
  * @author Guillaume Casagrande
  */
 class CLanguage extends Language {
+	/**
+	 * Constructs a CLanguage object and fills the map of instructions.
+	 */
 	CLanguage() {
 		super();
 		extension = "c";
+		name = "c";
 
 		instructionsTranslation.put(']', "}");
 		instructionsTranslation.put('-', "memory[i]--;");

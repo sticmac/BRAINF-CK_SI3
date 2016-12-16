@@ -32,17 +32,8 @@ public class CodeGenerator {
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
 	public CodeGenerator(String filename, String language) throws IOException {
-		switch (language) {
-			case "c":
-				lang = new CLanguage();
-				break;
-			case "python":
-				lang = new PythonLanguage();
-				break;
-			case "ruby":
-				lang = new RubyLanguage();
-				break;
-		}
+		LanguageSet ls = new LanguageSet();
+		lang = ls.getLanguage(language);
 
 		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
 		File f = new File(filename);
@@ -64,7 +55,7 @@ public class CodeGenerator {
 	/**
 	 * Writes the front of the file.
 	 */
-	public void front() throws IOException {
+	private void front() throws IOException {
 		wtf.write(lang.buildFront());
 	}
 

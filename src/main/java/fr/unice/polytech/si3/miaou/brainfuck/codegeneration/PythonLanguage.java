@@ -6,16 +6,23 @@ import java.util.HashMap;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
 /**
- * Translates a brainfuck program in C.
+ * Translates a brainfuck program in Python.
  *
  * @author Guillaume Casagrande
  */
 class PythonLanguage extends Language {
+	/**
+	 * Counts the number of tabulations to add before the writing of an instruction.
+	 */
 	private int spaces;
 
+	/**
+	 * Constructs a PythonLanguage object and fills the map of instructions.
+	 */
 	PythonLanguage() {
 		super();
 		extension = "py";
+		name = "python";
 		spaces = 0;
 
 		instructionsTranslation.put(']', "");

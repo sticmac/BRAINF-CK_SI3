@@ -6,14 +6,18 @@ import java.util.HashMap;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
 /**
- * Translates a brainfuck program in C.
+ * Translates a brainfuck program in Ruby.
  *
  * @author Guillaume Casagrande
  */
 class RubyLanguage extends Language {
+	/**
+	 * Constructs a RubyLanguage object and fills the map of instructions.
+	 */
 	RubyLanguage() {
 		super();
 		extension = "rb";
+		name = "ruby";
 
 		instructionsTranslation.put(']', "end");
 		instructionsTranslation.put('-', "memory[i] -= 1");
