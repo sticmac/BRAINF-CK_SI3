@@ -37,6 +37,11 @@ public class Machine {
 	private Io ioAccess;
 
 	/**
+	 * Stack of return addresses.
+	 */
+	private Stack<Integer> addressesStack;
+
+	/**
 	 * Current location in memory.
 	 */
 	private int location;
@@ -55,6 +60,7 @@ public class Machine {
 	public Machine(int entryPoint, JumpTable jumptable) {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
+		this.addressesStack = new Stack<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 	}
@@ -128,6 +134,21 @@ public class Machine {
 	 */
 	public int getInstrPointer() {
 		return instrPointer;
+	}
+
+	/**
+	 * Saves next instrPointer as a return address.
+	 * Called by Procedure to store a return address for the next Return instruction.
+	 */
+	public void saveReturnAddress() {
+		addressesStack.push(instrPointer);
+	}
+
+	/**
+	 * Change the instruction pointer location for the first element of the pointer stack, which is popped.
+	 */
+	public void goToLastReturnAddress() {
+		instrPointer = addressesStack.pop();
 	}
 
 	/**

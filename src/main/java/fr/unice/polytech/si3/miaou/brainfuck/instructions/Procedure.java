@@ -32,6 +32,7 @@ public class Procedure extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}
 }
