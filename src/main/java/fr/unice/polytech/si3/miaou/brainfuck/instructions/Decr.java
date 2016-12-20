@@ -27,10 +27,11 @@ public class Decr extends WriteMemory {
 	 * @throws OverflowException	if the current cell value is at it's bottom limit.
 	 */
 	@Override
-	public void accept(Machine machine) throws OverflowException {
+	public void accept(Machine machine) {
 		super.accept(machine);
 		byte value = machine.readMemory();
-		if (value <= Byte.MIN_VALUE) throw new OverflowException("Below minimum value");
+		if (value <= Byte.MIN_VALUE)
+			throw new OverflowException("Below minimum value");
 		value--;
 		machine.writeMemory(value);
 	}

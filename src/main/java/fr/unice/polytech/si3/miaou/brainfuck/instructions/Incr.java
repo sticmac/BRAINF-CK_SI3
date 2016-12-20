@@ -27,10 +27,11 @@ public class Incr extends WriteMemory {
 	 * @throws OverflowException	if the current cell value is at it's top limit.
 	 */
 	@Override
-	public void accept(Machine machine) throws OverflowException {
+	public void accept(Machine machine) {
 		super.accept(machine);
 		byte value = machine.readMemory();
-		if (value >= Byte.MAX_VALUE) throw new OverflowException("Above maximum value");
+		if (value >= Byte.MAX_VALUE)
+			throw new OverflowException("Above maximum value");
 		value++;
 		machine.writeMemory(value);
 	}
