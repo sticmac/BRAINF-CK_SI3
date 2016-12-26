@@ -45,6 +45,11 @@ public class Procedure extends Instruction {
 		}
 	}
 
+	/**
+	 * Modify values of the Procedure's parameters.
+	 *
+	 * @param parametersValues an array of integers setting the values of procedure's parameters.
+	 */
 	public void setParametersValues(int[] parametersValues) {
 		int i = 0;
 		int size = parametersValues.length;
@@ -71,6 +76,11 @@ public class Procedure extends Instruction {
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}
 
+	/**
+	 * Clones the current procedure instruction.
+	 *
+	 * @return the cloned procedure instruction.
+	 */
 	@Override
 	public Procedure clone() {
 		return new Procedure(getName(), position, parametersNames);
