@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -10,6 +11,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
 /**
  * Parses the instruction from either a stream of String for the two text representations or from a stream of int (color code) for images
@@ -92,12 +94,20 @@ public class InstructionParser {
 	 */
 	private void parseInstructionsFromText(String line) {
 		Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
+		String[] split = line.split(" ");
 
 		if (instr != null) {
 			instructions.add(instr);
 			jumptable.bind(instr, instructions.size());
-		} else if (iset.getProc(line) != null) {
-			instructions.add(iset.getProc(line));
+		} else if (iset.getProc(split[0]) != null) {
+			Procedure proc = iset.getProc(split[0]).clone();
+			if (split.length > 1) {
+				int[] parameters = Arrays.stream(Arrays.copyOfRange(split, 1, split.length))
+						.mapToInt(Integer::parseInt)
+						.toArray();
+				proc.setParametersValues(parameters);
+			}
+			instructions.add(proc);
 		} else {
 			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
 				char c = line.charAt(i);
