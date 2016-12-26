@@ -4,7 +4,9 @@ import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,6 +34,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	private String name;
 
 	/**
+	 * Name of the defined parameters.
+	 */
+	private Optional<String[]> parameters;
+
+	/**
 	 * Content of the procedure.
 	 */
 	private Stream.Builder<String> body;
@@ -51,6 +58,7 @@ class FunctionsParser implements Function<String, Stream<String>> {
 		this.iset = iset;
 		defining = false;
 		name = "";
+		parameters = Optional.empty();
 		counter = 0;
 	}
 
@@ -67,7 +75,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 			if (defining) {
 				throw new SyntaxFunctionException("Trying to declare a new function before the end of another one.");
 			} else {
-				name = line.split(" ")[1];
+				String[] split = line.split(" ");
+				name = split[1];
+				if (split.length > 2) {
+					parameters = Optional.of(Arrays.copyOfRange(split, 2, split.length));
+				}
 				body = Stream.builder();
 				defining = true;
 				return Stream.empty();
@@ -78,7 +90,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 			} else {
 				defining = false;
 				body.add(line);
-				iset.addProc(new Procedure(name, counter));
+				if (parameters.isPresent()) {
+					iset.addProc(new Procedure(name, counter, parameters.get()));
+				} else {
+					iset.addProc(new Procedure(name, counter));
+				}
 				List<String> list = body.build().collect(Collectors.toList());
 				counter += list.size()+1;
 				return list.stream();
