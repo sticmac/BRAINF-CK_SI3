@@ -20,6 +20,11 @@ public class Procedure extends Instruction {
 	private int position;
 
 	/**
+	 * Parameters names.
+	 */
+	private String[] parametersNames;
+
+	/**
 	 * Map between parameters name and Optional of their values.
 	 */
 	private Map<String, Optional<Integer>> parameters;
@@ -33,6 +38,7 @@ public class Procedure extends Instruction {
 	public Procedure(String name, int position, String... parameters) {
 		super(name, '\0', 0);
 		this.position = position;
+		this.parametersNames = parameters;
 		this.parameters = new HashMap<>();
 		for (String p : parameters) {
 			this.parameters.put(p, Optional.empty());
@@ -43,7 +49,7 @@ public class Procedure extends Instruction {
 		int i = 0;
 		int size = parametersValues.length;
 		if (parameters.entrySet().size() != size) {
-			throw new FunctionUsageException("Needs "+size+" parameter values.");
+			throw new FunctionUsageException("Needs "+parameters.entrySet().size()+" parameter values.");
 		}
 		for (Iterator<Map.Entry<String, Optional<Integer>>> it = parameters.entrySet().iterator() ; it.hasNext() ; ) {
 			if (i < size) {
@@ -63,5 +69,10 @@ public class Procedure extends Instruction {
 	public void accept(Machine machine) {
 		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
+	}
+
+	@Override
+	public Procedure clone() {
+		return new Procedure(getName(), position, parametersNames);
 	}
 }
