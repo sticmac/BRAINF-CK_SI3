@@ -36,9 +36,9 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	private String name;
 
 	/**
-	 * Name of the defined parameters.
+	 * Parameter of a procedure.
 	 */
-	private Optional<String[]> parameters;
+	private Optional<Integer> parameter;
 
 	/**
 	 * Instructions counter.
@@ -59,7 +59,6 @@ class FunctionsParser implements Function<String, Stream<String>> {
 		this.iset = iset;
 		defining = false;
 		name = "";
-		parameters = Optional.empty();
 		counter = 0;
 	}
 
@@ -79,7 +78,7 @@ class FunctionsParser implements Function<String, Stream<String>> {
 			} else {
 				name = line.split(" ")[1];
 				if (split.length > 2) {
-					parameters = Optional.of(Arrays.copyOfRange(split, 2, split.length));
+
 				}
 				defining = true;
 				return Stream.empty();
@@ -89,11 +88,7 @@ class FunctionsParser implements Function<String, Stream<String>> {
 				throw new SyntaxFunctionException("Trying to return without declaring a function.");
 			} else {
 				defining = false;
-				if (parameters.isPresent()) {
-					iset.addProc(new Procedure(name, prevCounter, parameters.get()));
-				} else {
-					iset.addProc(new Procedure(name, prevCounter));
-				}
+				iset.addProc(new Procedure(name, prevCounter));
 				counter++;
 				prevCounter = counter;
 				return Stream.of(line);

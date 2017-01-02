@@ -20,14 +20,9 @@ public class Procedure extends Instruction {
 	private int position;
 
 	/**
-	 * Parameters names.
-	 */
-	private String[] parametersNames;
-
-	/**
-	 * Map between parameters name and Optional of their values.
-	 */
-	private Map<String, Optional<Integer>> parameters;
+	 * Optional of an Integer corresponding to the parameter if passed.
+ 	 */
+	private Optional<Integer> parameter;
 
 	/**
 	 * Main constructor of Procedure.
@@ -35,33 +30,20 @@ public class Procedure extends Instruction {
 	 * @param name name of the Procedure.
 	 * @param position position where the Procedure's instructions are placed in the Instructions' memory.
 	 */
-	public Procedure(String name, int position, String... parameters) {
+	public Procedure(String name, int position) {
 		super(name, '\0', 0);
 		this.position = position;
-		this.parametersNames = parameters;
-		this.parameters = new HashMap<>();
-		for (String p : parameters) {
-			this.parameters.put(p, Optional.empty());
-		}
+		this.parameter = Optional.empty();
 	}
 
+
 	/**
-	 * Modify values of the Procedure's parameters.
+	 * Set value of the parameter.
 	 *
-	 * @param parametersValues an array of integers setting the values of procedure's parameters.
+	 * @param parameter new value of the parameter.
 	 */
-	public void setParametersValues(int[] parametersValues) {
-		int i = 0;
-		int size = parametersValues.length;
-		if (parameters.entrySet().size() != size) {
-			throw new FunctionUsageException("Needs "+parameters.entrySet().size()+" parameter values.");
-		}
-		for (Iterator<Map.Entry<String, Optional<Integer>>> it = parameters.entrySet().iterator() ; it.hasNext() ; ) {
-			if (i < size) {
-				it.next().setValue(Optional.of(parametersValues[i]));
-				i++;
-			}
-		}
+	public void setParameter(int parameter) {
+		this.parameter = Optional.of(parameter);
 	}
 
 	/**
@@ -72,10 +54,9 @@ public class Procedure extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
-		boolean backMemory = parametersNames.length > 0;
-		if (parametersNames.length > 0) {
+		if (parameter.isPresent()) {
 			machine.saveMemoryAddress();
-			machine.setLocation(parameters.get(parametersNames[0]).get());
+			machine.setLocation(parameter.get());
 		}
 		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
@@ -88,6 +69,6 @@ public class Procedure extends Instruction {
 	 */
 	@Override
 	public Procedure clone() {
-		return new Procedure(getName(), position, parametersNames);
+		return new Procedure(getName(), position);
 	}
 }

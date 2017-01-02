@@ -1,12 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.virtualmachine;
 
 import java.util.*;
-import java.util.stream.Stream;
-import java.lang.Character;
 
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 

@@ -36,6 +36,9 @@ class InstructionTextParser implements Consumer<String> {
 			addAndBindInstructions(instr);
 		} else if (iset.getProc(split[0]) != null) {
 			Procedure proc = iset.getProc(split[0]);
+			if (split.length > 1) {
+				proc.setParameter(Integer.parseInt(split[1]));
+			}
 			instructions.add(proc);
 		} else {
 			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format

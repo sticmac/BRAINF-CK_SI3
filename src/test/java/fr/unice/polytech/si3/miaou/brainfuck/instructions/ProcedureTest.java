@@ -9,18 +9,7 @@ public class ProcedureTest {
 	private Procedure procedure;
 
 	@Before
-	@Test
 	public void defineContext() {
-		procedure = new Procedure("miaou", 0, "a", "b");
-	}
-
-	@Test(expected = FunctionUsageException.class)
-	public void testTooMuchParameters() {
-		procedure.setParametersValues(new int[]{1,2,3});
-	}
-
-	@Test(expected = FunctionUsageException.class)
-	public void testTooFewParameters() {
-		procedure.setParametersValues(new int[]{1});
+		procedure = new Procedure("miaou", 0);
 	}
 }
