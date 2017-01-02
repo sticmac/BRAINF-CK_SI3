@@ -41,6 +41,11 @@ public class Machine {
 	private Stack<Integer> addressesStack;
 
 	/**
+	 * Stack of memory addresses to return to.
+	 */
+	private Stack<Integer> memoryBackStack;
+
+	/**
 	 * Current location in memory.
 	 */
 	private int location;
@@ -60,6 +65,7 @@ public class Machine {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
 		this.addressesStack = new Stack<>();
+		this.memoryBackStack = new Stack<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 	}
@@ -144,10 +150,25 @@ public class Machine {
 	}
 
 	/**
+	 * Saves the current location in memory as a to-go-back memory address.
+	 */
+	public void saveMemoryAddress() {
+		memoryBackStack.push(location);
+	}
+
+	/**
 	 * Change the instruction pointer location for the first element of the pointer stack, which is popped.
 	 */
 	public void goToLastReturnAddress() {
 		instrPointer = addressesStack.pop();
+	}
+
+	/**
+	 * Returns the memory pointer to last stored return address.
+	 */
+	public void goBackMemory() {
+		if (!memoryBackStack.isEmpty())
+			location = memoryBackStack.pop();
 	}
 
 	/**
