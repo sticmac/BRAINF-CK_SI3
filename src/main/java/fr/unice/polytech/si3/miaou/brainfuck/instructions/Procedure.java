@@ -72,6 +72,11 @@ public class Procedure extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		boolean backMemory = parametersNames.length > 0;
+		if (parametersNames.length > 0) {
+			machine.saveMemoryAddress();
+			machine.setLocation(parameters.get(parametersNames[0]).get());
+		}
 		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}

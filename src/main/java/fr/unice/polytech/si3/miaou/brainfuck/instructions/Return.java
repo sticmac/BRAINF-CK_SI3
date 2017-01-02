@@ -23,6 +23,7 @@ public class Return extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		machine.goBackMemory();
 		machine.goToLastReturnAddress();
 	}
 }
