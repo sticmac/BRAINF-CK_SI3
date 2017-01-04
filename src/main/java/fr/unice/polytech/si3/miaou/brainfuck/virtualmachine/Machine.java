@@ -1,18 +1,13 @@
 package fr.unice.polytech.si3.miaou.brainfuck.virtualmachine;
 
+import java.util.*;
 import java.util.stream.Stream;
-import java.util.Arrays;
 import java.lang.Character;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.ConditionalJump;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Jump;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Back;
 import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 
@@ -21,6 +16,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
  *
  * @author Pierre-Emmanuel Novac
  * @author Nassim Bounouas
+ * @author Julien Lemaire
  * @see fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction
  * @see Memory
  */
@@ -31,42 +27,42 @@ public class Machine {
 	private Memory memory;
 
 	/**
+	 * Jumptable used to associate ConditionalJump instructions
+	 */
+	private JumpTable jumptable;
+
+	/**
 	 * Input and output gateway.
 	 */
 	private Io ioAccess;
 
 	/**
+	 * Stack of return addresses.
+	 */
+	private Stack<Integer> addressesStack;
+
+	/**
 	 * Current location in memory.
 	 */
-	private int location = 0;
+	private int location;
 
 	/**
-	 * True if we are currently jumping back or to another ConditionalJump instruction.
+	 * Current location in Instructions' memory.
 	 */
-	private boolean jumping = false;
-
-	/**
-	 * True if the Interpreter needs to browse the instructions in reverse order.
-	 */
-	private boolean reversed = false;
-
-	/**
-	 * Bracket counter for conditional jumps instruction matching.
-	 */
-	private BracketCounter bracketCounter;
+	private int instrPointer;
 
 	/**
 	 * Constructs a new virtual machine, initialize its Memory.
+	 *
+	 * @param entryPoint	The initial position of instruction pointer.
+	 * @param jumptable     The jumptable containing conditional jumps positions.
 	 */
-	public Machine() {
-		memory = new Memory();
-		bracketCounter = new BracketCounter() { // Anonymous class for defining the onMatch() callback method.
-			@Override protected void onMatch() {
-				Machine.this.setJumping(false);
-				Machine.this.setReversed(false);
-				this.reset();
-			}
-		};
+	public Machine(int entryPoint, JumpTable jumptable) {
+		this.memory = new Memory();
+		this.jumptable = jumptable;
+		this.addressesStack = new Stack<>();
+		this.location = 0;
+		this.instrPointer = entryPoint;
 	}
 
 	/**
@@ -94,15 +90,15 @@ public class Machine {
 	 * @param instr	Instruction to execute.
 	 */
 	public void executeOp(Instruction instr) {
-		if (instr instanceof Jump && readMemory() == Byte.MIN_VALUE) {
-			this.jumping = true;
-		} else if (instr instanceof Back && readMemory() != Byte.MIN_VALUE) {
-			this.jumping = true;
-		} else {
-			this.jumping = false ;
-			instr.accept(this);
-		}
+		instr.accept(this);
+		instrPointer++;
+	}
 
+	/**
+	 * Return the index of the conditional Jump associated to current {@link Machine#instrPointer}.
+	 */
+	public void jump() {
+		this.setInstrPointer(jumptable.getJump(instrPointer));
 	}
 
 	/**
@@ -123,39 +119,36 @@ public class Machine {
 	}
 
 	/**
-	 * Enables or disables the jumping mode.
+	 * Change the instruction pointer location.
 	 *
-	 * @param jumping	sets or unsets the jumping mode.
+	 * @param i new {@link Machine#instrPointer}
 	 */
-	public void setJumping(boolean jumping) {
-		this.jumping = jumping;
+	public void setInstrPointer(int i) {
+		instrPointer = i;
 	}
 
 	/**
-	 * Tells wether we are currently jumping or not.
+	 * Returns the current instruction pointer location.
 	 *
-	 * @return true if we're jumping.
+	 * @return {@link Machine#instrPointer}
 	 */
-	public boolean isJumping() {
-		return jumping;
+	public int getInstrPointer() {
+		return instrPointer;
 	}
 
 	/**
-	 * Enables or disables reverse browsing of instruction.
-	 *
-	 * @param r	true to make the Interpreter browse instructions in reverse order.
+	 * Saves next instrPointer as a return address.
+	 * Called by Procedure to store a return address for the next Return instruction.
 	 */
-	public void setReversed(boolean r) {
-		this.reversed = r;
+	public void saveReturnAddress() {
+		addressesStack.push(instrPointer);
 	}
 
 	/**
-	 * Tells wether the parser is in reverse order mode or not.
-	 *
-	 * @return true if we're browsing instructions in reverse order.
+	 * Change the instruction pointer location for the first element of the pointer stack, which is popped.
 	 */
-	public boolean isReversed() {
-		return reversed;
+	public void goToLastReturnAddress() {
+		instrPointer = addressesStack.pop();
 	}
 
 	/**
