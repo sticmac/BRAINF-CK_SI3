@@ -72,6 +72,10 @@ public class Procedure extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
+		machine.goToProcedureSpace();
+		for (int i = 0 ; i < parametersNames.length ; i++) {
+			parameters.get(parametersNames[i]);
+		}
 		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}

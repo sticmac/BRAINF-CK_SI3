@@ -15,5 +15,6 @@ public class Return extends Instruction {
 	@Override
 	public void accept(Machine machine) {
 		machine.goToLastReturnAddress();
+		machine.goToSavedMemory();
 	}
 }

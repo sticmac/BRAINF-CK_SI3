@@ -22,6 +22,11 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
  */
 public class Machine {
 	/**
+	 * Where procedure stuff has to be done.
+	 */
+	public static final int PROCEDURE_SPACE = 25000;
+
+	/**
 	 * Virtual machine's data memory.
 	 */
 	private Memory memory;
@@ -40,6 +45,11 @@ public class Machine {
 	 * Stack of return addresses.
 	 */
 	private Stack<Integer> addressesStack;
+
+	/**
+	 * Stack of memory addresses to return to.
+	 */
+	private Stack<Integer> memoryStack;
 
 	/**
 	 * Current location in memory.
@@ -61,6 +71,7 @@ public class Machine {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
 		this.addressesStack = new Stack<>();
+		this.memoryStack = new Stack<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 	}
@@ -149,6 +160,16 @@ public class Machine {
 	 */
 	public void goToLastReturnAddress() {
 		instrPointer = addressesStack.pop();
+	}
+
+	public void goToProcedureSpace() {
+		memoryStack.push(location);
+		for (location = PROCEDURE_SPACE ; this.readMemory() != Byte.MIN_VALUE ; location+=10);
+	}
+
+	public void goToSavedMemory() {
+		if (!memoryStack.isEmpty())
+			location = memoryStack.pop();
 	}
 
 	/**
