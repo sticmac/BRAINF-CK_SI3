@@ -1,7 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
 import java.util.List;
@@ -32,14 +34,11 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	private String name;
 
 	/**
-	 * Content of the procedure.
-	 */
-	private Stream.Builder<String> body;
-
-	/**
 	 * Line counter.
 	 */
 	private int counter;
+
+	private int prevCounter;
 
 	/**
 	 * Main constructor of FunctionsParser.
@@ -47,7 +46,6 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	 * @param iset the InstructionSet the parsed Procedures has to be added to.
 	 */
 	public FunctionsParser(InstructionSet iset) {
-		body = Stream.builder();
 		this.iset = iset;
 		defining = false;
 		name = "";
@@ -69,7 +67,6 @@ class FunctionsParser implements Function<String, Stream<String>> {
 				throw new SyntaxFunctionException("Trying to declare a new function before the end of another one.");
 			} else {
 				name = line.split(" ")[1];
-				body = Stream.builder();
 				defining = true;
 				return Stream.empty();
 			}
@@ -78,19 +75,16 @@ class FunctionsParser implements Function<String, Stream<String>> {
 				throw new SyntaxFunctionException("Trying to return without declaring a function.");
 			} else {
 				defining = false;
-				body.add(line);
-				iset.addProc(new Procedure(name, counter));
-				List<String> list = body.build().collect(Collectors.toList());
-				counter += list.size()+1;
-				return list.stream();
-			}
-		} else {
-			if (defining) {
-				body.add(line);
-				return Stream.empty();
-			} else {
+				iset.addProc(new Procedure(name, prevCounter));
+				counter++;
+				prevCounter = counter;
 				return Stream.of(line);
 			}
+		} else {
+			InstructionTextCounter count = new InstructionTextCounter(iset);
+			count.accept(line);
+			counter += count.getCounter();
+			return Stream.of(line);
 		}
 	}
 }

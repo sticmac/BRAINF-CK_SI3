@@ -16,14 +16,12 @@ import java.util.function.Consumer;
  *
  * @author Julien Lemaire
  */
-class InstructionTextParser implements Consumer<String> {
-	private List<Instruction> instructions;
-	private JumpTable jumptable;
+class InstructionTextCounter implements Consumer<String> {
+	private int counter;
+
 	private InstructionSet iset;
 
-	public InstructionTextParser(List<Instruction> instructions, JumpTable jumptable, InstructionSet iset) {
-		this.instructions = instructions;
-		this.jumptable = jumptable;
+	public InstructionTextCounter(InstructionSet iset) {
 		this.iset = iset;
 	}
 
@@ -33,11 +31,9 @@ class InstructionTextParser implements Consumer<String> {
 		String[] split = line.split(" ");
 
 		if (instr != null) {
-			instructions.add(instr);
-			jumptable.bind(instr, instructions.size());
+			counter++;
 		} else if (iset.getProc(split[0]) != null) {
-			Procedure proc = iset.getProc(split[0]);
-			instructions.add(proc);
+			counter++;
 		} else {
 			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
 				char c = line.charAt(i);
@@ -46,9 +42,12 @@ class InstructionTextParser implements Consumer<String> {
 				instr = iset.getOp(c);
 
 				if (instr == null) throw new InvalidInstructionException(c);
-				instructions.add(instr);
-				jumptable.bind(instr, instructions.size());
+				counter++;
 			}
 		}
+	}
+
+	public int getCounter() {
+		return counter;
 	}
 }
