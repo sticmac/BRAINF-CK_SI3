@@ -8,7 +8,6 @@ import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
-import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 
 /**
