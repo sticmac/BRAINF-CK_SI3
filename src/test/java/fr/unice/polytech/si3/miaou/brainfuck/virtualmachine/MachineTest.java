@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class MachineTest {
 	Machine machine;
@@ -13,7 +14,7 @@ public class MachineTest {
 
 	@Before
 	public void setUp() {
-		machine = new Machine();
+		machine = new Machine(0, new JumpTable());
 		instr = new Instruction("", 'c', 0) {
 			@Override public void accept(Machine machine) {
 				MachineTest.this.executed = true;

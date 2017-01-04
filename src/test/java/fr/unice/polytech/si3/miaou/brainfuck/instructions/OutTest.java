@@ -12,6 +12,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.*;
 import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class OutTest {
 	Instruction out;
@@ -21,7 +22,7 @@ public class OutTest {
 	@Before
 	public void setUp() throws FileNotFoundException {
 		out = new Out();
-		machine = new Machine();
+		machine = new Machine(0, new JumpTable());
 		outStream = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(outStream));
 		machine.setIo(new Io(null, null));

@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.OverflowException;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class DecrTest {
 	Instruction decr;
@@ -16,7 +17,7 @@ public class DecrTest {
 	@Before
 	public void setUp() {
 		decr = new Decr();
-		machine = new Machine();
+		machine = new Machine(0, new JumpTable());
 	}
 
 	@Test

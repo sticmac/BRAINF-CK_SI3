@@ -14,6 +14,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.*;
 import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class InTest {
 	Instruction back;
@@ -27,7 +28,7 @@ public class InTest {
 	public void setUp() throws FileNotFoundException, IOException {
 		file = testFolder.newFile();
 		back = new In();
-		machine = new Machine();
+		machine = new Machine(0, new JumpTable());
 		machine.setIo(new Io(file.getPath(), null));
 	}
 

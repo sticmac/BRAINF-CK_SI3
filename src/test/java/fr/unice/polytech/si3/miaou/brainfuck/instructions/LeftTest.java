@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class LeftTest {
 	Instruction left;
@@ -14,7 +15,7 @@ public class LeftTest {
 	@Before
 	public void setUp() {
 		left = new Left();
-		machine = new Machine();
+		machine = new Machine(0, new JumpTable());
 	}
 
 	@Test
