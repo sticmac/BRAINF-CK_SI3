@@ -60,7 +60,7 @@ public class InstructionParser {
 		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
 		.flatMap(new FunctionsParser(iset))
-		.forEachOrdered(this::parseInstructionsFromText);
+		.forEachOrdered(new InstructionTextParser(instructions, jumptable, iset));
 
 		mainPosition = instructions.lastIndexOf(iset.getOp("RET"))+1;
 	}
@@ -73,43 +73,8 @@ public class InstructionParser {
 	 */
 	public InstructionParser(IntStream stream) {
 		this();
-		stream.forEachOrdered(colour -> {
-			if (colour != 0xFF000000) { // Skip black
-				Instruction instr = iset.getOp(colour);
-				if (instr != null) instructions.add(instr);
-				else {
-					throw new InvalidInstructionException(colour);
-				}
-			}
-		});
-	}
 
-	/**
-	 * Parses a given line of text to parse new Instructions.
-	 * Add the parsed Instructions to instructions list.
-	 *
-	 * @param line the line to parse.
-	 */
-	private void parseInstructionsFromText(String line) {
-		Instruction instr = iset.getOp(line); // Tries to parse the whole line (ie. long format)
-
-		if (instr != null) {
-			instructions.add(instr);
-			jumptable.bind(instr, instructions.size());
-		} else if (iset.getProc(line) != null) {
-			instructions.add(iset.getProc(line));
-		} else {
-			for (int i = 0; i < line.length(); i++) { // Tries to executes the instructions with the short format
-				char c = line.charAt(i);
-				if (c == ' ' || c == '\t') continue;
-
-				instr = iset.getOp(c);
-
-				if (instr == null) throw new InvalidInstructionException(c);
-				instructions.add(instr);
-				jumptable.bind(instr, instructions.size());
-			}
-		}
+		stream.forEachOrdered(new InstructionImageParser(instructions, jumptable, iset));
 	}
 
 	/**
