@@ -56,13 +56,15 @@ public class InstructionParser {
 	public InstructionParser(Stream<String> stream) {
 		this();
 
+		FunctionsParser functionsParser = new FunctionsParser(iset);
+
 		stream.filter(l -> !l.startsWith("#")) // Remove lines starting with a comment
 		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
-		.flatMap(new FunctionsParser(iset))
+		.flatMap(functionsParser)
 		.forEachOrdered(new InstructionTextParser(instructions, jumptable, iset));
 
-		mainPosition = instructions.lastIndexOf(iset.getOp("RET"))+1;
+		mainPosition = functionsParser.getCounter();
 	}
 
 	/**

@@ -34,10 +34,13 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	private String name;
 
 	/**
-	 * Line counter.
+	 * Instructions counter.
 	 */
 	private int counter;
 
+	/**
+	 * Location of the previous procedure.
+	 */
 	private int prevCounter;
 
 	/**
@@ -81,10 +84,19 @@ class FunctionsParser implements Function<String, Stream<String>> {
 				return Stream.of(line);
 			}
 		} else {
-			InstructionTextCounter count = new InstructionTextCounter(iset);
-			count.accept(line);
-			counter += count.getCounter();
+			if (defining) {
+				InstructionTextCounter count = new InstructionTextCounter(iset);
+				count.accept(line);
+				counter += count.getCounter();
+			}
 			return Stream.of(line);
 		}
+	}
+
+	/**
+	 * Gets the current value of the counter.
+	 */
+	public int getCounter() {
+		return counter;
 	}
 }
