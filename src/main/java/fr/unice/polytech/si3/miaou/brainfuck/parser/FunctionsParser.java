@@ -55,16 +55,17 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	}
 
 	/**
-	 * Parses the given line and deletes every comment and indentation it contains.
+	 * Parses the given line and parses every function declaration.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a>'s apply() method.
 	 *
 	 * @param line the line to parse coming from the calling Stream function.
-	 * @return comment and indentation parsing result.
+	 * @return function parsing result.
 	 */
 	@Override
 	public Stream<String> apply(String line) {
 		if (line.startsWith("FUNC")) {
-			if (defining) {
+			String[] split = line.split(" ");
+			if (defining || split.length < 2) {
 				throw new SyntaxFunctionException("Trying to declare a new function before the end of another one.");
 			} else {
 				name = line.split(" ")[1];

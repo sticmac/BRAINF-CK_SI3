@@ -9,7 +9,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
  */
 public class Return extends Instruction {
 	public Return() {
-		super("RET", '\0', 0);
+		super("RET", 'R', 0);
 	}
 
 	@Override
