@@ -1,8 +1,5 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
 /**
@@ -21,11 +18,11 @@ class CLanguage extends Language {
 
 		instructionsTranslation.put(']', "}");
 		instructionsTranslation.put('-', "(*memory)--;");
-		instructionsTranslation.put(',', "(*memory) = getchar();");
+		instructionsTranslation.put(',', "(*memory) = fgetc(finput);");
 		instructionsTranslation.put('+', "(*memory)++;");
 		instructionsTranslation.put('[', "while (*memory) {");
 		instructionsTranslation.put('<', "memory--;");
-		instructionsTranslation.put('.', "putchar(*memory);");
+		instructionsTranslation.put('.', "fputc(*memory, foutput);");
 		instructionsTranslation.put('>', "memory++;");
 	}
 
@@ -51,10 +48,30 @@ class CLanguage extends Language {
 	}
 
 	@Override
+	String io(String in, String out) {
+		sb = new StringBuilder();
+		sb.append("    FILE *finput;\n");
+		sb.append("    FILE *foutput;\n");
+		if ("System.in".equals(in)) {
+			sb.append("    finput = stdin;\n");
+		}
+		else {
+            sb.append("    finput = fopen(\"").append(in).append("\", \"r\");\n");
+		}
+		if ("System.out".equals(out)) {
+			sb.append("    foutput = stdout;\n");
+		}
+		else {
+            sb.append("    foutput = fopen(\"").append(out).append("\", \"w\");\n");
+		}
+		return sb.toString();
+	}
+
+	@Override
 	String buildFooter() {
 		sb = new StringBuilder();
 		sb.append("\n    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n");
-		sb.append("        if (*p) { printf(\"C%d: %d\\n\", i, *p); }\n    }\n");
+		sb.append("        if (*p) { fprintf(foutput, \"\\nC%d: %d\", i, *p); }\n    }\n");
 		sb.append("    return 0;\n}");
 
 		return sb.toString();

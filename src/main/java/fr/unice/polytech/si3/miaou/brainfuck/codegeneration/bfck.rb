@@ -10,6 +10,9 @@ miaou
 memory = Array.new(30000, 0)
 i = 0
 
+finput = File.open("test", 'r')
+foutput = $stdout
+
 memory[i] += 1 #incr
 memory[i] -= 1 #decr
 i += 1 #right
@@ -24,8 +27,13 @@ print memory[i].chr #out
 memory[i] += 1
 print memory[i].chr #out
 
+i += 1
+memory[i] = finput.getc()
+foutput.write(memory[i])
+
 for i in (0...30000)
 	if memory[i] != 0 then
-    	puts memory[i]
+		foutput.write(memory[i])
+    	#puts memory[i]
 	end
 end

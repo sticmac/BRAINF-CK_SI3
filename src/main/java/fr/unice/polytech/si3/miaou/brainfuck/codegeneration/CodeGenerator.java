@@ -5,7 +5,6 @@ import java.util.List;
 import java.io.File;
 
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
-import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
 /**
@@ -25,15 +24,24 @@ public class CodeGenerator {
 	private Language lang;
 
 	/**
+	 * Input and output of the program.
+	 */
+	private String input;
+	private String output;
+
+	/**
 	 * Main constructor of the <code>CodeGenerator</code> class.
 	 *
 	 * @param filename the name of the program file.
 	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename, String language) throws IOException {
+	public CodeGenerator(String filename, String language, String in, String out) throws IOException {
 		LanguageSet ls = new LanguageSet();
 		lang = ls.getLanguage(language);
+
+		input = (in == null) ? "System.in" : in;
+		output = (out == null) ? "System.out" : out;
 
 		filename = filename.substring(0, filename.lastIndexOf("."))+"."+lang.getExtension();
 		File f = new File(filename);
@@ -41,6 +49,7 @@ public class CodeGenerator {
 
 		wtf = new WriteTextFile(filename);
 		front();
+		io();
 	}
 
 	/**
@@ -64,5 +73,12 @@ public class CodeGenerator {
 	 */
 	public void footer() throws IOException {
 		wtf.write(lang.buildFooter());
+	}
+
+	/**
+	 * Writes the lines to create the io files.
+	 */
+	private void io() {
+		wtf.write(lang.io(input, output));
 	}
 }

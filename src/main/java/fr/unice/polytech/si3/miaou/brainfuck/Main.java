@@ -91,7 +91,7 @@ public class Main {
 				check(ip);
 				break;
 			case GENERATE:
-				CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage());
+				CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
 				cg.writeInstructions(textFileRead(argp.getFilename()).get());
 				cg.footer();
 				break;

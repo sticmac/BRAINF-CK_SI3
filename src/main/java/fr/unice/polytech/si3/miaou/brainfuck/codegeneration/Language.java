@@ -54,6 +54,11 @@ abstract class Language {
 	abstract String buildFooter();
 
 	/**
+	 * Creates the io files.
+	 */
+	abstract String io(String in, String out);
+
+	/**
 	 * Returns the extension of the file.
 	 */
 	String getExtension() {

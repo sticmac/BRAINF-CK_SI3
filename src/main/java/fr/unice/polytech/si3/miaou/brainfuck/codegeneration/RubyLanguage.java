@@ -1,8 +1,5 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 
 /**
@@ -21,11 +18,11 @@ class RubyLanguage extends Language {
 
 		instructionsTranslation.put(']', "end");
 		instructionsTranslation.put('-', "memory[i] -= 1");
-		instructionsTranslation.put(',', "user_input = gets.chomp\n    memory[i] = user_input[0,1]");
+		instructionsTranslation.put(',', "memory[i] = finput.getc()");
 		instructionsTranslation.put('+', "memory[i] += 1");
 		instructionsTranslation.put('[', "while memory[i] != 0");
 		instructionsTranslation.put('<', "i -= 1");
-		instructionsTranslation.put('.', "print memory[i].chr");
+		instructionsTranslation.put('.', "foutput.write(memory[i].chr)");
 		instructionsTranslation.put('>', "i += 1");
 	}
 
@@ -44,11 +41,30 @@ class RubyLanguage extends Language {
 	}
 
 	@Override
+	String io(String in, String out) {
+		sb = new StringBuilder();
+		if ("System.in".equals(in)) {
+			sb.append("finput = $stdin\n");
+		}
+		else {
+			sb.append("finput = File.open(\"").append(in).append("\", 'r')\n");
+		}
+		if ("System.out".equals(out)) {
+			sb.append("foutput = $stdout\n");
+		}
+		else {
+            sb.append("foutput = File.open(\"").append(out).append("\", 'w')\n");
+		}
+		return sb.toString();
+	}
+
+	@Override
 	String buildFooter() {
 		sb = new StringBuilder();
 		sb.append("\nfor i in (0...30000)\n");
 		sb.append("    if memory[i] != 0 then\n");
-		sb.append("        print \"C\",i,\": \",memory[i],\"\\n\"\n");
+		sb.append("        string = \"\\nC\"+i.to_s+\": \"+memory[i].ord.to_s\n");
+		sb.append("        foutput.write(string)\n");
 		sb.append("    end\nend");
 		return sb.toString();
 	}

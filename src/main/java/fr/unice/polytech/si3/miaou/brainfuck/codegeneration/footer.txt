@@ -1,9 +1,0 @@
-
-	//dump
-	for (i = 0; i < SIZE_MEMORY; i++) {
-		if (memory[i] != 0) {
-			printf("C%d: %d\n", i, memory[i]);
-		}
-	}
-	return 0;
-}

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #coding: latin-1
 
+import os
+
 size_memory = 30000
 
 memory = [0] * size_memory
