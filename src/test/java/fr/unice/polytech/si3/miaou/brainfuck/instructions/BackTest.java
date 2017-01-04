@@ -38,7 +38,6 @@ public class BackTest {
 	public void acceptDoNothingTest() {
 		back.accept(machine);
 		assertFalse(machine.isJumping());
-		assertFalse(machine.isReversed());
 	}
 
 	@Test
@@ -46,7 +45,6 @@ public class BackTest {
 		machine.writeMemory((byte) 1);
 		back.accept(machine);
 		assertTrue(machine.isJumping());
-		assertTrue(machine.isReversed());
 		assertTrue(0 != Metrics.DATA_READ.value());
 	}
 
@@ -56,16 +54,13 @@ public class BackTest {
 		back.accept(machine);
 		back.accept(machine);
 		assertFalse(machine.isJumping());
-		assertTrue(machine.isReversed());
 	}
 
 	@Test
 	public void acceptResetTest() {
-		machine.setReversed(true);
 		machine.setJumping(true);
 		back.accept(machine);
 		assertFalse(machine.isJumping());
-		assertTrue(machine.isReversed());
 	}
 
 	@Test

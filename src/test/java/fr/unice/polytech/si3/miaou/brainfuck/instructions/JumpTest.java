@@ -39,34 +39,28 @@ public class JumpTest {
 		machine.writeMemory((byte) 1);
 		jump.accept(machine);
 		assertFalse(machine.isJumping());
-		assertFalse(machine.isReversed());
 	}
 
 	@Test
 	public void acceptTest() {
 		jump.accept(machine);
 		assertTrue(machine.isJumping());
-		assertFalse(machine.isReversed());
 		assertTrue(0 != Metrics.DATA_READ.value());
 	}
 
 	@Test
 	public void acceptThenResetTest() {
-		machine.setReversed(true);
 		jump.accept(machine);
 		jump.accept(machine);
 		assertFalse(machine.isJumping());
-		assertFalse(machine.isReversed());
 	}
 
 	@Test
 	public void acceptResetTest() {
 		machine.writeMemory((byte) 1);
-		machine.setReversed(true);
 		machine.setJumping(true);
 		jump.accept(machine);
 		assertFalse(machine.isJumping());
-		assertFalse(machine.isReversed());
 	}
 
 	@Test
