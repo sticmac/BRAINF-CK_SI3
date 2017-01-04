@@ -29,10 +29,21 @@ class InstructionImageParser implements IntConsumer {
 	public void accept(int colour) {
 		if (colour != 0xFF000000) { // Skip black
 			Instruction instr = iset.getOp(colour);
-			if (instr != null) instructions.add(instr);
-			else {
+			if (instr != null) {
+				this.addAndBindInstructions(instr);
+			} else {
 				throw new InvalidInstructionException(colour);
 			}
 		}
+	}
+
+	/**
+	 * Add an instruction to the list of instructions and bind it in the jumptable if it's an JUMP or BACK instruction.
+	 *
+	 * @param instr Instruction to add and bind
+	 */
+	private void addAndBindInstructions(Instruction instr) {
+		instructions.add(instr);
+		jumptable.bind(instr, this.instructions.size());
 	}
 }

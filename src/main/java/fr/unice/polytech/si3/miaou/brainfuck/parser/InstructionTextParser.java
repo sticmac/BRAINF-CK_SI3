@@ -33,8 +33,7 @@ class InstructionTextParser implements Consumer<String> {
 		String[] split = line.split(" ");
 
 		if (instr != null) {
-			instructions.add(instr);
-			jumptable.bind(instr, instructions.size());
+			addAndBindInstructions(instr);
 		} else if (iset.getProc(split[0]) != null) {
 			Procedure proc = iset.getProc(split[0]);
 			instructions.add(proc);
@@ -46,9 +45,18 @@ class InstructionTextParser implements Consumer<String> {
 				instr = iset.getOp(c);
 
 				if (instr == null) throw new InvalidInstructionException(c);
-				instructions.add(instr);
-				jumptable.bind(instr, instructions.size());
+				addAndBindInstructions(instr);
 			}
 		}
+	}
+
+	/**
+	 * Add an instruction to the list of instructions and bind it in the jumptable if it's an JUMP or BACK instruction.
+	 *
+	 * @param instr Instruction to add and bind
+	 */
+	private void addAndBindInstructions(Instruction instr) {
+		instructions.add(instr);
+		jumptable.bind(instr, this.instructions.size());
 	}
 }
