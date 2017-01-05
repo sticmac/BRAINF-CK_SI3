@@ -83,6 +83,7 @@ class PythonLanguage extends Language {
 		sb.append("    if memory[j] != 0:\n");
 		sb.append("        string = \"\\nC\"+str(j)+\": \"+str(memory[j])\n");
 		sb.append("        foutput.write(string)\n");
+		sb.append("foutput.write(\"\\n\")");
 
 		return sb.toString();
 	}

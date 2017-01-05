@@ -65,7 +65,8 @@ class RubyLanguage extends Language {
 		sb.append("    if memory[i] != 0 then\n");
 		sb.append("        string = \"\\nC\"+i.to_s+\": \"+memory[i].ord.to_s\n");
 		sb.append("        foutput.write(string)\n");
-		sb.append("    end\nend");
+		sb.append("    end\n");
+		sb.append("end\nfoutput.write(\"\\n\")");
 		return sb.toString();
 	}
 }

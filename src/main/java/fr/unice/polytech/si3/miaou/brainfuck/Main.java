@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
@@ -61,7 +62,7 @@ public class Main {
 	 *
 	 * @throws IOException	in case of IO error on file operation.
 	 */
-	private void run() throws IOException {
+	private void run() throws LanguageException, IOException {
 		InstructionParser ip;
 
 		if (argp.getType() == Type.IMAGE) {

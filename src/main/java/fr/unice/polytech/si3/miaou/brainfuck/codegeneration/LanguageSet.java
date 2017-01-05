@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.codegeneration;
 
 import java.util.HashMap;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 
 /**
  * Stores all the object representing the languages available to translate a Brainfuck program.
@@ -34,7 +35,10 @@ class LanguageSet {
 	 * @param name	Language's name.
 	 * @return	Corresponding Language object.
 	 */
-	Language getLanguage(String name) {
+	Language getLanguage(String name) throws LanguageException{
+		if (!names.containsKey(name)) {
+			throw new LanguageException("Incorrect name of language. Try \"c\", \"python\" or \"ruby\".");
+		}
 		return names.get(name);
 	}
 }

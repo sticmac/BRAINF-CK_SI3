@@ -72,6 +72,7 @@ class CLanguage extends Language {
 		sb = new StringBuilder();
 		sb.append("\n    for (int i = 0; i < SIZE_MEMORY; i++, *p++) {\n");
 		sb.append("        if (*p) { fprintf(foutput, \"\\nC%d: %d\", i, *p); }\n    }\n");
+		sb.append("    fprintf(foutput, \"\\n\");\n");
 		sb.append("    return 0;\n}");
 
 		return sb.toString();

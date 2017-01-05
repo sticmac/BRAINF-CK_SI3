@@ -6,6 +6,7 @@ import java.io.File;
 
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 
 /**
  * Builds a file that is the translation of the brainfuck program in another language.
@@ -36,7 +37,7 @@ public class CodeGenerator {
 	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename, String language, String in, String out) throws IOException {
+	public CodeGenerator(String filename, String language, String in, String out) throws LanguageException, IOException {
 		LanguageSet ls = new LanguageSet();
 		lang = ls.getLanguage(language);
 
