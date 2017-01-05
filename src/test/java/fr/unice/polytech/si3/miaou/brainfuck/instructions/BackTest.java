@@ -17,7 +17,10 @@ public class BackTest {
 	@Before
 	public void setUp() {
 		back = new Back();
-		machine = new Machine(0, new JumpTable());
+		JumpTable jt = new JumpTable();
+		jt.bind(new Jump(), 0);
+		jt.bind(back, 1);
+		machine = new Machine(0, jt);
 	}
 
 	@Test
@@ -35,37 +38,17 @@ public class BackTest {
 		assertEquals(0xFFFF0000, back.getColor());
 	}
 
-/*	@Ignore
 	@Test
 	public void acceptDoNothingTest() {
 		back.accept(machine);
-		assertFalse(machine.isJumping());
+		assertEquals(0, machine.getInstrPointer());
 	}
 
-	@Ignore
 	@Test
 	public void acceptTest() {
 		machine.writeMemory((byte) 1);
 		back.accept(machine);
-		assertTrue(machine.isJumping());
+		assertEquals(1, machine.getInstrPointer());
 		assertTrue(0 != Metrics.DATA_READ.value());
 	}
-
-	@Ignore
-	@Test
-	public void acceptThenResetTest() {
-		machine.writeMemory((byte) 1);
-		back.accept(machine);
-		back.accept(machine);
-		assertFalse(machine.isJumping());
-	}
-
-	@Ignore
-	@Test
-	public void acceptResetTest() {
-		machine.setJumping(true);
-		back.accept(machine);
-		assertFalse(machine.isJumping());
-	}
-*/
 }

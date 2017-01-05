@@ -56,7 +56,6 @@ public class JumpTable {
 	 * @param index The instruction index
 	 */
 	public void bind(Instruction i, int index) {
-		index--; // Instruction list is counting from 1 to n and Machine from 0 to n
 		if (i instanceof Jump) {
 			this.intermediateStack.push(new Integer(index));
 		} else if (i instanceof Back) {

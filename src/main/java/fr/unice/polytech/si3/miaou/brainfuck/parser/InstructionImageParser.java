@@ -44,6 +44,6 @@ class InstructionImageParser implements IntConsumer {
 	 */
 	private void addAndBindInstructions(Instruction instr) {
 		instructions.add(instr);
-		jumptable.bind(instr, this.instructions.size());
+		jumptable.bind(instr, this.instructions.size() - 1);
 	}
 }
