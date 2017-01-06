@@ -10,6 +10,9 @@ import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.Metrics;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.Metric;
+
 /**
  * Actual virtual machine which processes the instructions and interracts with the memory.
  *
@@ -50,6 +53,8 @@ public class Machine {
 	 */
 	private int instrPointer;
 
+	private Metrics metrics;
+
 	/**
 	 * Constructs a new virtual machine, initialize its Memory.
 	 *
@@ -62,6 +67,7 @@ public class Machine {
 		this.addressesStack = new Stack<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
+		this.metrics = new Metrics();
 	}
 
 	/**
@@ -181,5 +187,13 @@ public class Machine {
 	 */
 	public String dumpMemory() {
 		return memory.toString();
+	}
+
+	public String dumpMetrics() {
+		return metrics.toString();
+	}
+
+	public <T extends Metric> T getMetric(Class<T> clazz) {
+		return metrics.get(clazz);
 	}
 }

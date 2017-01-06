@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.OverflowException;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Decr instruction: decrements the current memory cell by one.

@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Back instruction: go back to the instruction right after the associated JUMP if the pointed
