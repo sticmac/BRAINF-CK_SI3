@@ -8,9 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Back;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.ConditionalJump;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Jump;
 
@@ -78,20 +76,5 @@ public class JumpTable {
 	 */
 	public Integer getJump(int index) {
 			return this.conditionnalJumpMap.get(new Integer(index));
-	}
-
-	/**
-	 * Return a String which display the jumptable content.
-	 */
-	@Override
-	public String toString() {
-		String str = "";
-		Iterator<Map.Entry<Integer, Integer>> it = this.conditionnalJumpMap.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Integer, Integer> pair = it.next();
-			str += pair.getKey() + " = " + pair.getValue() + "\n";
-		}
-		str += "Size : " + this.conditionnalJumpMap.size() + "\n";
-		return str;
 	}
 }
