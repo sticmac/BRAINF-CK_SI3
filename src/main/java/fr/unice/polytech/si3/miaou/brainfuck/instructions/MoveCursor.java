@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.DataMove;
 
 /**
  * Superclass for all the instructions that will move the cursor into the memory.
@@ -28,6 +28,6 @@ public class MoveCursor extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
-                Metrics.DATA_MOVE.incr();
+		machine.getMetric(DataMove.class).incr();
 	}
 }

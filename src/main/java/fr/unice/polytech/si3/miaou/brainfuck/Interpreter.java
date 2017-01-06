@@ -7,6 +7,11 @@ import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ProgSize;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ExecTime;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ExecMove;
+
+
 /**
  * Reads the instructions from a List and execute them.
  *
@@ -50,17 +55,20 @@ public class Interpreter {
 	 * @throws IOException	if any attempt to write in the log file failed.
 	 */
 	public void run(Machine machine) throws IOException {
-		Metrics.PROG_SIZE.set(instructions.size());
-		Metrics.EXEC_TIME.start();
+		machine.getMetric(ProgSize.class).set(instructions.size());
+		machine.getMetric(ExecTime.class).start();
+
 		for (int i = machine.getInstrPointer() ; i >= 0 && i < instructions.size() ; i = machine.getInstrPointer()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
 				logger.logStep(i, instructions.get(i), machine);
 			}
-			Metrics.EXEC_MOVE.incr();
+			machine.getMetric(ExecMove.class).incr();
 		}
-		Metrics.EXEC_TIME.stop();
+
+		machine.getMetric(ExecTime.class).stop();
+
 		System.out.print(machine.dumpMemory());
-		System.out.print(Metrics.dump());
+		System.out.print(machine.dumpMetrics());
 	}
 }

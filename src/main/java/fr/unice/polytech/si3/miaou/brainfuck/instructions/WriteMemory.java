@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.DataWrite;
 
 /**
  * Superclass for all the instructions that will modify the memory.
@@ -28,6 +28,6 @@ public class WriteMemory extends Instruction {
 	 */
 	@Override
 	public void accept(Machine machine) {
-                Metrics.DATA_WRITE.incr();
+		machine.getMetric(DataWrite.class).incr();
 	}
 }
