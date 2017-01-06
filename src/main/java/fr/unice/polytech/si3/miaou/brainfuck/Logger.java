@@ -29,7 +29,7 @@ public class Logger {
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
 	public Logger(String filename) throws IOException {
-		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf("."))+".log");
+		wtf = new WriteTextFile(filename.substring(0, filename.lastIndexOf('.'))+".log");
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class Logger {
 	 * @param data data to write in the log file.
 	 * @throws IOException	in case writing in the file is impossible.
 	 */
-	public void write(String data) throws IOException {
+	private void write(String data) throws IOException {
 		wtf.write(data);
 	}
 }
