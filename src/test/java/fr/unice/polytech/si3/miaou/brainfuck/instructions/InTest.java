@@ -13,7 +13,6 @@ import org.junit.rules.TemporaryFolder;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class InTest {
@@ -61,6 +60,6 @@ public class InTest {
 		assertEquals(-31, machine.readMemory());
 		back.accept(machine);
 		assertEquals(-6, machine.readMemory());
-		assertTrue(0 != Metrics.DATA_WRITE.value());
+		assertFalse(machine.dumpMetrics().contains("DATA_WRITE: 0"));
 	}
 }

@@ -6,7 +6,6 @@ import org.junit.Ignore;
 import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class JumpTest {
@@ -49,6 +48,6 @@ public class JumpTest {
 	public void acceptTest() {
 		jump.accept(machine);
 		assertEquals(1, machine.getInstrPointer());
-		assertTrue(0 != Metrics.DATA_READ.value());
+		assertFalse(machine.dumpMetrics().contains("DATA_READ: 0"));
 	}
 }

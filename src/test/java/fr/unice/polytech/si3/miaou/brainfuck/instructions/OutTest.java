@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class OutTest {
@@ -50,6 +49,6 @@ public class OutTest {
 		assertEquals("\0", outStream.toString());
 		out.accept(machine);
 		assertEquals("\0\0", outStream.toString());
-		assertTrue(0 != Metrics.DATA_READ.value());
+		assertFalse(machine.dumpMetrics().contains("DATA_READ: 0"));
 	}
 }

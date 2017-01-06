@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.OverflowException;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
@@ -38,7 +37,7 @@ public class IncrTest {
 	public void acceptTest() {
 		incr.accept(machine);
 		assertEquals(Byte.MIN_VALUE + 1, machine.readMemory());
-		assertTrue(0 != Metrics.DATA_WRITE.value());
+		assertFalse(machine.dumpMetrics().contains("DATA_WRITE: 0"));
 	}
 
 	@Test(expected=OverflowException.class)

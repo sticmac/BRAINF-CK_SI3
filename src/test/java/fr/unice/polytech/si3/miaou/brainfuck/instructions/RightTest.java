@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class RightTest {
@@ -37,6 +36,6 @@ public class RightTest {
 	public void acceptTest() {
 		right.accept(machine);
 		assertEquals(1, machine.getLocation());
-		assertTrue(0 != Metrics.DATA_MOVE.value());
+		assertFalse(machine.dumpMetrics().contains("DATA_MOVE: 0"));
 	}
 }
