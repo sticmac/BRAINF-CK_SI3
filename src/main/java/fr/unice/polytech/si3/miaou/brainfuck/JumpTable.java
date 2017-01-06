@@ -2,7 +2,7 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -62,7 +62,7 @@ public class JumpTable {
 				Integer backIndex = index;
 				this.conditionnalJumpMap.put(jumpIndex, backIndex);
 				this.conditionnalJumpMap.put(backIndex, jumpIndex);
-			} catch(EmptyStackException e) {
+			} catch(NoSuchElementException e) {
 				throw new BracketMismatchException();
 			}
 		}
