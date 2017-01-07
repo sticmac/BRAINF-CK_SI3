@@ -41,7 +41,7 @@ public class Machine {
 	/**
 	 * Stack of return addresses.
 	 */
-	private Stack<Integer> addressesStack;
+	private Deque<Integer> addressesStack;
 
 	/**
 	 * Current location in memory.
@@ -64,7 +64,7 @@ public class Machine {
 	public Machine(int entryPoint, JumpTable jumptable) {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
-		this.addressesStack = new Stack<>();
+		this.addressesStack = new ArrayDeque<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 		this.metrics = new Metrics();
