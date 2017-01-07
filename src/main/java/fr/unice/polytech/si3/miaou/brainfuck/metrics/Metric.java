@@ -5,7 +5,7 @@ package fr.unice.polytech.si3.miaou.brainfuck.metrics;
  *
  * @author Pierre-Emmanuel Novac
  */
-abstract public class Metric {
+public abstract class Metric {
 	private String name;
 
 	/**
