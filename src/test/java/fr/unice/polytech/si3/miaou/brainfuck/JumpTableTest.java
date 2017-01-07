@@ -26,6 +26,7 @@ public class JumpTableTest {
 		jt = new JumpTable();
 	}
 
+	// Check no exceptions thrown
 	@Test
 	public void checkTest() {
 		jt.check();

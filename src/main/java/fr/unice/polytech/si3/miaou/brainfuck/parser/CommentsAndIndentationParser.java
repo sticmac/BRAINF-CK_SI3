@@ -18,8 +18,8 @@ class CommentsAndIndentationParser implements Function<String, String> {
 	 */
 	@Override
 	public String apply(String line) {
-		int p = line.indexOf("#");
-		if (p > 0) line = line.substring(0, p); // Remove comments from the line
-		return line.trim(); // Remove leading and trailing whitespaces from the line
+		int p = line.indexOf('#');
+		String res = p > 0 ? line.substring(0, p) : line; // Remove comments from the line
+		return res.trim(); // Remove leading and trailing whitespaces from the line
 	}
 }
