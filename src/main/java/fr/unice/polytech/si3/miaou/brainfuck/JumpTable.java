@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.NoSuchElementException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;

@@ -19,11 +19,15 @@ import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
 
 public class JumpTableTest {
+	Instruction dummy;
 	JumpTable jt;
 
 	@Before
 	public void setUp() throws IOException {
 		jt = new JumpTable();
+		dummy = new Instruction("", '\0', 0) {
+			@Override public void accept(Machine m) {}
+		};
 	}
 
 	// Check no exceptions thrown
@@ -39,8 +43,29 @@ public class JumpTableTest {
 		jt.check();
 	}
 
+	@Test
+	public void bindTest() {
+		jt.bind(new Jump(), 1);
+		jt.bind(new Back(), 3);
+		assertEquals(1, jt.getJump(3).intValue());
+		assertEquals(3, jt.getJump(1).intValue());
+		jt.check();
+	}
+
 	@Test(expected=BracketMismatchException.class)
 	public void bindFailTest() {
 		jt.bind(new Back(), 0);
+	}
+
+	@Test(expected=BracketMismatchException.class)
+	public void dummyInstrBackTest() {
+		jt.bind(dummy, 0);
+		jt.bind(new Back(), 0);
+	}
+
+	@Test
+	public void dummyInstrTest() {
+		jt.bind(dummy, 0);
+		assertNull(jt.getJump(0));
 	}
 }
