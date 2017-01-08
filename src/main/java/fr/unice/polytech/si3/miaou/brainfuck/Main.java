@@ -71,27 +71,25 @@ public class Main {
 			ip = textFileRead(argp.getFilename());
 		}
 
-		if (argp.isIn(Mode.RUN)) {
-				check(ip);
-				execute(ip);
+		if (argp.isIn(Mode.CHECK)) { // Don't run program in check mode
+			check(ip);
+		} else if (argp.isIn(Mode.RUN)) {
+			check(ip);
+			execute(ip);
 		}
 
 		if (argp.isIn(Mode.REWRITE)) {
-				Translator tr = new Translator();
-				tr.toShortSyntax(ip.get());
+			Translator tr = new Translator();
+			tr.toShortSyntax(ip.get());
 		}
 
 		if (argp.isIn(Mode.TRANSLATE)) {
-				if (argp.getType() == Type.TEXT) {
-					Translator tra = new Translator();
-					WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
-				} else {
-					Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
-				}
-		}
-
-		if (argp.isIn(Mode.CHECK)) {
-				check(ip);
+			if (argp.getType() == Type.TEXT) {
+				Translator tra = new Translator();
+				WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
+			} else {
+				Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
+			}
 		}
 
 		if (argp.isIn(Mode.GENERATE)) {

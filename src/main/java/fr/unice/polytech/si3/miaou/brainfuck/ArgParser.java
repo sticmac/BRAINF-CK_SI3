@@ -51,7 +51,7 @@ public class ArgParser {
 
 	private String fetchNextArg(String[] args, int i) {
 		if (i+1 >= args.length || args[i+1].startsWith("-"))
-			throw new ArgumentsException("No value for " + args[i] + "option.");
+			throw new ArgumentsException("No value for " + args[i] + " option.");
 		return args[i+1];
 	}
 
