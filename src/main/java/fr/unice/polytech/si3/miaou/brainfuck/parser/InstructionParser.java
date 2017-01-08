@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
@@ -40,8 +39,8 @@ public class InstructionParser {
 	/**
 	 * Constructs an InsturctionParser with an empty list of instructions and creates the InstructionSet object.
 	 */
-	private InstructionParser() {
-		instructions = new ArrayList<Instruction>();
+	InstructionParser() {
+		instructions = new ArrayList<>();
 		iset = new InstructionSet();
 		jumptable = new JumpTable();
 	}
@@ -62,7 +61,7 @@ public class InstructionParser {
 		.map(new CommentsAndIndentationParser())
 		.flatMap(new MacroParser()) // Expand macros
 		.flatMap(functionsParser)
-		.forEachOrdered(new InstructionTextParser(instructions, jumptable, iset));
+		.forEachOrdered(new InstructionTextParser(this, iset));
 
 		mainPosition = functionsParser.getCounter();
 	}
@@ -76,7 +75,17 @@ public class InstructionParser {
 	public InstructionParser(IntStream stream) {
 		this();
 
-		stream.forEachOrdered(new InstructionImageParser(instructions, jumptable, iset));
+		stream.forEachOrdered(new InstructionImageParser(this, iset));
+	}
+
+	/**
+	 * Add an instruction to the list of instructions and bind it in the jumptable if it's an JUMP or BACK instruction.
+	 *
+	 * @param instr Instruction to add and bind
+	 */
+	public void addInstruction(Instruction instr) {
+		instructions.add(instr);
+		jumptable.bind(instr, this.instructions.size() - 1);
 	}
 
 	/**

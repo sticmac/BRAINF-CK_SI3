@@ -1,14 +1,11 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
-import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
-import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -42,6 +39,19 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	 * Location of the previous procedure.
 	 */
 	private int prevCounter;
+
+	private class InstructionCounter extends InstructionParser {
+		private int counter;
+
+		@Override
+		public void addInstruction(Instruction instr) {
+			counter++;
+		}
+
+		public int getCounter() {
+			return counter;
+		}
+	}
 
 	/**
 	 * Main constructor of FunctionsParser.
@@ -85,9 +95,10 @@ class FunctionsParser implements Function<String, Stream<String>> {
 			}
 		} else {
 			if (defining) {
-				InstructionTextCounter count = new InstructionTextCounter(iset);
+				InstructionCounter instrCounter = new InstructionCounter();
+				InstructionTextParser count = new InstructionTextParser(instrCounter, iset);
 				count.accept(line);
-				counter += count.getCounter();
+				counter += instrCounter.getCounter();
 			}
 			return Stream.of(line);
 		}
