@@ -39,6 +39,15 @@ public class LoggerTest {
 	}
 
 	@Test
+	public void noExtTest() throws IOException {
+		filename = testFolder.newFile("test").getPath();
+		log = new Logger(filename);
+		filename = filename + ".log";
+		log.logStep(5, instr, machine);
+		assertTrue(Files.exists(Paths.get(filename), new LinkOption[]{}));
+	}
+
+	@Test
 	public void logStepTest() throws IOException {
 		assertTrue((new String(Files.readAllBytes(Paths.get(filename)))).isEmpty());
 		machine.writeMemory((byte)4);
