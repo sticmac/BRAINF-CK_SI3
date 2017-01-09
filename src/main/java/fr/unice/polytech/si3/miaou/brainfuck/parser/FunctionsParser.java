@@ -77,9 +77,6 @@ class FunctionsParser implements Function<String, Stream<String>> {
 				throw new SyntaxFunctionException("Trying to declare a new function before the end of another one.");
 			} else {
 				name = line.split(" ")[1];
-				if (split.length > 2) {
-
-				}
 				defining = true;
 				return Stream.empty();
 			}
