@@ -61,14 +61,4 @@ public class Procedure extends Instruction {
 		machine.saveReturnAddress();
 		machine.setInstrPointer(position-1); //-1, because the instruction pointer is incremented right after the execution of the Procedure instruction.
 	}
-
-	/**
-	 * Clones the current procedure instruction.
-	 *
-	 * @return the cloned procedure instruction.
-	 */
-	@Override
-	public Procedure clone() {
-		return new Procedure(getName(), position);
-	}
 }
