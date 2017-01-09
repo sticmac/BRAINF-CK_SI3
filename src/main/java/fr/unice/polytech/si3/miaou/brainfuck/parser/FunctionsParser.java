@@ -110,4 +110,18 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	public int getCounter() {
 		return counter;
 	}
+
+	/**
+	 * Parsing a procedure call and adds the corresponding Procedure object to a list of instructions.
+	 *
+	 * @param split a split line containing the procedure call.
+	 * @param list a list of instructions where to add the procedure object.
+	 */
+	public void parseDeclaration(String split[], List<Instruction> list) {
+		Procedure proc = iset.getProc(split[0]);
+			if (split.length > 1) {
+				proc.setParameter(Integer.parseInt(split[1]));
+			}
+		list.add(proc);
+	}
 }
