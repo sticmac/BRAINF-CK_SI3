@@ -22,15 +22,14 @@ class PythonLanguage extends Language {
 		name = "python";
 		spaces = 0;
 
-		instructionsTranslation.put(iset.getOp("BACK"), "");
-		instructionsTranslation.put(iset.getOp("DECR"), "memory[i] -= 1");
-		instructionsTranslation.put(iset.getOp("IN"), "memory[i] = ord(finput.read(1))");
-		instructionsTranslation.put(iset.getOp("INCR"), "memory[i] += 1");
-		instructionsTranslation.put(iset.getOp("JUMP"), "while not memory[i] == 0:");
-		instructionsTranslation.put(iset.getOp("LEFT"), "i -= 1");
-		instructionsTranslation.put(iset.getOp("OUT"), "foutput.write(chr(memory[i]))");
-		instructionsTranslation.put(iset.getOp("RIGHT"), "i += 1");
-		instructionsTranslation.put(iset.getOp("RET"), "");
+		instructionsTranslation.put(']', "");
+		instructionsTranslation.put('-', "memory[i] -= 1");
+		instructionsTranslation.put(',', "memory[i] = ord(finput.read(1))");
+		instructionsTranslation.put('+', "memory[i] += 1");
+		instructionsTranslation.put('[', "while not memory[i] == 0:");
+		instructionsTranslation.put('<', "i -= 1");
+		instructionsTranslation.put('.', "foutput.write(chr(memory[i]))");
+		instructionsTranslation.put('>', "i += 1");
 	}
 
 	@Override
@@ -39,16 +38,10 @@ class PythonLanguage extends Language {
 		for (int i = spaces; i > 0; i--) {
 			sb.append("    ");
 		}
-		if ("JUMP".equals(instr.getName())) { spaces++; }
-		else if ("BACK".equals(instr.getName()) || "RET".equals(instr.getName())) { spaces--; }
+		if ('[' == (instr.getSymbol())) { spaces++; }
+		else if (']' == (instr.getSymbol())) { spaces--; }
 
-		if (counter == 42) {
-			sb.append(createProcedure("nameProc")).append("\n    ");
-			spaces++;
-		}
-		counter++;
-
-		sb.append(instructionsTranslation.get(instr.getName()));
+		sb.append(instructionsTranslation.get(instr.getSymbol()));
 		return sb.toString();
 	}
 
@@ -93,11 +86,5 @@ class PythonLanguage extends Language {
 		sb.append("foutput.write(\"\\n\")");
 
 		return sb.toString();
-	}
-
-	@Override
-	String createProcedure(String name) {
-		instructionsTranslation.put(iset.getProc(name), name+"()");
-		return "def "+name+"():";
 	}
 }

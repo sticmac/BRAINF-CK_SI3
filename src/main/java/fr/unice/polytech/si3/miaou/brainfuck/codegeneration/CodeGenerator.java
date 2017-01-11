@@ -33,16 +33,13 @@ public class CodeGenerator {
 	/**
 	 * Main constructor of the <code>CodeGenerator</code> class.
 	 *
-	 * @param argp the ArgParser with parsed arguments.
+	 * @param filename the name of the program file.
+	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	 public CodeGenerator(ArgParser argp) throws IOException {
- 		String filename = argp.getFilename();
- 		String in = argp.getInput();
- 		String out = argp.getOutput();
-
- 		LanguageSet ls = new LanguageSet();
- 		lang = ls.getLanguage(argp.getLanguage());
+	public CodeGenerator(String filename, String language, String in, String out) throws IOException {
+		LanguageSet ls = new LanguageSet();
+		lang = ls.getLanguage(language);
 
 		input = (in == null) ? "System.in" : in;
 		output = (out == null) ? "System.out" : out;

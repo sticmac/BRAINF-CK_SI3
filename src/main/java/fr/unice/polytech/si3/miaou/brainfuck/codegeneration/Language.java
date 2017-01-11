@@ -14,7 +14,7 @@ abstract class Language {
 	/**
 	 * Lists the equivalent code of each instruction.
 	 */
-	protected Map<Instruction, String> instructionsTranslation;
+	protected Map<Character, String> instructionsTranslation;
 
 	/**
 	 * Reprensents the extension of the file according to the language.
@@ -32,16 +32,10 @@ abstract class Language {
 	protected StringBuilder sb;
 
 	/**
- 	* Counts the number of instructions parsed.
- 	*/
-	protected int counter;
-
-	/**
 	 * Constructs a Language object and create the map of instructions.
 	 */
 	Language() {
 		instructionsTranslation = new HashMap<>();
-		counter = 0;
 	}
 
 	/**
@@ -63,11 +57,6 @@ abstract class Language {
 	 * Creates the io files.
 	 */
 	abstract String io(String in, String out);
-
-	/**
-	 * Creates a procedure.
-	 */
-	abstract String createProcedure(String name);
 
 	/**
 	 * Returns the extension of the file.
