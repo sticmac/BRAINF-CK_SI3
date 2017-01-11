@@ -17,12 +17,13 @@ public class ModeTest {
 	public void modeTest() {
 		Mode[] m = Mode.values();
 		List<String> mn = Arrays.stream(m).map(Mode::name).collect(Collectors.toList());
-		assertEquals(5, mn.size());
+		assertEquals(6, mn.size());
 		assertTrue(mn.contains("RUN"));
 		assertTrue(mn.contains("REWRITE"));
 		assertTrue(mn.contains("TRANSLATE"));
 		assertTrue(mn.contains("CHECK"));
 		assertTrue(mn.contains("TRACE"));
+		assertTrue(mn.contains("GENERATE"));
 	}
 
 	@Test
@@ -32,6 +33,7 @@ public class ModeTest {
 		assertEquals(Mode.TRANSLATE, Mode.of("TRANSLATE").get());
 		assertEquals(Mode.CHECK, Mode.of("CHECK").get());
 		assertEquals(Mode.TRACE, Mode.of("TRACE").get());
+		assertEquals(Mode.GENERATE, Mode.of("GENERATE").get());
 	}
 
 	@Test
