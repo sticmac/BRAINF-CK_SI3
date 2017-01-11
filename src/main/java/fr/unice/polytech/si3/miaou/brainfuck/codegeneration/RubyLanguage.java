@@ -16,20 +16,26 @@ class RubyLanguage extends Language {
 		extension = "rb";
 		name = "ruby";
 
-		instructionsTranslation.put(']', "end");
-		instructionsTranslation.put('-', "memory[i] -= 1");
-		instructionsTranslation.put(',', "memory[i] = finput.getbyte()");
-		instructionsTranslation.put('+', "memory[i] += 1");
-		instructionsTranslation.put('[', "while memory[i] != 0");
-		instructionsTranslation.put('<', "i -= 1");
-		instructionsTranslation.put('.', "foutput.write(memory[i].chr)");
-		instructionsTranslation.put('>', "i += 1");
+		instructionsTranslation.put(iset.getOp("BACK"), "end");
+		instructionsTranslation.put(iset.getOp("DECR"), "memory[i] -= 1");
+		instructionsTranslation.put(iset.getOp("IN"), "memory[i] = finput.getc()");
+		instructionsTranslation.put(iset.getOp("INCR"), "memory[i] += 1");
+		instructionsTranslation.put(iset.getOp("JUMP"), "while memory[i] != 0");
+		instructionsTranslation.put(iset.getOp("LEFT"), "i -= 1");
+		instructionsTranslation.put(iset.getOp("OUT"), "foutput.write(memory[i].chr)");
+		instructionsTranslation.put(iset.getOp("RIGHT"), "i += 1");
+		instructionsTranslation.put(iset.getOp("RET"), "end");
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return instructionsTranslation.get(instr.getSymbol());
-	}
+		sb = new StringBuilder();
+		if (counter == 42) {
+			sb.append(createProcedure("nameProc")).append("\n");
+		}
+		counter++;
+		sb.append(instructionsTranslation.get(instr.getName()));
+		return sb.toString();	}
 
 	@Override
 	String buildFront() {
@@ -66,5 +72,11 @@ class RubyLanguage extends Language {
 		sb.append("    end\n");
 		sb.append("end\nfoutput.write(\"\\n\")");
 		return sb.toString();
+	}
+
+	@Override
+	String createProcedure(String name) {
+		instructionsTranslation.put(iset.getProc(name), name);
+		return "def "+name+"()";
 	}
 }

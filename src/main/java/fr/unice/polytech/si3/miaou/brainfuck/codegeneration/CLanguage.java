@@ -16,19 +16,26 @@ class CLanguage extends Language {
 		extension = "c";
 		name = "c";
 
-		instructionsTranslation.put(']', "}");
-		instructionsTranslation.put('-', "(*memory)--;");
-		instructionsTranslation.put(',', "(*memory) = fgetc(finput);");
-		instructionsTranslation.put('+', "(*memory)++;");
-		instructionsTranslation.put('[', "while (*memory) {");
-		instructionsTranslation.put('<', "memory--;");
-		instructionsTranslation.put('.', "fputc(*memory, foutput);");
-		instructionsTranslation.put('>', "memory++;");
+		instructionsTranslation.put(iset.getOp("BACK"), "}");
+		instructionsTranslation.put(iset.getOp("DECR"), "(*memory)--;");
+		instructionsTranslation.put(iset.getOp("IN"), "(*memory) = fgetc(finput);");
+		instructionsTranslation.put(iset.getOp("INCR"), "(*memory)++;");
+		instructionsTranslation.put(iset.getOp("JUMP"), "while (*memory) {");
+		instructionsTranslation.put(iset.getOp("LEFT"), "memory--;");
+		instructionsTranslation.put(iset.getOp("OUT"), "fputc(*memory, foutput);");
+		instructionsTranslation.put(iset.getOp("RIGHT"), "memory++;");
+		instructionsTranslation.put(iset.getOp("RET"), "}");
 	}
 
 	@Override
 	String translateInstruction(Instruction instr) {
-		return "    "+instructionsTranslation.get(instr.getSymbol());
+		sb = new StringBuilder();
+		if (counter == 42) {
+			sb.append("    ").append(createProcedure("nameProc")).append("\n");
+		}
+		counter++;
+		sb.append("    ").append(instructionsTranslation.get(instr.getName()));
+		return sb.toString();
 	}
 
 	@Override
@@ -76,5 +83,11 @@ class CLanguage extends Language {
 		sb.append("    return 0;\n}");
 
 		return sb.toString();
+	}
+
+	@Override
+	String createProcedure(String name) {
+		instructionsTranslation.put(iset.getProc(name), name+"();");
+		return "void "+name+"() {";
 	}
 }
