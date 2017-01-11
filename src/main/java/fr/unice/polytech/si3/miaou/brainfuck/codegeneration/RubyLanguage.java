@@ -18,7 +18,7 @@ class RubyLanguage extends Language {
 
 		instructionsTranslation.put(']', "end");
 		instructionsTranslation.put('-', "memory[i] -= 1");
-		instructionsTranslation.put(',', "memory[i] = finput.getc()");
+		instructionsTranslation.put(',', "memory[i] = finput.getbyte()");
 		instructionsTranslation.put('+', "memory[i] += 1");
 		instructionsTranslation.put('[', "while memory[i] != 0");
 		instructionsTranslation.put('<', "i -= 1");
@@ -45,15 +45,13 @@ class RubyLanguage extends Language {
 		sb = new StringBuilder();
 		if ("System.in".equals(in)) {
 			sb.append("finput = $stdin\n");
-		}
-		else {
-			sb.append("finput = File.open(\"").append(in).append("\", 'r')\n");
+		} else {
+			sb.append("finput = File.open(\"").append(in).append("\", 'rb')\n");
 		}
 		if ("System.out".equals(out)) {
 			sb.append("foutput = $stdout\n");
-		}
-		else {
-            sb.append("foutput = File.open(\"").append(out).append("\", 'w')\n");
+		} else {
+			sb.append("foutput = File.open(\"").append(out).append("\", 'wb')\n");
 		}
 		return sb.toString();
 	}

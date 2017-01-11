@@ -48,7 +48,7 @@ class PythonLanguage extends Language {
 	@Override
 	String buildFront() {
 		sb = new StringBuilder();
-		sb.append("#!/usr/bin/python\n");
+		sb.append("#!/usr/bin/env python\n");
 		sb.append("#coding: latin-1\n\n");
 		sb.append("import os\n");
 		sb.append("import sys\n\n");
@@ -65,13 +65,13 @@ class PythonLanguage extends Language {
 			sb.append("finput = sys.stdin\n");
 		}
 		else {
-			sb.append("finput = open(\"").append(in).append("\", \"r\")\n");
+			sb.append("finput = open(\"").append(in).append("\", \"rb\")\n");
 		}
 		if ("System.out".equals(out)) {
 			sb.append("foutput = sys.stdout\n");
 		}
 		else {
-			sb.append("foutput = open(\"").append(out).append("\", \"w\")\n");
+			sb.append("foutput = open(\"").append(out).append("\", \"wb\")\n");
 		}
 		return sb.toString();
 	}

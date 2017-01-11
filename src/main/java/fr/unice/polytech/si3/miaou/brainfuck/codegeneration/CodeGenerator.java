@@ -37,7 +37,7 @@ public class CodeGenerator {
 	 * @param language the name of the language destination.
 	 * @throws IOException	if it's impossible to create the log file.
 	 */
-	public CodeGenerator(String filename, String language, String in, String out) throws LanguageException, IOException {
+	public CodeGenerator(String filename, String language, String in, String out) throws IOException {
 		LanguageSet ls = new LanguageSet();
 		lang = ls.getLanguage(language);
 
@@ -51,6 +51,7 @@ public class CodeGenerator {
 		wtf = new WriteTextFile(filename);
 		front();
 		io();
+		setExecutable(filename);
 	}
 
 	/**
@@ -81,5 +82,14 @@ public class CodeGenerator {
 	 */
 	private void io() {
 		wtf.write(lang.io(input, output));
+	}
+
+	/**
+	 * Add executable perm on the generated file.
+	 *
+	 * @param filename	file path.
+	 */
+	private void setExecutable(String filename) throws IOException {
+		(new File(filename)).setExecutable(true, false);
 	}
 }
