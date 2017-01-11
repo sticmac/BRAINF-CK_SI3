@@ -50,7 +50,7 @@ public class Main {
 			Main app = new Main(ap);
 			app.run();
 		} catch (BrainfuckException e) {
-			if (!(e instanceof BracketMismatchException) || ap.getMode() == Mode.RUN || ap.getMode() == Mode.CHECK) {
+			if (!(e instanceof BracketMismatchException) || ap.isIn(Mode.RUN) || ap.isIn(Mode.CHECK)) {
 				System.err.println(e);
 				System.exit(e.getErrorCode());
 			}
@@ -71,31 +71,31 @@ public class Main {
 			ip = textFileRead(argp.getFilename());
 		}
 
-		switch(argp.getMode()) {
-			case RUN:
-				check(ip);
-				execute(ip);
-				break;
-			case REWRITE:
-				Translator tr = new Translator();
-				tr.toShortSyntax(ip.get());
-				break;
-			case TRANSLATE:
-				if (argp.getType() == Type.TEXT) {
-					Translator tra = new Translator();
-					WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
-				} else {
-					Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
-				}
-				break;
-			case CHECK:
-				check(ip);
-				break;
-			case GENERATE:
-				CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
-				cg.writeInstructions(textFileRead(argp.getFilename()).get());
-				cg.footer();
-				break;
+		if (argp.isIn(Mode.CHECK)) { // Don't run program in check mode
+			check(ip);
+		} else if (argp.isIn(Mode.RUN)) {
+			check(ip);
+			execute(ip);
+		}
+
+		if (argp.isIn(Mode.REWRITE)) {
+			Translator tr = new Translator();
+			tr.toShortSyntax(ip.get());
+		}
+
+		if (argp.isIn(Mode.TRANSLATE)) {
+			if (argp.getType() == Type.TEXT) {
+				Translator tra = new Translator();
+				WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
+			} else {
+				Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
+			}
+		}
+
+		if (argp.isIn(Mode.GENERATE)) {
+			CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
+			cg.writeInstructions(textFileRead(argp.getFilename()).get());
+			cg.footer();
 		}
 	}
 
@@ -145,10 +145,12 @@ public class Main {
 		Machine machine = new Machine(ip.getMainPosition(), ip.getJumpTable());
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
 		Interpreter interpreter = new Interpreter(ip.get());
-		if (argp.isTracing()) {
+
+		if (argp.isIn(Mode.TRACE)) {
 			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);
 		}
+
 		interpreter.run(machine);
 	}
 }

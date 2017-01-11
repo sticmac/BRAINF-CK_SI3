@@ -1,12 +1,9 @@
 package fr.unice.polytech.si3.miaou.brainfuck.virtualmachine;
 
 import java.util.*;
-import java.util.stream.Stream;
-import java.lang.Character;
 
 import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.*;
-import fr.unice.polytech.si3.miaou.brainfuck.io.WriteTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.EndOfInputException;
 
@@ -41,7 +38,7 @@ public class Machine {
 	/**
 	 * Stack of return addresses.
 	 */
-	private Stack<Integer> addressesStack;
+	private Deque<Integer> addressesStack;
 
 	/**
 	 * Current location in memory.
@@ -64,7 +61,7 @@ public class Machine {
 	public Machine(int entryPoint, JumpTable jumptable) {
 		this.memory = new Memory();
 		this.jumptable = jumptable;
-		this.addressesStack = new Stack<>();
+		this.addressesStack = new ArrayDeque<>();
 		this.location = 0;
 		this.instrPointer = entryPoint;
 		this.metrics = new Metrics();
@@ -163,10 +160,14 @@ public class Machine {
 	 * @throws EndOfInputException	if the input didn't have enough character to read.
 	 */
 	public int getInput(){
-		int c = ioAccess.read();
-		return c;
+		return ioAccess.read();
 	}
 
+	/**
+	 * Write a byte to the machine's output.
+	 *
+	 * @param c	byte to write to the machine's output.
+	 */
 	public void output(int c){
 		this.ioAccess.write(c);
 	}
@@ -189,10 +190,21 @@ public class Machine {
 		return memory.toString();
 	}
 
+	/**
+	 * Returns the metrics value summary.
+	 *
+	 * @return metric values as a String.
+	 */
 	public String dumpMetrics() {
 		return metrics.toString();
 	}
 
+	/**
+	 * Return the metric corresponding to the given type.
+	 *
+	 * @param clazz	metric type.
+	 * @return the metric for this type.
+	 */
 	public <T extends Metric> T getMetric(Class<T> clazz) {
 		return metrics.get(clazz);
 	}

@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 import fr.unice.polytech.si3.miaou.brainfuck.metrics.ProgSize;
 import fr.unice.polytech.si3.miaou.brainfuck.metrics.ExecTime;

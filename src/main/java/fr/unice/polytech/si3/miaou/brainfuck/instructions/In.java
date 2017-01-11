@@ -35,8 +35,6 @@ public class In extends WriteMemory {
 		int c = machine.getInput();
 		if (c == -1) {
 			throw new EndOfInputException();
-		} else if (c < 0 || c > 255) {
-			throw new InputOutputException("Read error from input stream: " + c);
 		}
 		c -= OFFSET;
 		machine.writeMemory((byte) c);

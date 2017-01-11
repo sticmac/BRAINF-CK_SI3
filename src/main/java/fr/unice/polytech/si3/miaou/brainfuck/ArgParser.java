@@ -1,5 +1,13 @@
 package fr.unice.polytech.si3.miaou.brainfuck;
 
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.Optional;
+
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.ArgumentsException;
 
 /**
@@ -10,13 +18,9 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.ArgumentsException;
  * @author Julien Lemaire
  */
 public class ArgParser {
-	private String filename = "";
-	private String in;
-	private String out;
-	private String langName;
-	private Mode mode;
-	private Type type;
-	private boolean trace = false;
+	private static final List<String> fileArgs = Arrays.asList("-p", "-i", "-o", "--generate"); // Recognized filename options (program, in, out)
+	private Map<String, String> paramValues;
+	private Set<Mode> modes = EnumSet.of(Mode.RUN); //executing a file by default
 
 	/**
 	 * Main constructor of the <code>ArgParser</code> class.
@@ -24,62 +28,31 @@ public class ArgParser {
  	 *
 	 * @param args Array of String containing all the arguments passed through the executable.
 	 */
-	public ArgParser(String[] args) throws ArgumentsException {
-		mode = Mode.RUN; //reading a file by default
-		type = Type.TEXT; //the file is considered as text by default
-		//parsing files
-		for (int i = 0 ; i < args.length ; i++) {
-			switch (args[i]) {
-				case "-p":
-					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
-						this.filename = args[i+1];
-						if (this.filename.toLowerCase().endsWith(".bmp")) {
-							type = Type.IMAGE;
-						}
-						i++;
-					} else {
-						throw new ArgumentsException("No file for -p option.");
-					}
-					break;
-				case "-i":
-					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
-						this.in = args[i+1];
-						i++;
-					} else {
-						throw new ArgumentsException("No file for -i option.");
-					}
-					break;
-				case "-o":
-					if (i+1 < args.length && !(args[i+1].startsWith("-"))) {
-						this.out = args[i+1];
-						i++;
-					} else {
-						throw new ArgumentsException("No file for -o option.");
-					}
-					break;
-				case "--rewrite":
-					setMode(Mode.REWRITE);
-					break;
-				case "--translate":
-					setMode(Mode.TRANSLATE);
-					break;
-				case "--check":
-					setMode(Mode.CHECK);
-					break;
-				case "--trace":
-					this.trace = true;
-					break;
-				case "--generate":
-					setMode(Mode.GENERATE);
-					langName = args[++i];
-					break;
-				default:
-					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
+	public ArgParser(String[] args) {
+		paramValues = new HashMap<>();
+
+		//parsing arguments
+		int i = 0;
+		while (i < args.length) {
+			Optional<Mode> mode = args[i].length() > 2 ? Mode.of(args[i].substring(2).toUpperCase()) : Optional.empty();
+
+			mode.ifPresent(m -> Mode.addTo(modes, m));
+
+			if (fileArgs.contains(args[i])) {
+				paramValues.put(args[i], fetchNextArg(args, i));
+				i++; // Skip filename
+			} else if (!mode.isPresent()) {
+				throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}
+
+			i++;
 		}
-		if (this.filename == "") {
-			throw new ArgumentsException("No program filename specified.");
-		}
+	}
+
+	private String fetchNextArg(String[] args, int i) {
+		if (i+1 >= args.length || args[i+1].startsWith("-"))
+			throw new ArgumentsException("No value for " + args[i] + " option.");
+		return args[i+1];
 	}
 
 	/**
@@ -88,6 +61,9 @@ public class ArgParser {
 	 * @return The filename if one was passed, else an empty string.
 	 */
 	public String getFilename() {
+		String filename = paramValues.get("-p");
+		if (filename == null || filename.isEmpty())
+			throw new ArgumentsException("No program filename specified.");
 		return filename;
 	}
 
@@ -97,7 +73,7 @@ public class ArgParser {
 	 * @return The name of the input file if one was passed, else null.
 	 */
 	public String getInput() {
-		return in;
+		return paramValues.get("-i");
 	}
 
 	/**
@@ -106,16 +82,7 @@ public class ArgParser {
 	 * @return The name of the output file if one was passed, else null.
 	 */
 	public String getOutput() {
-		return out;
-	}
-
-	/**
-	 * Getter for the current instance's mode.
-	 *
-	 * @return The current instance's mode (by default RUN).
-	 */
-	public Mode getMode() {
-		return mode;
+		return paramValues.get("-o");
 	}
 
 	/**
@@ -124,39 +91,26 @@ public class ArgParser {
 	 * @return the name of the language to translate.
 	 */
 	public String getLanguage() {
-		return langName;
+		return paramValues.get("--generate");
 	}
 
 	/**
-	 * Getter for the trace boolean.
+	 * Check if the given mode was activated.
 	 *
-	 * @return true if trace mode is activated, else false.
+	 * @param mode	mode to check for.
+	 * @return true if the given mode is activated.
 	 */
-	public boolean isTracing() {
-		return trace;
+	public boolean isIn(Mode mode) {
+		return modes.contains(mode);
 	}
 
 	/**
 	 * Getter for the type of the file matching the filename entry.
+	 * The file is treated as text by default.
 	 *
 	 * @return The type of the used file.
 	 */
 	public Type getType() {
-		return type;
-	}
-
-	/**
-	 * Setter for the mode.
-	 * Checks if another mode (other than RUN) has been used before. In that case, it throws an exceptions.
-	 *
-	 * @param mode The new mode of execution.
-	 * @throws ArgumentsException if we try to use several modes of execution for the same instance (e.g : Translate and Check at the same time).
-	 */
-	private void setMode(Mode mode) {
-		if (this.mode == Mode.RUN) {
-			this.mode = mode;
-		} else {
-			throw new ArgumentsException("Trying to use several modes at the same time.");
-		}
+		return getFilename().toLowerCase().endsWith(".bmp") ? Type.IMAGE : Type.TEXT;
 	}
 }
