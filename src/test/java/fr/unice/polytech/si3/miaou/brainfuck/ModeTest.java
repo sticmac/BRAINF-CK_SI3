@@ -17,13 +17,14 @@ public class ModeTest {
 	public void modeTest() {
 		Mode[] m = Mode.values();
 		List<String> mn = Arrays.stream(m).map(Mode::name).collect(Collectors.toList());
-		assertEquals(6, mn.size());
+		assertEquals(7, mn.size());
 		assertTrue(mn.contains("RUN"));
 		assertTrue(mn.contains("REWRITE"));
 		assertTrue(mn.contains("TRANSLATE"));
 		assertTrue(mn.contains("CHECK"));
 		assertTrue(mn.contains("TRACE"));
 		assertTrue(mn.contains("GENERATE"));
+		assertTrue(mn.contains("NOMETRICS"));
 	}
 
 	@Test
