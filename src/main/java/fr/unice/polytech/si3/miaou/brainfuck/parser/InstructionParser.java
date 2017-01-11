@@ -115,14 +115,4 @@ public class InstructionParser {
 	public int getMainPosition() {
 		return mainPosition;
 	}
-
-	/**
-	 * Returns the size of the instructions list.
-	 *
-	 * @return the size of the instructions list.
-	 */
-	public int getInstructionsSize() {
-		return instructions.size();
-	}
 }
-

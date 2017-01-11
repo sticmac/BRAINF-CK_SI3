@@ -1,10 +1,12 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -109,5 +111,20 @@ class FunctionsParser implements Function<String, Stream<String>> {
 	 */
 	public int getCounter() {
 		return counter;
+	}
+
+	/**
+	 * Parsing a procedure call and returns the corresponding ProcedureCall object.
+	 * @param split a split line containing the procedure call.
+	 * @return ProcedureCall object corresponding to the current procedure call.
+	 */
+	public ProcedureCall parseCall(String split[]) {
+		ProcedureCall proc;
+		if (split.length > 1) {
+			proc = new ProcedureCall(iset.getProc(split[0]), Integer.parseInt(split[1]));
+		} else {
+			proc = new ProcedureCall(iset.getProc(split[0]));
+		}
+		return proc;
 	}
 }
