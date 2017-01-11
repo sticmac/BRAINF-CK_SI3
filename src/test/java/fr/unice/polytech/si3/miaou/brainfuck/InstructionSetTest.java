@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Incr;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
 
 public class InstructionSetTest {

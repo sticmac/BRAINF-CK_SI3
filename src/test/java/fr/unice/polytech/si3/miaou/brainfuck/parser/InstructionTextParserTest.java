@@ -1,20 +1,17 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
-import org.junit.Ignore;
+import fr.unice.polytech.si3.miaou.brainfuck.Procedure;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
 import org.junit.Test;
 import org.junit.Before;
 
 import static org.junit.Assert.*;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.IntStream;
 
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.InvalidInstructionException;
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Incr;
-import fr.unice.polytech.si3.miaou.brainfuck.instructions.Procedure;
 
 public class InstructionTextParserTest {
 	private InstructionTextParser parser;
@@ -63,6 +60,6 @@ public class InstructionTextParserTest {
 	public void addProcCallTest() {
 		parser.accept("testProc");
 		assertEquals(1, ip.get().size());
-		assertEquals(proc, ip.get().get(0));
+		assertEquals(ProcedureCall.class, ip.get().get(0).getClass());
 	}
 }
