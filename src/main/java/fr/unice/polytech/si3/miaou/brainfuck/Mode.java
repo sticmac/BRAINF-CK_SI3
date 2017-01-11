@@ -5,6 +5,5 @@ package fr.unice.polytech.si3.miaou.brainfuck;
  * @author Julien Lemaire
  */
 public enum Mode {
-	RUN, REWRITE, TRANSLATE, CHECK
+	RUN, REWRITE, TRANSLATE, CHECK, GENERATE
 };
-

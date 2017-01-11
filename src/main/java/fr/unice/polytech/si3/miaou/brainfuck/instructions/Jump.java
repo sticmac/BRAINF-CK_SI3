@@ -19,7 +19,6 @@ public class Jump extends ConditionalJump {
 		super("JUMP", '[', 0xFFFF7F00);
 	}
 
-
 	/**
 	 * Action performed by the instruction: conditional jump.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.

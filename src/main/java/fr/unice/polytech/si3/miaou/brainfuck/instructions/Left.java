@@ -18,7 +18,6 @@ public class Left extends MoveCursor {
 		super("LEFT", '<', 0xFF9400D3);
 	}
 
-
 	/**
 	 * Action performed by the instruction: move to the previous memory cell.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.

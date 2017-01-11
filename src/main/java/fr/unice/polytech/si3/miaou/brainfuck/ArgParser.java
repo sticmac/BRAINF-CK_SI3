@@ -13,6 +13,7 @@ public class ArgParser {
 	private String filename = "";
 	private String in;
 	private String out;
+	private String langName;
 	private Mode mode;
 	private Type type;
 	private boolean trace = false;
@@ -68,6 +69,10 @@ public class ArgParser {
 				case "--trace":
 					this.trace = true;
 					break;
+				case "--generate":
+					setMode(Mode.GENERATE);
+					langName = args[++i];
+					break;
 				default:
 					throw new ArgumentsException(args[i]+" is not a recognized option or argument.");
 			}
@@ -111,6 +116,15 @@ public class ArgParser {
 	 */
 	public Mode getMode() {
 		return mode;
+	}
+
+	/**
+	 * Getter for the language chosen.
+	 *
+	 * @return the name of the language to translate.
+	 */
+	public String getLanguage() {
+		return langName;
 	}
 
 	/**

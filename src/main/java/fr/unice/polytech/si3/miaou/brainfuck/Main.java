@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
@@ -13,6 +14,7 @@ import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteImage;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadImageFile;
+import fr.unice.polytech.si3.miaou.brainfuck.codegeneration.CodeGenerator;
 
 /**
  * Entry point for the application.
@@ -60,7 +62,7 @@ public class Main {
 	 *
 	 * @throws IOException	in case of IO error on file operation.
 	 */
-	private void run() throws IOException {
+	private void run() throws LanguageException, IOException {
 		InstructionParser ip;
 
 		if (argp.getType() == Type.IMAGE) {
@@ -88,6 +90,11 @@ public class Main {
 				break;
 			case CHECK:
 				check(ip);
+				break;
+			case GENERATE:
+				CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
+				cg.writeInstructions(textFileRead(argp.getFilename()).get());
+				cg.footer();
 				break;
 		}
 	}
