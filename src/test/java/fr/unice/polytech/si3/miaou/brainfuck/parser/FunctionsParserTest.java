@@ -1,15 +1,17 @@
 package fr.unice.polytech.si3.miaou.brainfuck.parser;
 
 import fr.unice.polytech.si3.miaou.brainfuck.InstructionSet;
-import org.junit.Ignore;
+import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
+import fr.unice.polytech.si3.miaou.brainfuck.instructions.ProcedureCall;
+import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import org.junit.Test;
 import org.junit.Before;
 
 import static org.junit.Assert.*;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.SyntaxFunctionException;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
@@ -17,25 +19,46 @@ import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
 
 public class FunctionsParserTest {
 	private FunctionsParser parser;
-	private Stream<String> lines;
 	private InstructionSet instructionSet;
 
 	@Before
 	public void defineContext() {
 		instructionSet = new InstructionSet();
 		parser = new FunctionsParser(instructionSet);
+		parser.apply("FUNC Miaou");
+		parser.apply("++");
+		parser.apply("RET");
+		parser.apply("FUNC Nyan");
+		parser.apply("-");
+		parser.apply("RET");
 	}
 
-	@Ignore
 	@Test
 	public void testExists() {
-		List<String> linesBuilder = new LinkedList<>();
-		linesBuilder.add("FUNC Miaou");
-		linesBuilder.add("++--");
-		linesBuilder.add("RET");
-		lines = linesBuilder.stream();
-		lines.map(parser);
 		assertNotNull(instructionSet.getProc("Miaou"));
+		assertNotNull(instructionSet.getProc("Nyan"));
+	}
+
+	@Test
+	public void testCounter() {
+		assertEquals(5, parser.getCounter());
+	}
+
+	@Test
+	public void testParseCall() {
+		List<Instruction> instr = new ArrayList<>();
+		parser.parseCall(new String[]{"Miaou"}, instr);
+		parser.parseCall(new String[]{"Nyan"}, instr);
+		assertEquals(2, instr.size());
+		assertEquals(ProcedureCall.class, instr.get(0).getClass());
+		assertEquals(ProcedureCall.class, instr.get(1).getClass());
+	}
+
+	@Test
+	public void testParseCallParameter() {
+		List<Instruction> instr = new ArrayList<>();
+		parser.parseCall(new String[]{"Miaou", "13"}, instr);
+		assertEquals(ProcedureCall.class, instr.get(0).getClass());
 	}
 
 	@Test
