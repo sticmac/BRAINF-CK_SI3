@@ -2,7 +2,7 @@
 # build script
 
 # Clean build dir and build jar archive
-mvn clean package
+mvn clean package verify
 
 # Builds the JavaDoc
 mvn javadoc:javadoc
