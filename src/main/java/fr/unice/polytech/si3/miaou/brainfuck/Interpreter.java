@@ -28,6 +28,8 @@ public class Interpreter {
 	 */
 	private Logger logger;
 
+	private boolean metricsReport;
+
 	/**
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
@@ -35,6 +37,7 @@ public class Interpreter {
 	 */
 	public Interpreter(List<Instruction> instructions) {
 		this.instructions = instructions;
+		this.metricsReport = true;
 	}
 
 	/**
@@ -44,6 +47,13 @@ public class Interpreter {
 	 */
 	public void setLogger(Logger log) {
 		this.logger = log;
+	}
+
+	/**
+	 * Disable the Metrics report.
+	 */
+	public void disableMetricsReport() {
+		this.metricsReport = false;
 	}
 
 	/**
@@ -68,6 +78,6 @@ public class Interpreter {
 		machine.getMetric(ExecTime.class).stop();
 
 		System.out.print(machine.dumpMemory());
-		System.out.print(machine.dumpMetrics());
+		if (metricsReport) System.out.print(machine.dumpMetrics());
 	}
 }

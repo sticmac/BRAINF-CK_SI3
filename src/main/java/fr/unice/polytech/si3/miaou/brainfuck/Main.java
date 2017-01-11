@@ -151,6 +151,10 @@ public class Main {
 			interpreter.setLogger(log);
 		}
 
+		if (argp.isIn(Mode.NOMETRICS)) {
+			interpreter.disableMetricsReport();
+		}
+
 		interpreter.run(machine);
 	}
 }

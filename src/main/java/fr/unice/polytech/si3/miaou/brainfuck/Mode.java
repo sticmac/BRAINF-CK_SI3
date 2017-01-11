@@ -18,7 +18,8 @@ public enum Mode {
 	TRANSLATE,
 	CHECK,
 	TRACE,
-	GENERATE;
+	GENERATE,
+	NOMETRICS;
 
 	/**
 	 * EnumSet of conflicting modes (Run, Rewrite, Translate)
