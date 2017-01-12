@@ -2,17 +2,19 @@ package fr.unice.polytech.si3.miaou.brainfuck;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.List;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 
+import fr.unice.polytech.si3.miaou.brainfuck.parser.InstructionParser;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.LanguageException;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
 import fr.unice.polytech.si3.miaou.brainfuck.io.Io;
 import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BrainfuckException;
+import fr.unice.polytech.si3.miaou.brainfuck.exceptions.BracketMismatchException;
 import fr.unice.polytech.si3.miaou.brainfuck.io.WriteImage;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadTextFile;
 import fr.unice.polytech.si3.miaou.brainfuck.io.ReadImageFile;
+import fr.unice.polytech.si3.miaou.brainfuck.codegeneration.CodeGenerator;
 
 /**
  * Entry point for the application.
@@ -42,12 +44,16 @@ public class Main {
 	 * @throws IOException		in case of IO error on file operation.
 	 */
 	public static void main(String[] args) throws IOException {
+		ArgParser ap = null;
 		try {
-			Main app = new Main(new ArgParser(args));
+			ap = new ArgParser(args);
+			Main app = new Main(ap);
 			app.run();
 		} catch (BrainfuckException e) {
-			System.err.println(e);
-			System.exit(e.getErrorCode());
+			if (!(e instanceof BracketMismatchException) || ap.isIn(Mode.RUN) || ap.isIn(Mode.CHECK)) {
+				System.err.println(e);
+				System.exit(e.getErrorCode());
+			}
 		}
 	}
 
@@ -56,7 +62,7 @@ public class Main {
 	 *
 	 * @throws IOException	in case of IO error on file operation.
 	 */
-	private void run() throws IOException {
+	private void run() throws LanguageException, IOException {
 		InstructionParser ip;
 
 		if (argp.getType() == Type.IMAGE) {
@@ -65,26 +71,31 @@ public class Main {
 			ip = textFileRead(argp.getFilename());
 		}
 
-		switch(argp.getMode()) {
-			case RUN:
-				check(ip);
-				execute(ip);
-				break;
-			case REWRITE:
-				Translator tr = new Translator();
-				tr.toShortSyntax(ip.get());
-				break;
-			case TRANSLATE:
-				if (argp.getType() == Type.TEXT) {
-					Translator tra = new Translator();
-					WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
-				} else {
-					Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
-				}
-				break;
-			case CHECK:
-				check(ip);
-				break;
+		if (argp.isIn(Mode.CHECK)) { // Don't run program in check mode
+			check(ip);
+		} else if (argp.isIn(Mode.RUN)) {
+			check(ip);
+			execute(ip);
+		}
+
+		if (argp.isIn(Mode.REWRITE)) {
+			Translator tr = new Translator();
+			tr.toShortSyntax(ip.get());
+		}
+
+		if (argp.isIn(Mode.TRANSLATE)) {
+			if (argp.getType() == Type.TEXT) {
+				Translator tra = new Translator();
+				WriteImage iw = new WriteImage(tra.toColor(textFileRead(argp.getFilename()).get()));
+			} else {
+				Files.copy(Paths.get(argp.getFilename()), System.out); //Copy the image file to stdout
+			}
+		}
+
+		if (argp.isIn(Mode.GENERATE)) {
+			CodeGenerator cg = new CodeGenerator(argp.getFilename(), argp.getLanguage(), argp.getInput(), argp.getOutput());
+			cg.writeInstructions(textFileRead(argp.getFilename()).get());
+			cg.footer();
 		}
 	}
 
@@ -115,13 +126,12 @@ public class Main {
 	}
 
 	/**
-	 * Starts the Checker to make sure the program is well-formed.
+	 * Starts the check to make sure the program is well-formed.
 	 *
 	 * @param ip	InstructionParser which previously parsed a file.
 	 */
 	private void check(InstructionParser ip) {
-		Checker checker = new Checker(ip.get());
-		checker.check();
+		ip.getJumpTable().check();
 	}
 
 	/**
@@ -132,13 +142,19 @@ public class Main {
 	 * @throws IOException			if writing the log failed (when one has to be written).
 	 */
 	private void execute(InstructionParser ip) throws FileNotFoundException, IOException {
-		Machine machine = new Machine();
+		Machine machine = new Machine(ip.getMainPosition(), ip.getJumpTable());
 		machine.setIo(new Io(argp.getInput(),argp.getOutput()));
-		Interpreter interpreter = new Interpreter(ip.get(), ip.getJumpTable());
-		if (argp.isTracing()) {
+		Interpreter interpreter = new Interpreter(ip.get());
+
+		if (argp.isIn(Mode.TRACE)) {
 			Logger log = new Logger(argp.getFilename());
 			interpreter.setLogger(log);
 		}
+
+		if (argp.isIn(Mode.NOMETRICS)) {
+			interpreter.disableMetricsReport();
+		}
+
 		interpreter.run(machine);
 	}
 }

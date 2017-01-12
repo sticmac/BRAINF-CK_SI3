@@ -18,7 +18,7 @@ public class Translator {
 	 * @param instr	instruction to translate.
 	 */
 	public void toLongSyntax(Instruction instr) {
-		System.out.print(instr.getName());
+		System.out.println(instr.getName());
 	}
 
 	/**

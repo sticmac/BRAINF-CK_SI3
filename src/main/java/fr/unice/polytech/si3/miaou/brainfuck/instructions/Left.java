@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Left instruction: move to the previous memory cell.
@@ -18,7 +17,6 @@ public class Left extends MoveCursor {
 	public Left() {
 		super("LEFT", '<', 0xFF9400D3);
 	}
-
 
 	/**
 	 * Action performed by the instruction: move to the previous memory cell.

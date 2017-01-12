@@ -1,8 +1,6 @@
 package fr.unice.polytech.si3.miaou.brainfuck.instructions;
 
-import fr.unice.polytech.si3.miaou.brainfuck.BracketCounter;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.Metrics;
 
 /**
  * Jump instruction: jump to the instruction right after the associated BACK if the pointed
@@ -21,7 +19,6 @@ public class Jump extends ConditionalJump {
 		super("JUMP", '[', 0xFFFF7F00);
 	}
 
-
 	/**
 	 * Action performed by the instruction: conditional jump.
 	 * Overrides <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a>'s method.
@@ -31,21 +28,9 @@ public class Jump extends ConditionalJump {
 	@Override
 	public void accept(Machine machine) {
 		super.accept(machine);
-		if (!machine.isJumping() && machine.readMemory() == Byte.MIN_VALUE) {
-			machine.setJumping(true);
-		} else {
-			machine.setReversed(false);
-			machine.setJumping(false);
+		if (machine.readMemory() == Byte.MIN_VALUE) {
+			machine.jump();
 		}
 	}
 
-	/**
-	 * Increments the left bracket counter.
-	 *
-	 * @param bc	BracketCounter whose left bracket count is to be incremented.
-	 */
-	@Override
-	public void incr(BracketCounter bc) {
-		bc.incrLeft();
-	}
 }

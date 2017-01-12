@@ -5,7 +5,11 @@ import java.io.IOException;
 
 import fr.unice.polytech.si3.miaou.brainfuck.instructions.Instruction;
 import fr.unice.polytech.si3.miaou.brainfuck.virtualmachine.Machine;
-import fr.unice.polytech.si3.miaou.brainfuck.JumpTable;
+
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ProgSize;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ExecTime;
+import fr.unice.polytech.si3.miaou.brainfuck.metrics.ExecMove;
+
 
 /**
  * Reads the instructions from a List and execute them.
@@ -20,24 +24,20 @@ public class Interpreter {
 	private List<Instruction> instructions;
 
 	/**
-	 * Jumptable used to associate ConditionalJump instructions
-	 */
-	private JumpTable jumptable;
-
-	/**
 	 * The Logger for the current instance of the program.
 	 */
 	private Logger logger;
+
+	private boolean metricsReport;
 
 	/**
 	 * Constructs an interpreter using the given List of Instruction.
 	 *
 	 * @param instructions 	List of Instruction containing instructions to execute.
-	 * @param jumptable     The jumptable containing conditional jumps positions
 	 */
-	public Interpreter(List<Instruction> instructions, JumpTable jumptable) {
+	public Interpreter(List<Instruction> instructions) {
 		this.instructions = instructions;
-		this.jumptable = jumptable;
+		this.metricsReport = true;
 	}
 
 	/**
@@ -50,6 +50,13 @@ public class Interpreter {
 	}
 
 	/**
+	 * Disable the Metrics report.
+	 */
+	public void disableMetricsReport() {
+		this.metricsReport = false;
+	}
+
+	/**
 	 * Executes the instructions from the List and print memory content if the program terminated successfully.
 	 * Parses in reverse order when Machine::isReversed returns true.
 	 *
@@ -57,23 +64,20 @@ public class Interpreter {
 	 * @throws IOException	if any attempt to write in the log file failed.
 	 */
 	public void run(Machine machine) throws IOException {
-		int i = 0;
-		Metrics.PROG_SIZE.set(instructions.size());
-		Metrics.EXEC_TIME.start();
-		while (i >= 0 && i < instructions.size()) {
+		machine.getMetric(ProgSize.class).set(instructions.size());
+		machine.getMetric(ExecTime.class).start();
+
+		for (int i = machine.getInstrPointer() ; i >= 0 && i < instructions.size() ; i = machine.getInstrPointer()) {
 			machine.executeOp(instructions.get(i));
 			if (logger != null) {
 				logger.logStep(i, instructions.get(i), machine);
 			}
-			if (machine.isJumping()){
-				i = jumptable.getJump(i).intValue();
-			} else {
-				i++;
-			}
-			Metrics.EXEC_MOVE.incr();
+			machine.getMetric(ExecMove.class).incr();
 		}
-		Metrics.EXEC_TIME.stop();
+
+		machine.getMetric(ExecTime.class).stop();
+
 		System.out.print(machine.dumpMemory());
-		System.out.print(Metrics.dump());
+		if (metricsReport) System.out.print(machine.dumpMetrics());
 	}
 }
